@@ -22,8 +22,6 @@ class IQClient
 
   static String INSIGHT_KEY = 'sonatype-nexus-iq'
 
-  private static final String API_GET_POLICY_EVALUATION_JSON = "{{iqURL}}/rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json"
-
   SonatypeHTTPBuilder http
 
   String serverUrl
@@ -39,8 +37,24 @@ class IQClient
     this.password = password
   }
 
-  Set lookupPolcyDetailsFromIQ(String s)
+  def lookupPolcyDetailsFromIQ(String iqAppExternalId, String iqReportInternalid)
   {
-    new HashSet() //TODO: implement
+    def url = getLookupTicketsForProjectUrl(serverUrl, iqAppExternalId, iqReportInternalid)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
   }
+
+  private static Map getRequestHeaders(username, password) {
+    return [
+            'User-Agent' : USER_AGENT,
+            Authorization: 'Basic ' + ("${username}:${password}").bytes.encodeBase64()
+    ]
+  }
+
+  private static String getLookupTicketsForProjectUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
+    // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
+    return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalid}/browseReport/policythreats.json"
+  }
+
 }

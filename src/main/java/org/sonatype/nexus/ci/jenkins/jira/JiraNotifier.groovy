@@ -67,7 +67,8 @@ class JiraNotifier
   {
     try {
       // 1. Get Policy Findings from IQ
-      Set potentialFindings = iqClient.lookupPolcyDetailsFromIQ(policyEvaluationHealthAction.reportLink);
+      Set potentialFindings = iqClient.lookupPolcyDetailsFromIQ("aaaaaaa-testidegrandfathering", //TODO: parse the app name, is this just in the report link???
+              "a22d44d0209b47358c8dd2532bb7afb3");
       System.out.println("IQ Link: " + policyEvaluationHealthAction.reportLink);
 
       // 2. Get Tickets from Jira

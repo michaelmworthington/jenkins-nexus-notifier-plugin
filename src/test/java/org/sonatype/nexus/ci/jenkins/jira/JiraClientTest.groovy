@@ -83,6 +83,6 @@ class JiraClientTest
     def resp = client.closeTicket("10209")
 
     expect:
-    resp = null
+    resp == null
   }
 }
