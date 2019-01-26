@@ -28,11 +28,19 @@ def notifierConfiguration = NotifierConfiguration.getNotifierConfiguration()
 def hasBitbucket = notifierConfiguration != null && notifierConfiguration.bitbucketConfigs != null &&
     notifierConfiguration.bitbucketConfigs.size() > 0
 
+def hasJira = notifierConfiguration != null && notifierConfiguration.jiraConfigs != null &&
+        notifierConfiguration.jiraConfigs.size() > 0
+
 f.section(title: typedDescriptor.displayName) {
   if (hasBitbucket) {
     f.property(field: 'bitbucketNotification')
   }
-  if (!hasBitbucket) {
+
+  if (hasJira) {
+    f.property(field: 'jiraNotification')
+  }
+
+  if (!hasBitbucket && !hasJira) {
     tr {
       td(class: 'setting-leftspace') {}
       td {}

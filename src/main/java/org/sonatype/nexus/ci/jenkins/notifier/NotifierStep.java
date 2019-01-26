@@ -18,6 +18,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import org.sonatype.nexus.ci.jenkins.bitbucket.BitbucketNotifier;
+import org.sonatype.nexus.ci.jenkins.jira.JiraNotifier;
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction;
 
 import hudson.AbortException;
@@ -42,6 +43,7 @@ public class NotifierStep
     implements SimpleBuildStep
 {
   private BitbucketNotification bitbucketNotification;
+  private JiraNotification jiraNotification;
 
   @DataBoundSetter
   public void setBitbucketNotification(final BitbucketNotification bitbucketNotification) {
@@ -50,6 +52,15 @@ public class NotifierStep
 
   public BitbucketNotification getBitbucketNotification() {
     return bitbucketNotification;
+  }
+
+  @DataBoundSetter
+  public void setJiraNotification(final JiraNotification jiraNotification) {
+    this.jiraNotification = jiraNotification;
+  }
+
+  public JiraNotification getJiraNotification() {
+    return jiraNotification;
   }
 
   @DataBoundConstructor
@@ -77,6 +88,10 @@ public class NotifierStep
 
     if (bitbucketNotification != null && bitbucketNotification.getSendBitbucketNotification()) {
       new BitbucketNotifier(run, listener).send(buildPassing, bitbucketNotification, policyEvaluationHealthAction);
+    }
+
+    if (jiraNotification != null && jiraNotification.getSendJiraNotification()) {
+      new JiraNotifier(run, listener).send(buildPassing, jiraNotification, policyEvaluationHealthAction);
     }
   }
 

@@ -31,4 +31,19 @@ class SonatypeHTTPBuilder
         headers = requestHeaders
     }
   }
+
+  def post(url, requestBody, requestHeaders) {
+    this.request(url, Method.POST, JSON) {
+      req ->
+        body = requestBody
+        headers = requestHeaders
+    }
+  }
+
+  def get(url, requestHeaders) {
+    this.request(url, Method.GET, JSON) {
+      req ->
+        headers = requestHeaders
+    }
+  }
 }

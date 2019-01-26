@@ -10,28 +10,28 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package org.sonatype.nexus.ci.jenkins.config.NotifierConfiguration
+package org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 
-import org.sonatype.nexus.ci.jenkins.config.Messages
-import org.sonatype.nexus.ci.jenkins.config.NotifierConfiguration
+import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 
 def f = namespace(lib.FormTagLib)
-def typedDescriptor = (NotifierConfiguration) descriptor
+def c = namespace(lib.CredentialsTagLib)
+def typedDescriptor = (JiraNotification.DescriptorImpl) descriptor
 
 f.section(title: typedDescriptor.displayName) {
-  f.entry(title: _(Messages.NotifierConfiguration_BitbucketServer())) {
-    f.repeatableHeteroProperty(
-        field: 'bitbucketConfigs',
-        addCaption: _(Messages.NotifierConfiguration_AddBitbucketServer()),
-        oneEach: 'true'
-    )
+  f.entry(title: _('Send Jira Notification'), field: 'sendJiraNotification') {
+    f.checkbox()
   }
 
-  f.entry(title: _(Messages.NotifierConfiguration_JiraServer())) {
-    f.repeatableHeteroProperty(
-            field: 'jiraConfigs',
-            addCaption: _(Messages.NotifierConfiguration_AddJiraServer()),
-            oneEach: 'true'
-    )
+  f.entry(title: _('Jira Project Key'), field: 'projectKey') {
+    f.textbox(clazz: 'required')
+  }
+
+  f.advanced() {
+    f.section(title: _('Advanced options')) {
+      f.entry(title: _('Use job specific credentials'), field: 'jobCredentialsId') {
+        c.select(context:app, includeUser:false, expressionAllowed:false)
+      }
+    }
   }
 }

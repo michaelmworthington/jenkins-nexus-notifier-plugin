@@ -26,20 +26,23 @@ class NotifierConfiguration
     extends GlobalConfiguration
 {
   List<BitbucketConfiguration> bitbucketConfigs
+  List<JiraConfiguration> jiraConfigs
 
   NotifierConfiguration() {
     load()
   }
 
   @DataBoundConstructor
-  NotifierConfiguration(final List<BitbucketConfiguration> bitbucketConfigs) {
+  NotifierConfiguration(final List<BitbucketConfiguration> bitbucketConfigs, final List<JiraConfiguration> jiraConfigs) {
     this.bitbucketConfigs = bitbucketConfigs ?: []
+    this.jiraConfigs = jiraConfigs ?: []
   }
 
   @Override
   boolean configure(final StaplerRequest req, final JSONObject json) throws Descriptor.FormException {
     def notifierConfiguration = req.bindJSON(NotifierConfiguration, json)
     this.bitbucketConfigs = notifierConfiguration.bitbucketConfigs
+    this.jiraConfigs = notifierConfiguration.jiraConfigs
     save()
     return true
   }

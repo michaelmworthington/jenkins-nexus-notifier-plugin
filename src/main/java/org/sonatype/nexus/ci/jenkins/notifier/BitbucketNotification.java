@@ -89,16 +89,37 @@ public class BitbucketNotification
       return Messages.BitbucketNotification_DisplayName();
     }
 
-    public FormValidation doCheckProjectKey(@QueryParameter String projectKey) {
-      return FormUtil.validateNotEmpty(projectKey, Messages.BitbucketNotification_ProjectKeyRequired());
+    public FormValidation doCheckProjectKey(@QueryParameter Boolean sendBitbucketNotification, @QueryParameter String projectKey) {
+      if(Boolean.FALSE.equals(sendBitbucketNotification))
+      {
+        return FormValidation.ok();
+      }
+      else
+      {
+        return FormUtil.validateNotEmpty(projectKey, Messages.BitbucketNotification_ProjectKeyRequired());
+      }
     }
 
-    public FormValidation doCheckRepositorySlug(@QueryParameter String repositorySlug) {
-      return FormUtil.validateNotEmpty(repositorySlug, Messages.BitbucketNotification_RepositorySlugRequired());
+    public FormValidation doCheckRepositorySlug(@QueryParameter Boolean sendBitbucketNotification, @QueryParameter String repositorySlug) {
+      if(Boolean.FALSE.equals(sendBitbucketNotification))
+      {
+        return FormValidation.ok();
+      }
+      else
+      {
+        return FormUtil.validateNotEmpty(repositorySlug, Messages.BitbucketNotification_RepositorySlugRequired());
+      }
     }
 
-    public FormValidation doCheckCommitHash(@QueryParameter String commitHash) {
-      return FormUtil.validateNotEmpty(commitHash, Messages.BitbucketNotification_CommitHashRequired());
+    public FormValidation doCheckCommitHash(@QueryParameter Boolean sendBitbucketNotification, @QueryParameter String commitHash) {
+      if(Boolean.FALSE.equals(sendBitbucketNotification))
+      {
+        return FormValidation.ok();
+      }
+      else
+      {
+        return FormUtil.validateNotEmpty(commitHash, Messages.BitbucketNotification_CommitHashRequired());
+      }
     }
 
     public ListBoxModel doFillJobCredentialsIdItems(@AncestorInPath final Job job) {
