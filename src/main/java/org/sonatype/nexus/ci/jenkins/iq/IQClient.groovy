@@ -39,7 +39,7 @@ class IQClient
 
   def lookupPolcyDetailsFromIQ(String iqAppExternalId, String iqReportInternalid)
   {
-    def url = getLookupTicketsForProjectUrl(serverUrl, iqAppExternalId, iqReportInternalid)
+    def url = getPolicyEvaluationResultsUrl(serverUrl, iqAppExternalId, iqReportInternalid)
     def headers = getRequestHeaders(username, password)
 
     http.get(url, headers)
@@ -52,7 +52,7 @@ class IQClient
     ]
   }
 
-  private static String getLookupTicketsForProjectUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
+  private static String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
     // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
     return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalid}/browseReport/policythreats.json"
   }

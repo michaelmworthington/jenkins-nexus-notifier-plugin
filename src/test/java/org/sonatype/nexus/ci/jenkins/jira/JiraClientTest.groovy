@@ -12,16 +12,10 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
-import groovy.json.JsonOutput
-import org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
-import spock.lang.Ignore
+import org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult
+
 import spock.lang.Specification
-
-import java.security.MessageDigest
-
-import static org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult.BuildStatus.FAIL
-import static org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult.BuildStatus.PASS
 
 class JiraClientTest
     extends Specification
@@ -49,7 +43,7 @@ class JiraClientTest
   }
 
   //@Ignore
-  def 'helper test to verify interaction with Bitbucket Server - Get All Tickets'() {
+  def 'helper test to verify interaction with Jira Server - Get All Tickets'() {
     setup:
       def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
       def resp = client.lookupJiraTickets("DP")
@@ -61,14 +55,14 @@ class JiraClientTest
   }
 
   //@Ignore
-  def 'helper test to verify interaction with Bitbucket Server - Create Ticket'() {
+  def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
     def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
     def resp = client.createIssue("DP",
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-1234",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
-                                  org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult.BuildStatus.PASS,
+                                  PolicyEvaluationResult.BuildStatus.PASS,
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE")
 
     expect:
@@ -77,7 +71,7 @@ class JiraClientTest
   }
 
   //@Ignore
-  def 'helper test to verify interaction with Bitbucket Server - Close Ticket'() {
+  def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
     def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
     def resp = client.closeTicket("10209")

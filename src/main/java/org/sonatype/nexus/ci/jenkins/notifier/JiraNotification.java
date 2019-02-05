@@ -23,7 +23,6 @@ import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
-import org.sonatype.nexus.ci.jenkins.config.BitbucketConfiguration;
 import org.sonatype.nexus.ci.jenkins.config.JiraConfiguration;
 import org.sonatype.nexus.ci.jenkins.config.NotifierConfiguration;
 import org.sonatype.nexus.ci.jenkins.util.FormUtil;
@@ -90,8 +89,8 @@ public class JiraNotification
     public ListBoxModel doFillJobCredentialsIdItems(@AncestorInPath final Job job) {
       NotifierConfiguration configuration = NotifierConfiguration.getNotifierConfiguration();
       checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration());
-      checkArgument(configuration.getBitbucketConfigs() != null, Messages.JiraClientFactory_NoConfiguration());
-      checkArgument(configuration.getBitbucketConfigs().size() > 0, Messages.JiraClientFactory_NoConfiguration());
+      checkArgument(configuration.getJiraConfigs() != null, Messages.JiraClientFactory_NoConfiguration());
+      checkArgument(configuration.getJiraConfigs().size() > 0, Messages.JiraClientFactory_NoConfiguration());
 
       JiraConfiguration jiraConfiguration = configuration.getJiraConfigs().get(0);
       return FormUtil.newCredentialsItemsListBoxModel(jiraConfiguration.getServerUrl(),
