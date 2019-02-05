@@ -27,6 +27,18 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox(clazz: 'required')
   }
 
+  f.entry(title: _('Create Individual Tickets'), field: 'shouldCreateIndividualTickets') {
+    f.checkbox()
+  }
+
+  f.entry(title: _('Transition Jira Tickets'), field: 'shouldTransitionJiraTickets') {
+    f.checkbox()
+  }
+
+  f.entry(title: _('Jira Transition Status'), field: 'jiraTransitionStatus') {
+    f.textbox()
+  }
+
   f.advanced() {
     f.section(title: _('Advanced options')) {
       f.entry(title: _('Use job specific credentials'), field: 'jobCredentialsId') {

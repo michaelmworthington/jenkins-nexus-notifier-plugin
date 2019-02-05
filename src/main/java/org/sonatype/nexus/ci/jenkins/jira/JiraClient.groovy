@@ -14,9 +14,6 @@ package org.sonatype.nexus.ci.jenkins.jira
 
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-
 class JiraClient
 {
   static String USER_AGENT = 'nexus-jenkins-notifier'
@@ -56,7 +53,7 @@ class JiraClient
     http.get(url, headers)
   }
 
-  def closeTicket(String ticketInternalId)
+  def closeTicket(String ticketInternalId, String pTransitionName)
   {
     //1. Get the transitions
     def url = getIssueTransitionsUrl(serverUrl, ticketInternalId)
@@ -68,7 +65,7 @@ class JiraClient
     def transition_id = "21"
 
     resp.transitions.each {
-      if ("In Progress".equals(it.name)){
+      if (pTransitionName.equals(it.name)){
         transition_id = it.id
       }
     }

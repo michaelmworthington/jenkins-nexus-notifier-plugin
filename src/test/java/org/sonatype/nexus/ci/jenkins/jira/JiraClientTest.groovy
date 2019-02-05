@@ -74,7 +74,7 @@ class JiraClientTest
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
     def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
-    def resp = client.closeTicket("10209")
+    def resp = client.closeTicket("10209", "Done")
 
     expect:
     resp == null

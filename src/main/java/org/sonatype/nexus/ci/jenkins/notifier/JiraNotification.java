@@ -33,8 +33,12 @@ public class JiraNotification
     implements Describable<JiraNotification>
 {
   private boolean sendJiraNotification;
-
   private String projectKey;
+
+  private boolean shouldCreateIndividualTickets;
+
+  private boolean shouldTransitionJiraTickets;
+  private String jiraTransitionStatus;
 
   private String jobCredentialsId;
 
@@ -46,6 +50,12 @@ public class JiraNotification
     return projectKey;
   }
 
+  public boolean getShouldCreateIndividualTickets() { return shouldCreateIndividualTickets; }
+
+  public boolean getShouldTransitionJiraTickets() { return shouldTransitionJiraTickets; }
+
+  public String getJiraTransitionStatus() { return jiraTransitionStatus; }
+
   public String getJobCredentialsId() {
     return jobCredentialsId;
   }
@@ -53,10 +63,16 @@ public class JiraNotification
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
                           final String projectKey,
+                          final boolean shouldCreateIndividualTickets,
+                          final boolean shouldTransitionJiraTickets,
+                          final String jiraTransitionStatus,
                           final String jobCredentialsId)
   {
     this.sendJiraNotification = sendJiraNotification;
     this.projectKey = projectKey;
+    this.shouldCreateIndividualTickets = shouldCreateIndividualTickets;
+    this.shouldTransitionJiraTickets = shouldTransitionJiraTickets;
+    this.jiraTransitionStatus = jiraTransitionStatus;
     this.jobCredentialsId = jobCredentialsId;
   }
 
@@ -83,6 +99,17 @@ public class JiraNotification
       else
       {
         return FormUtil.validateNotEmpty(projectKey, Messages.JiraNotification_ProjectKeyRequired());
+      }
+    }
+
+    public FormValidation doCheckJiraTransitionStatus(@QueryParameter Boolean shouldTransitionJiraTickets, @QueryParameter String jiraTransitionStatus) {
+      if(Boolean.FALSE.equals(shouldTransitionJiraTickets))
+      {
+        return FormValidation.ok();
+      }
+      else
+      {
+        return FormUtil.validateNotEmpty(jiraTransitionStatus, Messages.JiraNotification_TransitionStatusRequired());
       }
     }
 
