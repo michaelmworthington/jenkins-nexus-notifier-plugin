@@ -36,7 +36,7 @@ class PolicyViolation
         action.hasProperty('moderateComponentCount')
   }
 
-  static Set<PolicyViolation> buildFromIQ(Object component) {
+  static Set<PolicyViolation> buildFromIQ(Object component, String pReportLink) {
     Set<PolicyViolation> returnValue = new HashSet<PolicyViolation>();
 
     //potentialFindings.aaData[0].activeViolations[0].policyName
@@ -58,7 +58,7 @@ class PolicyViolation
 
       String fingerprint = MessageDigest.getInstance("SHA-256").digest(fingerprintKey.bytes).encodeHex().toString()
 
-      returnValue.add(new PolicyViolation(reportLink: "foo", //TODO
+      returnValue.add(new PolicyViolation(reportLink: pReportLink,
                                           componentName: componentName,
                                           policyName: it.policyName,
                                           fingerprintKey: fingerprintKey,

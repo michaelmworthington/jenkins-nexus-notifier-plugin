@@ -61,7 +61,7 @@ class JiraClient
     def resp = http.get(url, headers)
 
     //2. Pick the right transition
-    //todo : default
+    //todo : what should the default be? Or, what to do if no transition matches?
     def transition_id = "21"
 
     resp.transitions.each {
@@ -125,6 +125,7 @@ class JiraClient
     //String newdate = new Date().format(f)
 
 
+    String formatted_summary = "${description}"
     String formatted_description = "\n\tDescription: ${description}\n\n\tTimestamp: ${newdate}\n\n\tSource: ${source}\n\n\tSeverity: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
 
     return [
@@ -132,7 +133,7 @@ class JiraClient
                     project: [
                             key: projectKey
                     ],
-                    summary: "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                    summary: formatted_summary,
                     description: formatted_description,
                     priority: [
                             name: "Low"
