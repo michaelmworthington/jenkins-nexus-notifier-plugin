@@ -39,6 +39,14 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
+  f.entry(title: _('Jira Custom Field for IQ Application Id'), field: 'applicationCustomFieldName') {
+    f.textbox()
+  }
+
+  f.entry(title: _('Jira Custom Field for IQ Organization Id'), field: 'organizationCustomFieldName') {
+    f.textbox()
+  }
+
   f.advanced() {
     f.section(title: _('Advanced options')) {
       f.entry(title: _('Use job specific credentials'), field: 'jobCredentialsId') {

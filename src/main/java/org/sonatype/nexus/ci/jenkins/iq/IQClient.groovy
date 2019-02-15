@@ -37,12 +37,8 @@ class IQClient
     this.password = password
   }
 
-  def lookupPolcyDetailsFromIQ(String reportLink)
+  def lookupPolcyDetailsFromIQ(String iqReportInternalid, String iqAppExternalId)
   {
-    String[] linkPieces = reportLink.split("/")
-    String iqReportInternalid = linkPieces[linkPieces.length-1]
-    String iqAppExternalId = linkPieces[linkPieces.length-3]
-
     def url = getPolicyEvaluationResultsUrl(serverUrl, iqAppExternalId, iqReportInternalid)
     def headers = getRequestHeaders(username, password)
 

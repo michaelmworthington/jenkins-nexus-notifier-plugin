@@ -39,6 +39,8 @@ public class JiraNotification
 
   private boolean shouldTransitionJiraTickets;
   private String jiraTransitionStatus;
+  private String applicationCustomFieldName;
+  private String organizationCustomFieldName;
 
   private String jobCredentialsId;
 
@@ -56,6 +58,10 @@ public class JiraNotification
 
   public String getJiraTransitionStatus() { return jiraTransitionStatus; }
 
+  public String getApplicationCustomFieldName() { return applicationCustomFieldName; }
+
+  public String getOrganizationCustomFieldName() { return organizationCustomFieldName; }
+
   public String getJobCredentialsId() {
     return jobCredentialsId;
   }
@@ -66,6 +72,8 @@ public class JiraNotification
                           final boolean shouldCreateIndividualTickets,
                           final boolean shouldTransitionJiraTickets,
                           final String jiraTransitionStatus,
+                          final String applicationCustomFieldName,
+                          final String organizationCustomFieldName,
                           final String jobCredentialsId)
   {
     this.sendJiraNotification = sendJiraNotification;
@@ -73,6 +81,8 @@ public class JiraNotification
     this.shouldCreateIndividualTickets = shouldCreateIndividualTickets;
     this.shouldTransitionJiraTickets = shouldTransitionJiraTickets;
     this.jiraTransitionStatus = jiraTransitionStatus;
+    this.applicationCustomFieldName = applicationCustomFieldName;
+    this.organizationCustomFieldName = organizationCustomFieldName;
     this.jobCredentialsId = jobCredentialsId;
   }
 

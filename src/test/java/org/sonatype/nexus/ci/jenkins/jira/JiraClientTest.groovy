@@ -14,39 +14,69 @@ package org.sonatype.nexus.ci.jenkins.jira
 
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 import org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult
-
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class JiraClientTest
     extends Specification
 {
+
+  private static final String port = "59454" //for Charles Proxy
+  //private static final String port = "8080"
+
   def http
-  def client
+  JiraClient client
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    client = new JiraClient('http://localhost:8080', 'admin', 'admin123')
+    client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
     client.http = http
   }
 
-  def 'put card has correct url'() {
+  def 'lookupJiraTickets has correct url - with all params'() {
     def url
 
     when:
-      client.putCard("DP", "", 1, 2, 3, 4, "http://example.com")
+    client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "test")
 
     then:
-      1 * http.put(_, _, _) >> { args -> url = args[0]}
+    1 * http.get(_, _) >> { args -> url = args[0]}
 
     and:
-      url == 'http://localhost:7990/rest/insights/1.0/projects/int/repos/repo/commits/abcdefg/reports/sonatype-nexus-iq'
+    url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22+AND+status+%21%3D+%22Done%22+AND+%22IQ+Application%22+%7E+%22test%22"
+  }
+
+  def 'lookupJiraTickets has correct url - without application field'() {
+    def url
+
+    when:
+    client.lookupJiraTickets("JIRAIQ", "Done", null, null)
+
+    then:
+    1 * http.get(_, _) >> { args -> url = args[0]}
+
+    and:
+    url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22+AND+status+%21%3D+%22Done%22"
+  }
+
+  def 'lookupJiraTickets has correct url - without transition status'() {
+    def url
+
+    when:
+    client.lookupJiraTickets("JIRAIQ", null, null, null)
+
+    then:
+    1 * http.get(_, _) >> { args -> url = args[0]}
+
+    and:
+    url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22"
   }
 
   //@Ignore
   def 'helper test to verify interaction with Jira Server - Get All Tickets'() {
     setup:
-      def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
-      def resp = client.lookupJiraTickets("DP")
+      def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+      def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "test")
 
     expect:
       resp != null
@@ -55,15 +85,26 @@ class JiraClientTest
   }
 
   //@Ignore
+  def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
+    setup:
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    def resp = client.lookupCustomFields()
+
+    expect:
+    resp != null
+  }
+
+  //@Ignore
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
-    def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
-    def resp = client.createIssue("DP",
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    def resp = client.createIssue("JIRAIQ",
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-1234",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   PolicyEvaluationResult.BuildStatus.PASS,
-                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE")
+                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                  "test")
 
     expect:
     resp != null
@@ -73,7 +114,7 @@ class JiraClientTest
   //@Ignore
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
-    def client = new JiraClient('http://localhost:59454', 'admin', 'admin123')
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
     def resp = client.closeTicket("10209", "Done")
 
     expect:

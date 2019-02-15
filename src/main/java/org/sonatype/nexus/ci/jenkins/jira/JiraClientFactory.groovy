@@ -25,7 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull
 
 class JiraClientFactory
 {
-  static JiraClient getJiraClient(String jobCredentialsId = null) {
+  static JiraClient getJiraClient(String jobCredentialsId = null, PrintStream logger = null) {
     def configuration = NotifierConfiguration.getNotifierConfiguration()
     checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration())
     checkArgument(configuration.jiraConfigs != null, Messages.JiraClientFactory_NoConfiguration())
@@ -37,7 +37,7 @@ class JiraClientFactory
 
     def credentials = findCredentials(jiraConfig.serverUrl, credentialsId)
 
-    return new JiraClient(jiraConfig.serverUrl, credentials.username, credentials.password.plainText)
+    return new JiraClient(jiraConfig.serverUrl, credentials.username, credentials.password.plainText, logger)
   }
 
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {
