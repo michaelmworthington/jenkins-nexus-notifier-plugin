@@ -14,17 +14,21 @@ package org.sonatype.nexus.ci.jenkins.iq
 
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 import org.sonatype.nexus.ci.jenkins.jira.JiraClient
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class IQClientTest
     extends Specification
 {
+  //private static final String port = "60359" //for Charles Proxy
+  private static final String port = "8060"
+
   def http
   def client
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    client = new IQClient('http://localhost:8060/iq', 'admin', 'admin123')
+    client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123')
     client.http = http
   }
 
@@ -32,23 +36,23 @@ class IQClientTest
     def url
 
     when:
-      client.lookupPolcyDetailsFromIQ("aaaaaaa-testidegrandfathering", "a22d44d0209b47358c8dd2532bb7afb3")
+      client.lookupPolcyDetailsFromIQ("a22d44d0209b47358c8dd2532bb7afb3", "aaaaaaa-testidegrandfathering")
 
     then:
       1 * http.get(_, _) >> { args -> url = args[0]}
 
     and:
-      url == 'http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json'
+      url == "http://localhost:${port}/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json"
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with IQ Server - Get Report Violations'() {
     def url
 
     setup:
-      def client = new IQClient('http://localhost:60359/iq', 'admin', 'admin123')
+      def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123')
       //make it a real client instead of a mock http
-      def resp = client.lookupPolcyDetailsFromIQ("http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048")
+      def resp = client.lookupPolcyDetailsFromIQ("3d0fedc4857f44368e0b501a6b986048", "aaaaaaa-testidegrandfathering")
 
     expect:
       resp != null

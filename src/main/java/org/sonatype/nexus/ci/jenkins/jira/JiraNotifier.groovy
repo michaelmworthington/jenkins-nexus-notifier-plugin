@@ -54,7 +54,9 @@ class JiraNotifier
     String transitionStatus = jiraNotification.jiraTransitionStatus
     String applicationCustomFieldName = jiraNotification.applicationCustomFieldName
     String organizationCustomFieldName = jiraNotification.organizationCustomFieldName
-    //TODO: ADD CONFIG FOR FILTERING POLICY NAME (i.e. ONLY CREATE TICKETS FOR SECURITY ISSUES
+    String violationIdCustomFieldName = jiraNotification.violationIdCustomFieldName
+    String policyFilterPrefix = jiraNotification.policyFilterPrefix
+    boolean shouldAggregateTicketsByComponent = jiraNotification.shouldAggregateTicketsByComponent //TODO: Aggregate by component
 
     logger.println("Creating Jira Tickets for Project: " + projectKey)
 
@@ -66,6 +68,8 @@ class JiraNotifier
                                      transitionStatus,
                                      applicationCustomFieldName,
                                      organizationCustomFieldName,
+                                     violationIdCustomFieldName,
+                                     policyFilterPrefix,
                                      PolicyEvaluationHealthAction.build(policyEvaluationHealthAction))
   }
 
@@ -77,30 +81,37 @@ class JiraNotifier
                                                 final String transitionStatus,
                                                 final String applicationCustomFieldName,
                                                 final String organizationCustomFieldName,
+                                                final String violationIdCustomFieldName,
+                                                final String policyFilterPrefix,
                                                 final PolicyEvaluationHealthAction policyEvaluationHealthAction)
   {
     try {
+      // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
+      logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
+
       String[] linkPieces = policyEvaluationHealthAction.reportLink.split("/")
       String iqReportInternalid = linkPieces[linkPieces.length-1]
       String iqAppExternalId = linkPieces[linkPieces.length-3]
 
-      def customFields = jiraClient.lookupCustomFields()
-      String applicationCustomFieldId = lookupCustomFieldId(customFields, applicationCustomFieldName)
-      String organizationCustomFieldId = lookupCustomFieldId(customFields, organizationCustomFieldName)
+      //TODO: look up the org
+      String iqOrgExternalId = "org";
 
-      if (shouldCreateIndividualTickets) {
+      def customFields = jiraClient.lookupCustomFields()
+      String applicationCustomFieldId = jiraClient.lookupCustomFieldId(customFields, applicationCustomFieldName)
+      String organizationCustomFieldId = jiraClient.lookupCustomFieldId(customFields, organizationCustomFieldName)
+      String violationIdCustomFieldId = jiraClient.lookupCustomFieldId(customFields, violationIdCustomFieldName)
+
+      if (shouldCreateIndividualTickets)
+      {
         /***************************************
               1. Get Policy Findings from IQ
          ***************************************/
-
-        // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
-        logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
 
         //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
         def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, iqAppExternalId)
         Map<String, PolicyViolation> potentialFindingsMap = new HashMap<String, PolicyViolation>()
         potentialFindings.aaData.each {
-          PolicyViolation.buildFromIQ(it, policyEvaluationHealthAction.reportLink).each {
+          PolicyViolation.buildFromIQ(it, policyEvaluationHealthAction.reportLink, iqAppExternalId, policyFilterPrefix).each {
             potentialFindingsMap.put(it.fingerprint, it)
           }
         }
@@ -113,7 +124,7 @@ class JiraNotifier
         def currentFindings = jiraClient.lookupJiraTickets(projectKey, transitionStatus, applicationCustomFieldName, iqAppExternalId)
         Map<String, PolicyViolation> currentFindingsMap = new HashMap<String, PolicyViolation>()
         currentFindings.issues.each {
-          PolicyViolation pv = PolicyViolation.buildFromJira(it)
+          PolicyViolation pv = PolicyViolation.buildFromJira(it, violationIdCustomFieldId)
           currentFindingsMap.put(pv.fingerprint, pv)
         }
 
@@ -121,14 +132,16 @@ class JiraNotifier
             3. Filter out Existing Tickets
          ***************************************/
 
+        //todo : aggregate by component - how to track all the violations?
         logger.println("Potential Components with Findings from the IQ Server Report: ${potentialFindings.aaData.size}")
         logger.println("Potential Policy Violation Findings from the IQ Server Report: ${potentialFindingsMap.size()}")
         logger.println("Current Findings in Jira before filtering: ${currentFindings.issues.size}")
 
         //which results from IQ do we need to create, and which alredy exist, and which need to be closed
         //  Loop through potential findings map and current findings map
-        Set<PolicyViolation> newFindings = calculateNewFindings(potentialFindingsMap, currentFindingsMap)
-        Set<PolicyViolation> repeatFindings = calculateRepeatFindings(potentialFindingsMap, currentFindingsMap)
+        Set<PolicyViolation> newFindings = new HashSet<PolicyViolation>()
+        Set<PolicyViolation> repeatFindings = new HashSet<PolicyViolation>()
+        calculateNewAndRepeatFindings(potentialFindingsMap, currentFindingsMap, newFindings, repeatFindings)
         Set<PolicyViolation> oldFindings = calculateOldFindings(potentialFindingsMap, currentFindingsMap)
 
         logger.println("Number of findings that do not have tickets: ${newFindings.size()}")
@@ -139,9 +152,12 @@ class JiraNotifier
           4. Create New Tickets
          ***************************************/
 
-        logger.println("Creating tickets for each policy violation")
+        logger.println("Creating ${newFindings.size()} tickets for each policy violation")
         newFindings.each {
-          createIndividualTicket(jiraClient, projectKey, it, iqAppExternalId, applicationCustomFieldId, "org", organizationCustomFieldId) //TODO: look up the org
+          createIndividualTicket(jiraClient, projectKey, it,
+                                 iqAppExternalId, applicationCustomFieldId,
+                                 iqOrgExternalId, organizationCustomFieldId,
+                                 violationIdCustomFieldId)
         }
 
         /***************************************
@@ -149,7 +165,7 @@ class JiraNotifier
          ***************************************/
 
         if (shouldTransitionJiraTickets) {
-          logger.println("Transitioning old tickets to: ${transitionStatus}")
+          logger.println("Transitioning ${oldFindings.size()} old tickets to: ${transitionStatus}")
           oldFindings.each{
             transitionTicket(jiraClient, transitionStatus, it)
           }
@@ -166,7 +182,7 @@ class JiraNotifier
       }
       else {
         logger.println("Creating just one ticket with a violation summary in the description")
-        createSummaryTicket(jiraClient, projectKey, policyEvaluationHealthAction, iqAppExternalId)
+        createSummaryTicket(jiraClient, projectKey, policyEvaluationHealthAction, iqAppExternalId, iqReportInternalid)
 
         if (shouldTransitionJiraTickets)
         {
@@ -180,38 +196,22 @@ class JiraNotifier
     }
   }
 
-  private Set<PolicyViolation> calculateNewFindings(HashMap<String, PolicyViolation> pPotentialFindings, HashMap<String, PolicyViolation> pCurrentFindings)
+  private void calculateNewAndRepeatFindings(HashMap<String, PolicyViolation> pPotentialFindings,
+                                             HashMap<String, PolicyViolation> pCurrentFindings,
+                                             HashSet<PolicyViolation> newFindings,
+                                             HashSet<PolicyViolation> repeatFindings)
   {
-    Set<PolicyViolation> returnValue = new HashSet<PolicyViolation>()
-
-    pPotentialFindings.each{
-      if (pCurrentFindings.containsKey(it.key)){
-        //TODO: make the fingerprints match
-        logger.println("Jira ticket: ${pCurrentFindings.get(it.key).ticketExternalId} already exists for finding: ${it.value.fingerprintKey}")
-      } else {
-        returnValue.add(it.value)
+    pPotentialFindings.each {
+      if (pCurrentFindings.containsKey(it.key))
+      {
+        logger.println("Jira ticket: ${pCurrentFindings.get(it.key).ticketExternalId} already exists for finding: ${it.value.fingerprintPrettyPrint}")
+        repeatFindings.add(it.value)
+      } else
+      {
+        logger.println("Jira ticket: not found for for finding: ${it.value.fingerprintPrettyPrint}")
+        newFindings.add(it.value)
       }
     }
-
-    return returnValue
-  }
-
-  private Set<PolicyViolation> calculateRepeatFindings(HashMap<String, PolicyViolation> pPotentialFindings, HashMap<String, PolicyViolation> pCurrentFindings)
-  {
-    Set<PolicyViolation> returnValue = new HashSet<PolicyViolation>()
-
-    //TODO: combine with calculateNewFindings() so I don't have to loop through the map twice
-    pPotentialFindings.each{
-      if (pCurrentFindings.containsKey(it.key)){
-        //TODO: make the fingerprints match
-        //TODO: Should I only look up Open Tickets? What about waiving closed violations?
-        returnValue.add(it.value)
-      } else {
-        logger.println("Jira ticket not found for finding: ${it.value.fingerprintKey}")
-      }
-    }
-
-    return returnValue
   }
 
   private Set<PolicyViolation> calculateOldFindings(HashMap<String, PolicyViolation> pPotentialFindings, HashMap<String, PolicyViolation> pCurrentFindings)
@@ -220,9 +220,9 @@ class JiraNotifier
 
     pCurrentFindings.each{
       if (pPotentialFindings.containsKey(it.key)){
-        //TODO: make the fingerprints match
-        logger.println("Finding: ${pPotentialFindings.get(it.key).fingerprintKey} still exists for Jira Ticket: ${it.value.ticketExternalId}")
+        logger.println("Finding: ${pPotentialFindings.get(it.key).fingerprintPrettyPrint} still exists for Jira Ticket: ${it.value.ticketExternalId}")
       } else {
+        logger.println("Finding no longer exists for Jira Ticket: ${it.value.ticketExternalId} - ${it.value.ticketSummary}")
         returnValue.add(it.value)
       }
     }
@@ -232,7 +232,7 @@ class JiraNotifier
 
   private void transitionTicket(JiraClient jiraClient, String transitionStatus, PolicyViolation pPolicyViolation)
   {
-    logger.println("Transitioning Jira Ticket: ${pPolicyViolation.ticketExternalId} to Status: ${transitionStatus}")
+    logger.println("Transitioning Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} to Status: ${transitionStatus}")
 
     jiraClient.closeTicket(pPolicyViolation.ticketInternalId, transitionStatus)
   }
@@ -243,39 +243,40 @@ class JiraNotifier
                                       String iqAppExternalId,
                                       String iqAppExternalIdCustomFieldId,
                                       String iqOrgExternalId,
-                                      String iqOrgExternalIdCustomFieldId)
+                                      String iqOrgExternalIdCustomFieldId,
+                                      String violationIdCustomFieldId)
   {
-    logger.println("Creating Jira Ticket in Project: ${projectKey} for Component: ${pPolicyViolation.fingerprintKey}")
+    logger.println("Creating Jira Ticket in Project: ${projectKey} for Component: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    //TODO: pull from PV
     def description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
-    def detail = "CVE-2019-1234"
-    def source = "SonatypeIQ:IQServerAppId:scanIQ"
-    def severity = 1
-    def fprint = "SONATYPEIQ-APPID-COMPONENTID-SVCODE"
+    def detail = "$pPolicyViolation.cvssReason"
+    def source = pPolicyViolation.reportLink
+    def severity = pPolicyViolation.policyThreatLevel
 
     jiraClient.createIssue(projectKey,
                            description,
                            detail,
                            source,
                            severity,
-                           fprint,
+                           pPolicyViolation.fingerprintKey,
                            iqAppExternalId,
                            iqAppExternalIdCustomFieldId,
                            iqOrgExternalId,
-                           iqOrgExternalIdCustomFieldId)
+                           iqOrgExternalIdCustomFieldId,
+                           pPolicyViolation.fingerprint,
+                           violationIdCustomFieldId)
   }
 
-  private void createSummaryTicket(JiraClient jiraClient, String projectKey, PolicyEvaluationHealthAction policyEvaluationHealthAction, String iqAppExternalId)
+  private void createSummaryTicket(JiraClient jiraClient, String projectKey, PolicyEvaluationHealthAction policyEvaluationHealthAction, String iqAppExternalId, String iqReportId)
   {
     //TODO: Create a summary ticket from the policyEvaluationHealthAction
     logger.println("Creating Summary Jira Ticket for Project: ${projectKey}")
 
-    def description = "Sonatype IQ Server Summary of Violations - three"
-    def detail = "CVE-2019-1234"
-    def source = "SonatypeIQ:IQServerAppId:scanIQ"
+    def description = "Sonatype IQ Server Summary of Violations"
+    def detail = "${policyEvaluationHealthAction.affectedComponentCount} components"
+    def source = policyEvaluationHealthAction.reportLink
     def severity = 1
-    def fprint = "SONATYPEIQ-APPID-COMPONENTID-SVCODE"
+    def fprint = "SONATYPEIQ-${iqAppExternalId}-${iqReportId}"
 
     jiraClient.createIssue(projectKey,
                            description,
@@ -283,21 +284,12 @@ class JiraNotifier
                            source,
                            severity,
                            fprint,
-                           iqAppExternalId)
+                           null,
+                           null,
+                           null,
+                           null,
+                           null,
+                           null)
 
   }
-
-  private static String lookupCustomFieldId(Object customFields, String fieldName)
-  {
-    String returnValue = null
-    customFields.each {
-      if(it.name == fieldName)
-      {
-        returnValue = it.id
-      }
-    }
-
-    returnValue
-  }
-
 }

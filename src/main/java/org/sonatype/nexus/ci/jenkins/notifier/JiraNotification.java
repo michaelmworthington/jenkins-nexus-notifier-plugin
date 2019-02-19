@@ -41,6 +41,9 @@ public class JiraNotification
   private String jiraTransitionStatus;
   private String applicationCustomFieldName;
   private String organizationCustomFieldName;
+  private String violationIdCustomFieldName;
+  private String policyFilterPrefix;
+  private boolean shouldAggregateTicketsByComponent;
 
   private String jobCredentialsId;
 
@@ -62,6 +65,12 @@ public class JiraNotification
 
   public String getOrganizationCustomFieldName() { return organizationCustomFieldName; }
 
+  public String getViolationIdCustomFieldName() { return violationIdCustomFieldName; }
+
+  public String getPolicyFilterPrefix() { return policyFilterPrefix; }
+
+  public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
+
   public String getJobCredentialsId() {
     return jobCredentialsId;
   }
@@ -74,6 +83,9 @@ public class JiraNotification
                           final String jiraTransitionStatus,
                           final String applicationCustomFieldName,
                           final String organizationCustomFieldName,
+                          final String violationIdCustomFieldName,
+                          final String policyFilterPrefix,
+                          final boolean shouldAggregateTicketsByComponent,
                           final String jobCredentialsId)
   {
     this.sendJiraNotification = sendJiraNotification;
@@ -83,6 +95,9 @@ public class JiraNotification
     this.jiraTransitionStatus = jiraTransitionStatus;
     this.applicationCustomFieldName = applicationCustomFieldName;
     this.organizationCustomFieldName = organizationCustomFieldName;
+    this.violationIdCustomFieldName = violationIdCustomFieldName;
+    this.policyFilterPrefix = policyFilterPrefix;
+    this.shouldAggregateTicketsByComponent = shouldAggregateTicketsByComponent;
     this.jobCredentialsId = jobCredentialsId;
   }
 

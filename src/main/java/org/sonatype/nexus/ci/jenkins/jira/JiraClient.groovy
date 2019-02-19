@@ -19,10 +19,6 @@ class JiraClient
 {
   static String USER_AGENT = 'nexus-jenkins-notifier'
 
-  static String LOGO_URL = 'http://cdn.sonatype.com/brand/logo/nexus-iq-64-no-background.png'
-
-  static String INSIGHT_KEY = 'sonatype-nexus-iq'
-
   SonatypeHTTPBuilder http
 
   String serverUrl
@@ -46,7 +42,7 @@ class JiraClient
       this.http.handler.failure = { resp, reader ->
         logger.println("Error Response Code: ${resp.status} with message: ${reader}")
         //[response:resp, reader:reader]
-        throw new HttpResponseException(resp);
+        throw new HttpResponseException(resp)
       }
     }
   }
@@ -60,9 +56,15 @@ class JiraClient
                   iqAppExternalId,
                   String iqAppExternalIdCustomFieldId,
                   String iqOrgExternalId,
-                  String iqOrgExternalIdCustomFieldId) {
+                  String iqOrgExternalIdCustomFieldId,
+                  String violationUniqueId,
+                  String violationIdCustomFieldId)
+  {
     def url = getCreateIssueRequestUrl(serverUrl)
-    def body = getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint, iqAppExternalId, iqAppExternalIdCustomFieldId,iqOrgExternalId,iqOrgExternalIdCustomFieldId)
+    def body = getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint,
+                                         iqAppExternalId, iqAppExternalIdCustomFieldId,
+                                         iqOrgExternalId,iqOrgExternalIdCustomFieldId,
+                                         violationUniqueId, violationIdCustomFieldId)
     def headers = getRequestHeaders(username, password)
 
     http.post(url, body, headers)
@@ -87,6 +89,19 @@ class JiraClient
     http.get(url, headers)
   }
 
+  static String lookupCustomFieldId(Object customFields, String fieldName)
+  {
+    String returnValue = null
+    customFields.each {
+      if(it.name == fieldName)
+      {
+        returnValue = it.id
+      }
+    }
+
+    returnValue
+  }
+
   def closeTicket(String ticketInternalId, String pTransitionName)
   {
     //1. Get the transitions
@@ -99,7 +114,7 @@ class JiraClient
     def transition_id = "21"
 
     resp.transitions.each {
-      if (pTransitionName.equals(it.name)){
+      if (pTransitionName == it.name){
         transition_id = it.id
       }
     }
@@ -149,9 +164,9 @@ class JiraClient
     // %20AND%20status!%3D%22Done%22
     // %20AND%20"IQ%20Application"%20~%20"test"
 
-    StringBuffer plainSearchString = new StringBuffer();
+    StringBuffer plainSearchString = new StringBuffer()
 
-    plainSearchString <<= "project = \"${projectKey}\"";
+    plainSearchString <<= "project = \"${projectKey}\""
 
     if (transitionTargetStatus?.trim())
     {
@@ -221,15 +236,15 @@ class JiraClient
     return "${serverUrl}/rest/api/2/issue"
   }
 
-  private static Map getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint, iqAppExternalId,iqAppExternalIdCustomFieldId,iqOrgExternalId, iqOrgExternalIdCustomFieldId) {
-    //TODO: Fully Dynamic
-
-    String newdate = new Date().format("YYYY-MM-DD HH:mm:ss Z") //2019-01-26 01:38:59 -0500
-    //DateTimeFormatter f = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL )
-    //String newdate = new Date().format(f)
+  private static Map getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint,
+                                               iqAppExternalId,iqAppExternalIdCustomFieldId,
+                                               iqOrgExternalId, iqOrgExternalIdCustomFieldId,
+                                               violationUniqueId, violationIdCustomFieldId)
+  {
+    String newdate = new Date().format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500
 
     String formatted_summary = "${description}"
-    String formatted_description = "\n\tDescription: ${description}\n\n\tTimestamp: ${newdate}\n\n\tSource: ${source}\n\n\tSeverity: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
+    String formatted_description = "\n\tDescription: ${description}\n\n\tTimestamp: ${newdate}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
 
     def returnValue = [
             fields : [
@@ -255,6 +270,11 @@ class JiraClient
     if(iqOrgExternalIdCustomFieldId && iqOrgExternalId)
     {
       returnValue.fields.put(iqOrgExternalIdCustomFieldId, iqOrgExternalId)
+    }
+
+    if(violationIdCustomFieldId && violationUniqueId)
+    {
+      returnValue.fields.put(violationIdCustomFieldId, violationUniqueId)
     }
 
     return returnValue

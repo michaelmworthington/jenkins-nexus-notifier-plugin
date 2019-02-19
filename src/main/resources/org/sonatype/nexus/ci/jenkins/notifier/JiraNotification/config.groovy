@@ -47,6 +47,18 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
+  f.entry(title: _('Jira Custom Field for Violation Unique Id'), field: 'violationIdCustomFieldName') {
+    f.textbox()
+  }
+
+  f.entry(title: _('Create Tickets only for Policies starting with'), field: 'policyFilterPrefix') {
+    f.textbox()
+  }
+
+  f.entry(title: _('Aggregate Tickets by Component'), field: 'shouldAggregateTicketsByComponent') {
+    f.checkbox()
+  }
+
   f.advanced() {
     f.section(title: _('Advanced options')) {
       f.entry(title: _('Use job specific credentials'), field: 'jobCredentialsId') {

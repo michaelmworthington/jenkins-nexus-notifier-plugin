@@ -20,9 +20,8 @@ import spock.lang.Specification
 class JiraClientTest
     extends Specification
 {
-
-  private static final String port = "59454" //for Charles Proxy
-  //private static final String port = "8080"
+  //private static final String port = "59454" //for Charles Proxy
+  private static final String port = "8080"
 
   def http
   JiraClient client
@@ -72,11 +71,11 @@ class JiraClientTest
     url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22"
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Get All Tickets'() {
     setup:
       def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
-      def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "test")
+      def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "aaaaaaa-testidegrandfathering")
 
     expect:
       resp != null
@@ -84,7 +83,7 @@ class JiraClientTest
       resp.issues[0].key != null
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
@@ -92,30 +91,42 @@ class JiraClientTest
 
     expect:
     resp != null
+    resp.size > 0
+    resp[0].name != null
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    def customFields = client.lookupCustomFields()
+    String applicationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Application")
+    String organizationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Organization")
+    String violationIdCustomFieldId = client.lookupCustomFieldId(customFields, "Finding ID")
+
     def resp = client.createIssue("JIRAIQ",
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-1234",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
-                                  PolicyEvaluationResult.BuildStatus.PASS,
+                                  "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "test")
+                                  "test app",
+                                  applicationCustomFieldId,
+                                  "test org",
+                                  organizationCustomFieldId,
+                                  "some-sha-value",
+                                  violationIdCustomFieldId)
 
     expect:
     resp != null
     resp.key != null
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
-    def resp = client.closeTicket("10209", "Done")
+    def resp = client.closeTicket("10772", "Done")
 
     expect:
     resp == null
