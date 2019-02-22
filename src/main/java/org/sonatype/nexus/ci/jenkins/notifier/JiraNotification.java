@@ -13,6 +13,7 @@
 package org.sonatype.nexus.ci.jenkins.notifier;
 
 import hudson.Extension;
+import hudson.model.AbstractDescribableImpl;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.Job;
@@ -30,7 +31,7 @@ import org.sonatype.nexus.ci.jenkins.util.FormUtil;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class JiraNotification
-    implements Describable<JiraNotification>
+    extends AbstractDescribableImpl<JiraNotification>
 {
   private boolean sendJiraNotification;
   private String projectKey;
@@ -103,10 +104,10 @@ public class JiraNotification
     this.jobIQCredentialsId = jobIQCredentialsId;
   }
 
-  @Override
-  public Descriptor<JiraNotification> getDescriptor() {
-    return Jenkins.get().getDescriptorOrDie(this.getClass());
-  }
+//  @Override
+//  public Descriptor<JiraNotification> getDescriptor() {
+//    return Jenkins.get().getDescriptorOrDie(this.getClass());
+//  }
 
   @Extension
   @Symbol("nexusJiraNotification")

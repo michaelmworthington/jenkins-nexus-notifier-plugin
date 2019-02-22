@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import hudson.tasks.BuildStepMonitor;
 import org.sonatype.nexus.ci.jenkins.bitbucket.BitbucketNotifier;
 import org.sonatype.nexus.ci.jenkins.jira.JiraNotifier;
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction;
@@ -65,6 +66,11 @@ public class NotifierStep
 
   @DataBoundConstructor
   public NotifierStep() {}
+
+  @Override
+  public BuildStepMonitor getRequiredMonitorService() {
+    return BuildStepMonitor.BUILD;
+  }
 
   @Override
   public void perform(@Nonnull final Run run,

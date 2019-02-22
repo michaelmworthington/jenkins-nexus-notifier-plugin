@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.notifier;
 
+import hudson.model.AbstractDescribableImpl;
 import org.sonatype.nexus.ci.jenkins.config.BitbucketConfiguration;
 import org.sonatype.nexus.ci.jenkins.config.NotifierConfiguration;
 import org.sonatype.nexus.ci.jenkins.util.FormUtil;
@@ -31,7 +32,7 @@ import org.kohsuke.stapler.QueryParameter;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class BitbucketNotification
-    implements Describable<BitbucketNotification>
+    extends AbstractDescribableImpl<BitbucketNotification>
 {
   private boolean sendBitbucketNotification;
 
@@ -74,10 +75,10 @@ public class BitbucketNotification
     this.jobCredentialsId = jobCredentialsId;
   }
 
-  @Override
-  public Descriptor<BitbucketNotification> getDescriptor() {
-    return Jenkins.get().getDescriptorOrDie(this.getClass());
-  }
+//  @Override
+//  public Descriptor<BitbucketNotification> getDescriptor() {
+//    return Jenkins.get().getDescriptorOrDie(this.getClass());
+//  }
 
   @Extension
   @Symbol("nexusBitbucketNotification")
