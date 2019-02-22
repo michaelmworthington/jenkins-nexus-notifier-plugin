@@ -21,15 +21,19 @@ def c = namespace(lib.CredentialsTagLib)
 def typedDescriptor = (JiraConfiguration.DescriptorImpl) descriptor
 
 f.section(title: typedDescriptor.displayName) {
-  f.entry(title: _(Messages.Configuration_ServerUrl()), field: 'serverUrl') {
+  f.entry(title: _(Messages.Configuration_JiraServerUrl()), field: 'jiraServerUrl') {
     f.textbox(clazz: 'required')
+  }
+
+  f.entry(title: _(Messages.Configuration_JiraCredentials()), field: 'jiraCredentialsId') {
+    c.select(context: app, includeUser: false, expressionAllowed: false)
   }
 
   f.entry(title: _(Messages.Configuration_IQServerUrl()), field: 'iqServerUrl') {
     f.textbox(clazz: 'required')
   }
 
-  f.entry(title: _(Messages.Configuration_Credentials()), field: 'credentialsId') {
+  f.entry(title: _(Messages.Configuration_IQCredentials()), field: 'iqCredentialsId') {
     c.select(context: app, includeUser: false, expressionAllowed: false)
   }
 }

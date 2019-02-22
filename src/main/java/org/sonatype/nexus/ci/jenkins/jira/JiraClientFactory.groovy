@@ -33,11 +33,11 @@ class JiraClientFactory
 
     def jiraConfig = configuration.jiraConfigs.get(0)
 
-    def credentialsId = jobCredentialsId ?: jiraConfig.credentialsId
+    def credentialsId = jobCredentialsId ?: jiraConfig.jiraCredentialsId
 
-    def credentials = findCredentials(jiraConfig.serverUrl, credentialsId)
+    def credentials = findCredentials(jiraConfig.jiraServerUrl, credentialsId)
 
-    return new JiraClient(jiraConfig.serverUrl, credentials.username, credentials.password.plainText, logger)
+    return new JiraClient(jiraConfig.jiraServerUrl, credentials.username, credentials.password.plainText, logger)
   }
 
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {

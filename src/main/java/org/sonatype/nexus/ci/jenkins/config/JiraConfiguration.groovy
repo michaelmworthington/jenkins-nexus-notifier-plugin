@@ -26,15 +26,17 @@ import org.sonatype.nexus.ci.jenkins.util.FormUtil
 class JiraConfiguration
     implements Describable<JiraConfiguration>
 {
-  String serverUrl
+  String jiraServerUrl
+  String jiraCredentialsId
   String iqServerUrl
-  String credentialsId
+  String iqCredentialsId
 
   @DataBoundConstructor
-  JiraConfiguration(final String serverUrl, final String iqServerUrl, final String credentialsId) {
-    this.serverUrl = serverUrl
+  JiraConfiguration(final String jiraServerUrl, final String jiraCredentialsId, final String iqServerUrl, final String iqCredentialsId) {
+    this.jiraServerUrl = jiraServerUrl
+    this.jiraCredentialsId = jiraCredentialsId
     this.iqServerUrl = iqServerUrl
-    this.credentialsId = credentialsId
+    this.iqCredentialsId = iqCredentialsId
   }
 
   @Override
@@ -51,7 +53,7 @@ class JiraConfiguration
       Messages.JiraConfiguration_DisplayName()
     }
 
-    FormValidation doCheckServerUrl(@QueryParameter String value) {
+    FormValidation doCheckJiraServerUrl(@QueryParameter String value) {
       def validation = FormUtil.validateUrl(value)
       if (validation.kind == Kind.OK) {
         validation = FormUtil.validateNotEmpty(value, Messages.Configuration_ServerUrlRequired())
@@ -59,9 +61,22 @@ class JiraConfiguration
       return validation
     }
 
-    ListBoxModel doFillCredentialsIdItems(@QueryParameter String serverUrl,
-                                          @QueryParameter String credentialsId) {
-      return FormUtil.newCredentialsItemsListBoxModel(serverUrl, credentialsId, null)
+    ListBoxModel doFillJiraCredentialsIdItems(@QueryParameter String jiraServerUrl,
+                                              @QueryParameter String jiraCredentialsId) {
+      return FormUtil.newCredentialsItemsListBoxModel(jiraServerUrl, jiraCredentialsId, null)
+    }
+
+    FormValidation doCheckIqServerUrl(@QueryParameter String value) {
+      def validation = FormUtil.validateUrl(value)
+      if (validation.kind == Kind.OK) {
+        validation = FormUtil.validateNotEmpty(value, Messages.Configuration_ServerUrlRequired())
+      }
+      return validation
+    }
+
+    ListBoxModel doFillIqCredentialsIdItems(@QueryParameter String iqServerUrl,
+                                            @QueryParameter String iqCredentialsId) {
+      return FormUtil.newCredentialsItemsListBoxModel(iqServerUrl, iqCredentialsId, null)
     }
   }
 }

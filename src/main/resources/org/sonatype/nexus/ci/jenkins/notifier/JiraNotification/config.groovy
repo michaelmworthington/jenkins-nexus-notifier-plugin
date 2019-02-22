@@ -61,7 +61,11 @@ f.section(title: typedDescriptor.displayName) {
 
   f.advanced() {
     f.section(title: _('Advanced options')) {
-      f.entry(title: _('Use job specific credentials'), field: 'jobCredentialsId') {
+      f.entry(title: _('Use job specific credentials for Jira'), field: 'jobJiraCredentialsId') {
+        c.select(context:app, includeUser:false, expressionAllowed:false)
+      }
+
+      f.entry(title: _('Use job specific credentials for IQ Server'), field: 'jobIQCredentialsId') {
         c.select(context:app, includeUser:false, expressionAllowed:false)
       }
     }

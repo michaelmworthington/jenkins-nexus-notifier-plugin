@@ -28,7 +28,7 @@ class IQClientTest
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123')
+    client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out)
     client.http = http
   }
 
@@ -50,7 +50,7 @@ class IQClientTest
     def url
 
     setup:
-      def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123')
+      def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out)
       //make it a real client instead of a mock http
       def resp = client.lookupPolcyDetailsFromIQ("3d0fedc4857f44368e0b501a6b986048", "aaaaaaa-testidegrandfathering")
 

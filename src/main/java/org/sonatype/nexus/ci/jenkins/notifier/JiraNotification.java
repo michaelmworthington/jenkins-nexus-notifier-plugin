@@ -45,7 +45,8 @@ public class JiraNotification
   private String policyFilterPrefix;
   private boolean shouldAggregateTicketsByComponent;
 
-  private String jobCredentialsId;
+  private String jobJiraCredentialsId;
+  private String jobIQCredentialsId;
 
   public boolean getSendJiraNotification() {
     return sendJiraNotification;
@@ -71,9 +72,8 @@ public class JiraNotification
 
   public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
 
-  public String getJobCredentialsId() {
-    return jobCredentialsId;
-  }
+  public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
+  public String getJobIQCredentialsId() { return jobIQCredentialsId; }
 
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
@@ -86,7 +86,8 @@ public class JiraNotification
                           final String violationIdCustomFieldName,
                           final String policyFilterPrefix,
                           final boolean shouldAggregateTicketsByComponent,
-                          final String jobCredentialsId)
+                          final String jobJiraCredentialsId,
+                          final String jobIQCredentialsId)
   {
     this.sendJiraNotification = sendJiraNotification;
     this.projectKey = projectKey;
@@ -98,7 +99,8 @@ public class JiraNotification
     this.violationIdCustomFieldName = violationIdCustomFieldName;
     this.policyFilterPrefix = policyFilterPrefix;
     this.shouldAggregateTicketsByComponent = shouldAggregateTicketsByComponent;
-    this.jobCredentialsId = jobCredentialsId;
+    this.jobJiraCredentialsId = jobJiraCredentialsId;
+    this.jobIQCredentialsId = jobIQCredentialsId;
   }
 
   @Override
@@ -138,15 +140,28 @@ public class JiraNotification
       }
     }
 
-    public ListBoxModel doFillJobCredentialsIdItems(@AncestorInPath final Job job) {
+    public ListBoxModel doFillJobJiraCredentialsIdItems(@AncestorInPath final Job job) {
       NotifierConfiguration configuration = NotifierConfiguration.getNotifierConfiguration();
       checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration());
       checkArgument(configuration.getJiraConfigs() != null, Messages.JiraClientFactory_NoConfiguration());
       checkArgument(configuration.getJiraConfigs().size() > 0, Messages.JiraClientFactory_NoConfiguration());
 
       JiraConfiguration jiraConfiguration = configuration.getJiraConfigs().get(0);
-      return FormUtil.newCredentialsItemsListBoxModel(jiraConfiguration.getServerUrl(),
-          jiraConfiguration.getCredentialsId(), job);
+      return FormUtil.newCredentialsItemsListBoxModel(jiraConfiguration.getJiraServerUrl(),
+                                                      jiraConfiguration.getJiraCredentialsId(),
+                                                      job);
+    }
+
+    public ListBoxModel doFillJobIQCredentialsIdItems(@AncestorInPath final Job job) {
+      NotifierConfiguration configuration = NotifierConfiguration.getNotifierConfiguration();
+      checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration());
+      checkArgument(configuration.getJiraConfigs() != null, Messages.JiraClientFactory_NoConfiguration());
+      checkArgument(configuration.getJiraConfigs().size() > 0, Messages.JiraClientFactory_NoConfiguration());
+
+      JiraConfiguration jiraConfiguration = configuration.getJiraConfigs().get(0);
+      return FormUtil.newCredentialsItemsListBoxModel(jiraConfiguration.getIqServerUrl(),
+                                                      jiraConfiguration.getIqCredentialsId(),
+                                                      job);
     }
   }
 }

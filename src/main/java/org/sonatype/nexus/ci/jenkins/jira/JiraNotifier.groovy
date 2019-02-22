@@ -44,8 +44,8 @@ class JiraNotifier
   {
     checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey())
 
-    IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobCredentialsId) //TODO: create separate credentials
-    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobCredentialsId, logger)
+    IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger)
+    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger)
 
     def envVars = run.getEnvironment(listener)
     def projectKey = envVars.expand(jiraNotification.projectKey)
@@ -56,7 +56,7 @@ class JiraNotifier
     String organizationCustomFieldName = jiraNotification.organizationCustomFieldName
     String violationIdCustomFieldName = jiraNotification.violationIdCustomFieldName
     String policyFilterPrefix = jiraNotification.policyFilterPrefix
-    boolean shouldAggregateTicketsByComponent = jiraNotification.shouldAggregateTicketsByComponent //TODO: Aggregate by component
+    boolean shouldAggregateTicketsByComponent = jiraNotification.shouldAggregateTicketsByComponent //TODO: Aggregate by component - epics & stories
 
     logger.println("Creating Jira Tickets for Project: " + projectKey)
 

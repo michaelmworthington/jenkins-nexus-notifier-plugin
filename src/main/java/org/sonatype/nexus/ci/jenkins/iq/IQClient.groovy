@@ -12,15 +12,12 @@
  */
 package org.sonatype.nexus.ci.jenkins.iq
 
+import groovyx.net.http.HttpResponseException
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 
 class IQClient
 {
   static String USER_AGENT = 'nexus-jenkins-notifier'
-
-  static String LOGO_URL = 'http://cdn.sonatype.com/brand/logo/nexus-iq-64-no-background.png'
-
-  static String INSIGHT_KEY = 'sonatype-nexus-iq'
 
   SonatypeHTTPBuilder http
 
@@ -30,11 +27,24 @@ class IQClient
 
   String password
 
-  IQClient(String serverUrl, String username, String password) {
+  IQClient(String serverUrl, String username, String password, PrintStream logger) {
     this.http = new SonatypeHTTPBuilder()
     this.serverUrl = serverUrl
     this.username = username
     this.password = password
+
+    if(logger)
+    {
+      /*
+       * Jira sends the error message in the body. Let's print that out in addition to the stack trace
+       *   ref: https://stackoverflow.com/questions/19966548/groovy-httpbuilder-get-body-of-failed-response
+       */
+      this.http.handler.failure = { resp, reader ->
+        logger.println("Error Response Code: ${resp.status} with message: ${reader}")
+        //[response:resp, reader:reader]
+        throw new HttpResponseException(resp)
+      }
+    }
   }
 
   def lookupPolcyDetailsFromIQ(String iqReportInternalid, String iqAppExternalId)
