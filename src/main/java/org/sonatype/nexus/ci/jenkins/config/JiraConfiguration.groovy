@@ -13,6 +13,7 @@
 package org.sonatype.nexus.ci.jenkins.config
 
 import hudson.Extension
+import hudson.model.AbstractDescribableImpl
 import hudson.model.Describable
 import hudson.model.Descriptor
 import hudson.util.FormValidation
@@ -24,7 +25,7 @@ import org.kohsuke.stapler.QueryParameter
 import org.sonatype.nexus.ci.jenkins.util.FormUtil
 
 class JiraConfiguration
-    implements Describable<JiraConfiguration>
+    extends AbstractDescribableImpl<JiraConfiguration>
 {
   String jiraServerUrl
   String jiraCredentialsId
@@ -39,10 +40,10 @@ class JiraConfiguration
     this.iqCredentialsId = iqCredentialsId
   }
 
-  @Override
-  Descriptor<JiraConfiguration> getDescriptor() {
-    return Jenkins.get().getDescriptorOrDie(this.getClass())
-  }
+//  @Override
+//  Descriptor<JiraConfiguration> getDescriptor() {
+//    return Jenkins.get().getDescriptorOrDie(this.getClass())
+//  }
 
   @Extension
   static class DescriptorImpl

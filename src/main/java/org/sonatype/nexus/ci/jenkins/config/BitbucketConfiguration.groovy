@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.config
 
+import hudson.model.AbstractDescribableImpl
 import org.sonatype.nexus.ci.jenkins.util.FormUtil
 
 import hudson.Extension
@@ -25,7 +26,7 @@ import org.kohsuke.stapler.DataBoundConstructor
 import org.kohsuke.stapler.QueryParameter
 
 class BitbucketConfiguration
-    implements Describable<BitbucketConfiguration>
+    extends AbstractDescribableImpl<BitbucketConfiguration>
 {
   String serverUrl
   String credentialsId
@@ -36,10 +37,10 @@ class BitbucketConfiguration
     this.credentialsId = credentialsId
   }
 
-  @Override
-  Descriptor<BitbucketConfiguration> getDescriptor() {
-    return Jenkins.get().getDescriptorOrDie(this.getClass())
-  }
+//  @Override
+//  Descriptor<BitbucketConfiguration> getDescriptor() {
+//    return Jenkins.get().getDescriptorOrDie(this.getClass())
+//  }
 
   @Extension
   static class DescriptorImpl

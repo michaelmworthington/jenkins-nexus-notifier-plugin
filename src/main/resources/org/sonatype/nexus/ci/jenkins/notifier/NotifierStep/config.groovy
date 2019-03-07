@@ -49,7 +49,7 @@ f.section(title: typedDescriptor.displayName) {
           h3(Messages.NotifierStep_NoNotifiers())
           div {
             yield Messages.NotifierStep_AddNotifiers()
-            a(href: Jenkins.get().rootUrl + "/configure", "Configure System")
+            a(href: Jenkins.getInstance().rootUrl + "/configure", "Configure System")
           }
         }
       }

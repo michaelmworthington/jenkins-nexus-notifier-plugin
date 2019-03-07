@@ -49,7 +49,7 @@ class BitbucketClientFactory
     //noinspection GroovyAssignabilityCheck
     List<StandardUsernamePasswordCredentials> lookupCredentials = CredentialsProvider.lookupCredentials(
         StandardUsernamePasswordCredentials,
-        Jenkins.get(),
+        Jenkins.getInstance(),
         ACL.SYSTEM,
         URIRequirementBuilder.fromUri(url).build())
 

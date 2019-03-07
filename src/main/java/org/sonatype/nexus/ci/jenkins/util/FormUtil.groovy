@@ -54,7 +54,7 @@ class FormUtil
                                                       final Item ancestor)
   {
     // Ref: https://github.com/jenkinsci/credentials-plugin/blob/master/docs/consumer.adoc
-    boolean noContextNotAdmin = ancestor == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
+    boolean noContextNotAdmin = ancestor == null && !Jenkins.getInstance().hasPermission(Jenkins.ADMINISTER)
     boolean contextNoPerm = ancestor != null && !ancestor.hasPermission(Item.EXTENDED_READ) &&
         !ancestor.hasPermission(CredentialsProvider.USE_ITEM)
 
@@ -66,7 +66,7 @@ class FormUtil
     return new StandardListBoxModel()
         .includeEmptyValue()
         .includeMatchingAs(ACL.SYSTEM,
-        ancestor ?: Jenkins.get(),
+        ancestor ?: Jenkins.getInstance(),
         StandardCredentials,
         fromUri(serverUrl).build(),
         anyOf(instanceOf(StandardUsernamePasswordCredentials)))
