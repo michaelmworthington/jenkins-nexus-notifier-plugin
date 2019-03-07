@@ -53,10 +53,16 @@ class JiraClient
                   source,
                   severity,
                   fprint,
-                  iqAppExternalId,
-                  String iqAppExternalIdCustomFieldId,
-                  String iqOrgExternalId,
-                  String iqOrgExternalIdCustomFieldId,
+                  iqAppExternalId, String iqAppExternalIdCustomFieldId,
+                  String iqOrgExternalId, String iqOrgExternalIdCustomFieldId,
+                  scanStage, scanStageId,
+                  violationDate, violationDateId,
+                  lastScanDate, lastScanDateId,
+                  severityString, severityId,
+                  cveCode, cveCodeId,
+                  cvss, cvssId,
+                  scanType, scanTypeId,
+                  toolName, toolNameId,
                   String violationUniqueId,
                   String violationIdCustomFieldId)
   {
@@ -64,6 +70,14 @@ class JiraClient
     def body = getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint,
                                          iqAppExternalId, iqAppExternalIdCustomFieldId,
                                          iqOrgExternalId,iqOrgExternalIdCustomFieldId,
+                                         scanStage, scanStageId,
+                                         violationDate, violationDateId,
+                                         lastScanDate, lastScanDateId,
+                                         severityString, severityId,
+                                         cveCode, cveCodeId,
+                                         cvss, cvssId,
+                                         scanType, scanTypeId,
+                                         toolName, toolNameId,
                                          violationUniqueId, violationIdCustomFieldId)
     def headers = getRequestHeaders(username, password)
 
@@ -239,6 +253,14 @@ class JiraClient
   private static Map getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint,
                                                iqAppExternalId,iqAppExternalIdCustomFieldId,
                                                iqOrgExternalId, iqOrgExternalIdCustomFieldId,
+                                               scanStage, scanStageId,
+                                               violationDate, violationDateId,
+                                               lastScanDate, lastScanDateId,
+                                               severityString, severityId,
+                                               cveCode, cveCodeId,
+                                               cvss, cvssId,
+                                               scanType, scanTypeId,
+                                               toolName, toolNameId,
                                                violationUniqueId, violationIdCustomFieldId)
   {
     String newdate = new Date().format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500
@@ -262,21 +284,26 @@ class JiraClient
                     ]
            ]
 
-    if (iqAppExternalIdCustomFieldId && iqAppExternalId)
-    {
-      returnValue.fields.put(iqAppExternalIdCustomFieldId, iqAppExternalId)
-    }
-
-    if(iqOrgExternalIdCustomFieldId && iqOrgExternalId)
-    {
-      returnValue.fields.put(iqOrgExternalIdCustomFieldId, iqOrgExternalId)
-    }
-
-    if(violationIdCustomFieldId && violationUniqueId)
-    {
-      returnValue.fields.put(violationIdCustomFieldId, violationUniqueId)
-    }
+    addCustomFieldToTicket(returnValue, iqAppExternalIdCustomFieldId, iqAppExternalId)
+    addCustomFieldToTicket(returnValue, iqOrgExternalIdCustomFieldId, iqOrgExternalId)
+    addCustomFieldToTicket(returnValue, scanStageId, scanStage)
+    addCustomFieldToTicket(returnValue, violationDateId, violationDate)
+    addCustomFieldToTicket(returnValue, lastScanDateId, lastScanDate)
+    addCustomFieldToTicket(returnValue, severityId, severityString)
+    addCustomFieldToTicket(returnValue, cveCodeId, cveCode)
+    addCustomFieldToTicket(returnValue, cvssId, cvss)
+    addCustomFieldToTicket(returnValue, scanTypeId, scanType) //todo: what if it is a drop down list? - looks like i need to pass an ID or Value
+    addCustomFieldToTicket(returnValue, toolNameId, toolName)
+    addCustomFieldToTicket(returnValue, violationIdCustomFieldId, violationUniqueId)
 
     return returnValue
+  }
+
+  def static addCustomFieldToTicket(Map ticketFieldsArray, String customFieldId, String customFieldValue)
+  {
+    if (customFieldId && customFieldValue)
+    {
+      ticketFieldsArray.fields.put(customFieldId, customFieldValue)
+    }
   }
 }

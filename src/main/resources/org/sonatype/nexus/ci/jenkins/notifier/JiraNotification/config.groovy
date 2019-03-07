@@ -31,6 +31,10 @@ f.section(title: typedDescriptor.displayName) {
     f.checkbox()
   }
 
+  f.entry(title: _('Aggregate Tickets by Component'), field: 'shouldAggregateTicketsByComponent') {
+    f.checkbox()
+  }
+
   f.entry(title: _('Transition Jira Tickets'), field: 'shouldTransitionJiraTickets') {
     f.checkbox()
   }
@@ -39,34 +43,72 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
-  f.entry(title: _('Jira Custom Field for IQ Application Id'), field: 'applicationCustomFieldName') {
-    f.textbox()
-  }
-
-  f.entry(title: _('Jira Custom Field for IQ Organization Id'), field: 'organizationCustomFieldName') {
-    f.textbox()
-  }
-
-  f.entry(title: _('Jira Custom Field for Violation Unique Id'), field: 'violationIdCustomFieldName') {
-    f.textbox()
-  }
-
   f.entry(title: _('Create Tickets only for Policies starting with'), field: 'policyFilterPrefix') {
     f.textbox()
   }
 
-  f.entry(title: _('Aggregate Tickets by Component'), field: 'shouldAggregateTicketsByComponent') {
-    f.checkbox()
-  }
-
   f.advanced() {
-    f.section(title: _('Advanced options')) {
+    f.section(title: _('Advanced Options')) {
       f.entry(title: _('Use job specific credentials for Jira'), field: 'jobJiraCredentialsId') {
-        c.select(context:app, includeUser:false, expressionAllowed:false)
+        c.select(context: app, includeUser: false, expressionAllowed: false)
       }
 
       f.entry(title: _('Use job specific credentials for IQ Server'), field: 'jobIQCredentialsId') {
-        c.select(context:app, includeUser:false, expressionAllowed:false)
+        c.select(context: app, includeUser: false, expressionAllowed: false)
+      }
+    }
+    f.section(title: _('Custom Field Options - Derived Fields')) {
+      f.entry(title: _('Jira Custom Field for IQ Application Id'), field: 'applicationCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Organization Id'), field: 'organizationCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Scan Stage'), field: 'scanStageCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Violation Unique Id'), field: 'violationIdCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Violation Detection Date'), field: 'violationDetectDateCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Last Scan Date'), field: 'lastScanDateCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Severity'), field: 'severityCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for CVE Code'), field: 'cveCodeCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for CVSS'), field: 'cvssCustomFieldName') {
+        f.textbox()
+      }
+    }
+    f.section(title: _('Custom Field Options - Pass Through Fields')) { //todo: can i make this a dynamic key/value list
+      f.entry(title: _('Jira Custom Field for Scan Type - Field Name'), field: 'scanTypeCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Scan Type - Value'), field: 'scanTypeCustomFieldValue') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Tool Name - Field Name'), field: 'toolNameCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Tool Name - Value'), field: 'toolNameCustomFieldValue') {
+        f.textbox()
       }
     }
   }

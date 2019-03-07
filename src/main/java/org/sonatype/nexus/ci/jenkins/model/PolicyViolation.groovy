@@ -61,6 +61,8 @@ class PolicyViolation
         //Add in CVE - multiple SECURITY-HIGH violations
         def cvssCondition = it.constraints[0].conditions.find { "SecurityVulnerabilitySeverity" == it.conditionType }
         String cvssReason = cvssCondition?.conditionReason
+        //TODO: Find a License Condition Reason
+        //TODO: Parse the CVSS Reason
 
         //TODO: do i want to use the fingerprint, or just the key string?
         String fingerprintPrettyPrint = "${componentName} - ${it.policyName} - ${cvssReason}"
