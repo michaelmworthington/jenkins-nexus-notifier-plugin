@@ -50,12 +50,12 @@ class PolicyViolation
     //TODO: this may need to be done specifically for each supported format
     //      but for now, according to https://www.midgetontoes.com/2016/03/11/properties-ordering-of-groovy-jsonslurper-parsing/
     //      the attributes of the json will be sorted - TODO: I may want to parse it anyway so it's easy to read. maybe i can dump the whole thing...
-    String componentName = component.componentIdentifier.format
-    component.componentIdentifier.coordinates.each {
+    String componentName = component.componentIdentifier?.format
+    component.componentIdentifier?.coordinates?.each {
       componentName += ":${it.value}"
-    }
+    } //TODO: if null, probably a component unknown, is there any other info we can provide (i.e. the filename)?
 
-    component.activeViolations.each {
+    component.activeViolations?.each {
       if (policyFilterPrefix == null || it.policyName.startsWith(policyFilterPrefix))
       {
         //Add in CVE - multiple SECURITY-HIGH violations
