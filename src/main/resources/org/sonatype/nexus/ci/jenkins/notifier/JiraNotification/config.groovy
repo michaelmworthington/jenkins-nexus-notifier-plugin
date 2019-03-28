@@ -27,6 +27,14 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox(clazz: 'required')
   }
 
+  f.entry(title: _('Jira Issue Type Name'), field: 'issueTypeName') {
+    f.textbox()
+  }
+
+  f.entry(title: _('Jira Issue Priority Name'), field: 'priorityName') {
+    f.textbox()
+  }
+
   f.entry(title: _('Create Individual Tickets'), field: 'shouldCreateIndividualTickets') {
     f.checkbox()
   }

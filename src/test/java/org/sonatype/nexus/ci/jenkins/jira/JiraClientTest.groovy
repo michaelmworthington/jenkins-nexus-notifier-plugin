@@ -95,7 +95,7 @@ class JiraClientTest
     resp[0].name != null
   }
 
-  @Ignore
+  //@Ignore
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
@@ -105,15 +105,23 @@ class JiraClientTest
     String violationIdCustomFieldId = client.lookupCustomFieldId(customFields, "Finding ID")
 
     def resp = client.createIssue("JIRAIQ",
+                                  "Bug",
+                                  "Low",
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-1234",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "test app",
-                                  applicationCustomFieldId,
-                                  "test org",
-                                  organizationCustomFieldId,
+                                  "test app", applicationCustomFieldId,
+                                  "test org", organizationCustomFieldId,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
                                   "some-sha-value",
                                   violationIdCustomFieldId)
 

@@ -42,13 +42,15 @@ class JiraNotifier
             final JiraNotification jiraNotification,
             final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction)
   {
-    checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey())
+    checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey()) //todo: the proper way to validate input strings - for custom fields in lookupAndValidateCustomField()
 
     IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger)
     JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger)
 
     def envVars = run.getEnvironment(listener)
-    def projectKey = envVars.expand(jiraNotification.projectKey)
+    String projectKey = envVars.expand(jiraNotification.projectKey) //TODO: do I need to expand any other fields?
+    String issueTypeName = jiraNotification.issueTypeName //TODO: this appears to be required on the API - the default value only comes in through the UI
+    String priorityName = jiraNotification.priorityName
     boolean shouldCreateIndividualTickets = jiraNotification.shouldCreateIndividualTickets
     boolean shouldTransitionJiraTickets = jiraNotification.shouldTransitionJiraTickets
     String transitionStatus = jiraNotification.jiraTransitionStatus
@@ -70,7 +72,7 @@ class JiraNotifier
     String toolNameCustomFieldName = jiraNotification.toolNameCustomFieldName
     String toolNameCustomFieldValue = jiraNotification.toolNameCustomFieldValue
 
-    logger.println("Creating Jira Tickets for Project: " + projectKey)
+    logger.println("Creating Jira Tickets for Project: ${projectKey} with issue type: ${issueTypeName} and priority: ${priorityName}")
 
     PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
 
@@ -85,18 +87,18 @@ class JiraNotifier
       //TODO: look up the org
       String iqOrgExternalId = "org";
 
-      def customFields = jiraClient.lookupCustomFields() //todo: streamline this - just pass the name around and do the lookups inside of jira client when creating the ticket??
-      String applicationCustomFieldId = jiraClient.lookupCustomFieldId(customFields, applicationCustomFieldName)
-      String organizationCustomFieldId = jiraClient.lookupCustomFieldId(customFields, organizationCustomFieldName)
-      String scanStageCustomFieldId = jiraClient.lookupCustomFieldId(customFields, scanStageCustomFieldName)
-      String violationIdCustomFieldId = jiraClient.lookupCustomFieldId(customFields, violationIdCustomFieldName)
-      String violationDetectDateCustomFieldId = jiraClient.lookupCustomFieldId(customFields, violationDetectDateCustomFieldName)
-      String lastScanDateCustomFieldId = jiraClient.lookupCustomFieldId(customFields, lastScanDateCustomFieldName)
-      String severityCustomFieldId = jiraClient.lookupCustomFieldId(customFields, severityCustomFieldName)
-      String cveCodeCustomFieldId = jiraClient.lookupCustomFieldId(customFields, cveCodeCustomFieldName)
-      String cvssCustomFieldId = jiraClient.lookupCustomFieldId(customFields, cvssCustomFieldName)
-      String scanTypeCustomFieldId = jiraClient.lookupCustomFieldId(customFields, scanTypeCustomFieldName)
-      String toolNameCustomFieldId = jiraClient.lookupCustomFieldId(customFields, toolNameCustomFieldName)
+      def customFields = jiraClient.lookupCustomFields() //todo: streamline this (i'm logging here as well) - just pass the name around and do the lookups inside of jira client when creating the ticket??
+      String applicationCustomFieldId = lookupAndValidateCustomField(jiraClient, customFields, applicationCustomFieldName, "App Name")
+      String organizationCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, organizationCustomFieldName, "Org Name")
+      String scanStageCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, scanStageCustomFieldName, "Scan Stage")
+      String violationIdCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, violationIdCustomFieldName, "Violation ID")
+      String violationDetectDateCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, violationDetectDateCustomFieldName, "Detect Date")
+      String lastScanDateCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, lastScanDateCustomFieldName, "Last Scan Date")
+      String severityCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, severityCustomFieldName, "Severity")
+      String cveCodeCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, cveCodeCustomFieldName, "CVE Code")
+      String cvssCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, cvssCustomFieldName, "CVSS")
+      String scanTypeCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, scanTypeCustomFieldName, "Scan Type")
+      String toolNameCustomFieldId = lookupAndValidateCustomField(jiraClient,customFields, toolNameCustomFieldName, "Tool Name")
 
       if (shouldCreateIndividualTickets)
       {
@@ -151,7 +153,7 @@ class JiraNotifier
 
         logger.println("Creating ${newFindings.size()} tickets for each policy violation")
         newFindings.each {
-          createIndividualTicket(jiraClient, projectKey, it,
+          createIndividualTicket(jiraClient, projectKey, issueTypeName, priorityName, it,
                                  iqAppExternalId, applicationCustomFieldId,
                                  iqOrgExternalId, organizationCustomFieldId,
                                  "TODO: Scan Stage", scanStageCustomFieldId,
@@ -187,7 +189,7 @@ class JiraNotifier
       }
       else {
         logger.println("Creating just one ticket with a violation summary in the description")
-        createSummaryTicket(jiraClient, projectKey, policyEvaluationHealthAction, iqAppExternalId, iqReportInternalid)
+        createSummaryTicket(jiraClient, projectKey, issueTypeName, priorityName, policyEvaluationHealthAction, iqAppExternalId, iqReportInternalid)
 
         if (shouldTransitionJiraTickets)
         {
@@ -199,6 +201,28 @@ class JiraNotifier
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
     }
+  }
+
+  private String lookupAndValidateCustomField(JiraClient pJiraClient, Object pCustomFields, String pFieldName, String pFieldDescription)
+  {
+    String returnValue = null
+    if(pFieldName)
+    {
+      returnValue = pJiraClient.lookupCustomFieldId(pCustomFields, pFieldName)
+      if (returnValue)
+      {
+        logger.println("Custom Field: ${pFieldName} -> ${returnValue}")
+      } else
+      {
+        throw new AbortException("Custom Field mapping for field description: ${pFieldDescription}, not found with field name: ${pFieldName}")
+      }
+    }
+    else
+    {
+      logger.println("Custom Field mapping not provided for field description: ${pFieldDescription}")
+    }
+
+    return returnValue
   }
 
   private void calculateNewAndRepeatFindings(HashMap<String, PolicyViolation> pPotentialFindings,
@@ -242,7 +266,7 @@ class JiraNotifier
     jiraClient.closeTicket(pPolicyViolation.ticketInternalId, transitionStatus)
   }
 
-  private void createIndividualTicket(JiraClient jiraClient, String projectKey, PolicyViolation pPolicyViolation,
+  private void createIndividualTicket(JiraClient jiraClient, String projectKey, String issueTypeName, String priorityName, PolicyViolation pPolicyViolation,
                                       String iqAppExternalId, String iqAppExternalIdCustomFieldId,
                                       String iqOrgExternalId, String iqOrgExternalIdCustomFieldId,
                                       String scanStage, String scanStageId,
@@ -263,6 +287,8 @@ class JiraNotifier
     def severity = pPolicyViolation.policyThreatLevel
 
     jiraClient.createIssue(projectKey,
+                           issueTypeName,
+                           priorityName,
                            description,
                            detail,
                            source,
@@ -282,7 +308,7 @@ class JiraNotifier
                            violationIdCustomFieldId)
   }
 
-  private void createSummaryTicket(JiraClient jiraClient, String projectKey, PolicyEvaluationHealthAction policyEvaluationHealthAction, String iqAppExternalId, String iqReportId)
+  private void createSummaryTicket(JiraClient jiraClient, String projectKey, String issueTypeName, String priorityName, PolicyEvaluationHealthAction policyEvaluationHealthAction, String iqAppExternalId, String iqReportId)
   {
     //TODO: Create a summary ticket from the policyEvaluationHealthAction
     logger.println("Creating Summary Jira Ticket for Project: ${projectKey}")
@@ -294,15 +320,23 @@ class JiraNotifier
     def fprint = "SONATYPEIQ-${iqAppExternalId}-${iqReportId}"
 
     jiraClient.createIssue(projectKey,
+                           issueTypeName,
+                           priorityName,
                            description,
                            detail,
                            source,
                            severity,
                            fprint,
-                           null,
-                           null,
-                           null,
-                           null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
+                           null, null,
                            null,
                            null)
 

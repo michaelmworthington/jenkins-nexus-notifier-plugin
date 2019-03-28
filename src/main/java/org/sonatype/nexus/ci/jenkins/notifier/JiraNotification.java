@@ -35,6 +35,8 @@ public class JiraNotification
 {
   private boolean sendJiraNotification;
   private String projectKey;
+  private String issueTypeName;
+  private String priorityName;
 
   private boolean shouldCreateIndividualTickets;
 
@@ -66,6 +68,12 @@ public class JiraNotification
 
   public String getProjectKey() {
     return projectKey;
+  }
+  public String getIssueTypeName() {
+    return issueTypeName;
+  }
+  public String getPriorityName() {
+    return priorityName;
   }
 
   public boolean getShouldCreateIndividualTickets() { return shouldCreateIndividualTickets; }
@@ -101,6 +109,8 @@ public class JiraNotification
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
                           final String projectKey,
+                          final String issueTypeName,
+                          final String priorityName,
                           final boolean shouldCreateIndividualTickets,
                           final boolean shouldTransitionJiraTickets,
                           final String jiraTransitionStatus,
@@ -124,6 +134,8 @@ public class JiraNotification
   {
     this.sendJiraNotification = sendJiraNotification;
     this.projectKey = projectKey;
+    this.issueTypeName = issueTypeName;
+    this.priorityName = priorityName;
     this.shouldCreateIndividualTickets = shouldCreateIndividualTickets;
     this.shouldTransitionJiraTickets = shouldTransitionJiraTickets;
     this.jiraTransitionStatus = jiraTransitionStatus;

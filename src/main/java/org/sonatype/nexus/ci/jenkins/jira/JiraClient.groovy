@@ -48,6 +48,8 @@ class JiraClient
   }
 
   def createIssue(projectKey,
+                  issueTypeName,
+                  priorityName,
                   description,
                   detail,
                   source,
@@ -67,7 +69,7 @@ class JiraClient
                   String violationIdCustomFieldId)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
-    def body = getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint,
+    def body = getCreateIssueRequestBody(projectKey, issueTypeName, priorityName, description, detail, source, severity, fprint,
                                          iqAppExternalId, iqAppExternalIdCustomFieldId,
                                          iqOrgExternalId,iqOrgExternalIdCustomFieldId,
                                          scanStage, scanStageId,
@@ -201,7 +203,7 @@ class JiraClient
   /**
    * Get the list of all fields in jira so we can map custom field name to id
    *
-   *  https://developer.atlassian.com/cloud/jira/platform/rest/v2/#api-api-2-field-get
+   *  https://developer.atlassian.com/cloud/jira/platform/rest/v2/#api-rest-api-2-field-get
    *
    *  [
    *   {
@@ -244,13 +246,20 @@ class JiraClient
     return "${serverUrl}/rest/api/2/field"
   }
 
+  /**
+   * https://developer.atlassian.com/cloud/jira/platform/rest/v2/#api-rest-api-2-issue-post
+   * https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-examples
+   *
+   * @param serverUrl
+   * @return
+   */
   private static String getCreateIssueRequestUrl(serverUrl) {
     //post: /rest/api/2/issue - [{"fields":{"project":{"key":"DP"},"summary":"Sonatype IQ Server SECURITY-HIGH Policy Violation","description":"\n\tDescription: Sonatype IQ Server SECURITY-HIGH Policy Violation\n\n\tTimestamp: 2019-01-26 01:38:59 -0500\n\n\tSource: SonatypeIQ:IQServerAppId:scanIQ\n\n\tSeverity: 1\n\n\tFingerprint:  57767fa9ecbe0b6271f20ea215e969ac7ed8f24ff7a67ee77dbf090e9e7f469b\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  CVE-2019-1234",
     // "priority":{"name":"Low"},"issuetype":{"name":"Bug"}},"labels":["Glue","triage.git"]}]
     return "${serverUrl}/rest/api/2/issue"
   }
 
-  private static Map getCreateIssueRequestBody(projectKey, description, detail, source, severity, fprint,
+  private static Map getCreateIssueRequestBody(projectKey, issueTypeName, priorityName, description, detail, source, severity, fprint,
                                                iqAppExternalId,iqAppExternalIdCustomFieldId,
                                                iqOrgExternalId, iqOrgExternalIdCustomFieldId,
                                                scanStage, scanStageId,
@@ -274,15 +283,19 @@ class JiraClient
                               key: projectKey
                       ],
                       summary: formatted_summary,
-                      description: formatted_description,
-                      priority: [
-                              name: "Low"
-                      ],
-                      issuetype: [
-                              name: "Bug" //TODO: issue type
-                      ]
+                      description: formatted_description
                     ]
            ]
+
+    if(priorityName)
+    {
+      addCustomFieldToTicket(returnValue, "priority", [ name: priorityName ])
+    }
+
+    if(issueTypeName)
+    {
+      addCustomFieldToTicket(returnValue, "issuetype", [ name: issueTypeName ])
+    }
 
     addCustomFieldToTicket(returnValue, iqAppExternalIdCustomFieldId, iqAppExternalId)
     addCustomFieldToTicket(returnValue, iqOrgExternalIdCustomFieldId, iqOrgExternalId)
@@ -299,7 +312,7 @@ class JiraClient
     return returnValue
   }
 
-  def static addCustomFieldToTicket(Map ticketFieldsArray, String customFieldId, String customFieldValue)
+  def static addCustomFieldToTicket(Map ticketFieldsArray, String customFieldId, customFieldValue)
   {
     if (customFieldId && customFieldValue)
     {
