@@ -51,6 +51,7 @@ class JiraNotifier
     def envVars = run.getEnvironment(listener)
     String projectKey = envVars.expand(jiraNotification.projectKey) //TODO: do I need to expand any other fields?
     String issueTypeName = jiraNotification.issueTypeName //TODO: this appears to be required on the API - the default value only comes in through the UI
+    String subTaskIssueTypeName = jiraNotification.subTaskIssueTypeName
     String priorityName = jiraNotification.priorityName
     boolean shouldCreateIndividualTickets = jiraNotification.shouldCreateIndividualTickets
     boolean shouldTransitionJiraTickets = jiraNotification.shouldTransitionJiraTickets
@@ -68,6 +69,7 @@ class JiraNotifier
     String cvssCustomFieldName = jiraNotification.cvssCustomFieldName
     String policyFilterPrefix = jiraNotification.policyFilterPrefix
     boolean shouldAggregateTicketsByComponent = jiraNotification.shouldAggregateTicketsByComponent //TODO: Aggregate by component - epics & stories
+    boolean shouldCreateSubTasksForAggregatedTickets = jiraNotification.shouldCreateSubTasksForAggregatedTickets //TODO: Aggregate by component - epics & stories
     String scanTypeCustomFieldName = jiraNotification.scanTypeCustomFieldName
     String scanTypeCustomFieldValue = jiraNotification.scanTypeCustomFieldValue
     String toolNameCustomFieldName = jiraNotification.toolNameCustomFieldName
@@ -87,6 +89,15 @@ class JiraNotifier
 
       //TODO: look up the org
       String iqOrgExternalId = "org";
+
+      //Just for debugging right now.
+      // todo: Maybe i'll use the response for some validation
+      jiraClient.lookupMetadataConfigurationForCreateIssue(projectKey, issueTypeName)
+      if (shouldCreateSubTasksForAggregatedTickets)
+      {
+        jiraClient.lookupMetadataConfigurationForCreateIssue(projectKey, subTaskIssueTypeName)
+      }
+
 
       def customFields = jiraClient.lookupCustomFields() //todo: streamline this (i'm logging here as well) - just pass the name around and do the lookups inside of jira client when creating the ticket??
       String applicationCustomFieldId = lookupAndValidateCustomField(jiraClient, customFields, applicationCustomFieldName, "App Name")

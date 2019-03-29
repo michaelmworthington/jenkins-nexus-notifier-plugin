@@ -31,6 +31,10 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
+  f.entry(title: _('Jira Sub-Task Issue Type Name'), field: 'subTaskIssueTypeName') {
+    f.textbox()
+  }
+
   f.entry(title: _('Jira Issue Priority Name'), field: 'priorityName') {
     f.textbox()
   }
@@ -40,6 +44,10 @@ f.section(title: typedDescriptor.displayName) {
   }
 
   f.entry(title: _('Aggregate Tickets by Component'), field: 'shouldAggregateTicketsByComponent') {
+    f.checkbox()
+  }
+
+  f.entry(title: _('Create Sub-Tasks for Each Violation When Aggregating Tickets by Component'), field: 'shouldCreateSubTasksForAggregatedTickets') {
     f.checkbox()
   }
 

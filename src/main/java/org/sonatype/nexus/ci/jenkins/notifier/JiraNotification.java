@@ -37,6 +37,7 @@ public class JiraNotification
   private boolean verboseLogging;
   private String projectKey;
   private String issueTypeName;
+  private String subTaskIssueTypeName;
   private String priorityName;
 
   private boolean shouldCreateIndividualTickets;
@@ -54,6 +55,7 @@ public class JiraNotification
   private String cvssCustomFieldName;
   private String policyFilterPrefix;
   private boolean shouldAggregateTicketsByComponent;
+  private boolean shouldCreateSubTasksForAggregatedTickets;
 
   private String jobJiraCredentialsId;
   private String jobIQCredentialsId;
@@ -74,6 +76,9 @@ public class JiraNotification
   }
   public String getIssueTypeName() {
     return issueTypeName;
+  }
+  public String getSubTaskIssueTypeName() {
+    return subTaskIssueTypeName;
   }
   public String getPriorityName() {
     return priorityName;
@@ -100,6 +105,8 @@ public class JiraNotification
   public String getPolicyFilterPrefix() { return policyFilterPrefix; }
 
   public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
+  public boolean getShouldCreateSubTasksForAggregatedTickets() { return shouldCreateSubTasksForAggregatedTickets; }
+
 
   public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
   public String getJobIQCredentialsId() { return jobIQCredentialsId; }
@@ -114,6 +121,7 @@ public class JiraNotification
                           final boolean verboseLogging,
                           final String projectKey,
                           final String issueTypeName,
+                          final String subTaskIssueTypeName,
                           final String priorityName,
                           final boolean shouldCreateIndividualTickets,
                           final boolean shouldTransitionJiraTickets,
@@ -129,6 +137,7 @@ public class JiraNotification
                           final String cvssCustomFieldName,
                           final String policyFilterPrefix,
                           final boolean shouldAggregateTicketsByComponent,
+                          final boolean shouldCreateSubTasksForAggregatedTickets,
                           final String jobJiraCredentialsId,
                           final String jobIQCredentialsId,
                           final String scanTypeCustomFieldName,
@@ -140,6 +149,7 @@ public class JiraNotification
     this.verboseLogging = verboseLogging;
     this.projectKey = projectKey;
     this.issueTypeName = issueTypeName;
+    this.subTaskIssueTypeName = subTaskIssueTypeName;
     this.priorityName = priorityName;
     this.shouldCreateIndividualTickets = shouldCreateIndividualTickets;
     this.shouldTransitionJiraTickets = shouldTransitionJiraTickets;
@@ -155,6 +165,7 @@ public class JiraNotification
     this.cvssCustomFieldName = cvssCustomFieldName;
     this.policyFilterPrefix = policyFilterPrefix;
     this.shouldAggregateTicketsByComponent = shouldAggregateTicketsByComponent;
+    this.shouldCreateSubTasksForAggregatedTickets = shouldCreateSubTasksForAggregatedTickets;
     this.jobJiraCredentialsId = jobJiraCredentialsId;
     this.jobIQCredentialsId = jobIQCredentialsId;
     this.scanTypeCustomFieldName = scanTypeCustomFieldName;

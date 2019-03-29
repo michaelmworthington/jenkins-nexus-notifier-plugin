@@ -45,7 +45,7 @@ class IQClientTest
       url == "http://localhost:${port}/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json"
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with IQ Server - Get Report Violations'() {
     setup:
       def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)

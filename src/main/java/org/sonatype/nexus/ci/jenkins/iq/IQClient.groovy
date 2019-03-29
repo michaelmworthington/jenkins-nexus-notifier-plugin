@@ -13,6 +13,7 @@
 package org.sonatype.nexus.ci.jenkins.iq
 
 import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
 import groovyx.net.http.HttpResponseException
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 
@@ -54,9 +55,14 @@ class IQClient
       {
         this.http.handler.success = { resp, parsedData ->
           logger.println("######################################")
-          logger.println(resp?.context?.delegate?.map?.get("http.request")?.original)
-          logger.println(resp?.responseBase?.statusline)
+          def req = resp?.context?.delegate?.map?.get("http.request")?.original
+          logger.println("REQUEST:  " + req)
+          if (req.hasProperty('entity'))
+          {
+            logger.println(JsonOutput.prettyPrint(resp?.context?.delegate?.map?.get("http.request")?.original?.entity?.content?.getText()))
+          }
           logger.println("######################################")
+          logger.println("RESPONSE: " + resp?.responseBase?.statusline)
           logger.println(new JsonBuilder(parsedData).toPrettyString())
           logger.println("######################################")
 

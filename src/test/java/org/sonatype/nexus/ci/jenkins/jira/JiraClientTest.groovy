@@ -83,7 +83,7 @@ class JiraClientTest
       resp.issues[0].key != null
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
@@ -93,6 +93,21 @@ class JiraClientTest
     resp != null
     resp.size > 0
     resp[0].name != null
+  }
+
+  @Ignore
+  def 'helper test to verify interaction with Jira Server - Get Project Ticket Fields'() {
+    setup:
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def resp = client.lookupMetadataConfigurationForCreateIssue("JIRAIQ", "Task")
+
+    expect:
+    resp != null
+    resp.expand == "projects"
+    resp.projects.size == 1
+    resp.projects[0].name == "Jira IQ"
+    resp.projects[0].issuetypes.size == 1
+    resp.projects[0].issuetypes[0].name == "Task"
   }
 
   //@Ignore
@@ -124,6 +139,36 @@ class JiraClientTest
                                   null, null,
                                   "some-sha-value",
                                   violationIdCustomFieldId)
+
+    expect:
+    resp != null
+    resp.key != null
+  }
+
+  //@Ignore
+  def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
+    setup:
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+
+    def resp = client.createIssue("JIRAIQ",
+                                  "Task",
+                                  "Low",
+                                  "UnitTest Task",
+                                  "Fun with Spock",
+                                  "SonatypeIQ:IQServerAppId:scanIQ",
+                                  "1",
+                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null,null)
 
     expect:
     resp != null

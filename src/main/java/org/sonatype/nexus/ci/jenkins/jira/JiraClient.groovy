@@ -13,6 +13,7 @@
 package org.sonatype.nexus.ci.jenkins.jira
 
 import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
 import groovyx.net.http.HttpResponseException
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 
@@ -54,9 +55,14 @@ class JiraClient
       {
         this.http.handler.success = { resp, parsedData ->
           logger.println("######################################")
-          logger.println(resp?.context?.delegate?.map?.get("http.request")?.original)
-          logger.println(resp?.responseBase?.statusline)
+          def req = resp?.context?.delegate?.map?.get("http.request")?.original
+          logger.println("REQUEST:  " + req)
+          if (req.hasProperty('entity'))
+          {
+            logger.println(JsonOutput.prettyPrint(resp?.context?.delegate?.map?.get("http.request")?.original?.entity?.content?.getText()))
+          }
           logger.println("######################################")
+          logger.println("RESPONSE: " + resp?.responseBase?.statusline)
           logger.println(new JsonBuilder(parsedData).toPrettyString())
           logger.println("######################################")
 
@@ -119,6 +125,14 @@ class JiraClient
   def lookupCustomFields()
   {
     def url = getLookupCustomFieldsUrl(serverUrl)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
+  def lookupMetadataConfigurationForCreateIssue(String projectKey, String issueTypeName)
+  {
+    def url = getLookupMetadataConfigurationForCreateIssueUrl(serverUrl, projectKey, issueTypeName)
     def headers = getRequestHeaders(username, password)
 
     http.get(url, headers)
@@ -282,6 +296,17 @@ class JiraClient
     }
 
     return "${serverUrl}/rest/api/2/field"
+  }
+
+  private String getLookupMetadataConfigurationForCreateIssueUrl(String serverUrl, String pProjectName, String pIssueTypeName)
+  {
+    if(verboseLogging){
+      logger.println("Get the list of field metadata needed when creating an issue in Jira")
+    }
+
+    // {{jiraUrl}}/rest/api/2/issue/createmeta?projectKeys=JIRAIQ&issuetypeNames=Task&expand=projects.issuetypes.fields
+    return "${serverUrl}/rest/api/2/issue/createmeta?projectKeys=${pProjectName}&issuetypeNames=${pIssueTypeName}&expand=projects.issuetypes.fields"
+
   }
 
   /**
