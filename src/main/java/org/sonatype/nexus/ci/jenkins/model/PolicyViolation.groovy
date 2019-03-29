@@ -94,12 +94,24 @@ class PolicyViolation
     String status = ticket.fields.status.name
     //String application = ticket.fields.get(applicationCustomFieldId)
     //String organization = ticket.fields.get(organizationCustomFieldId)
-    String fingerprint = ticket.fields.get(violationIdCustomFieldId)
+    String fingerprint = safeCustomFieldLookup(ticket, violationIdCustomFieldId)
 
     return new PolicyViolation(ticketStatus: status,
                                ticketExternalId: ticketExternalId,
                                ticketInternalId: ticketInternalId,
                                ticketSummary: summary,
                                fingerprint: fingerprint)
+  }
+
+  def static safeCustomFieldLookup(ticket, String pCustomFieldId)
+  {
+    if(pCustomFieldId)
+    {
+      ticket.fields.get(pCustomFieldId)
+    }
+    else
+    {
+      return null;
+    }
   }
 }
