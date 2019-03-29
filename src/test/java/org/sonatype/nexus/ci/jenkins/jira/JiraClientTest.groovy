@@ -28,7 +28,7 @@ class JiraClientTest
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
     client.http = http
   }
 
@@ -74,7 +74,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Get All Tickets'() {
     setup:
-      def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+      def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
       def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "aaaaaaa-testidegrandfathering")
 
     expect:
@@ -83,10 +83,10 @@ class JiraClientTest
       resp.issues[0].key != null
   }
 
-  @Ignore
+  //@Ignore
   def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
     def resp = client.lookupCustomFields()
 
     expect:
@@ -98,7 +98,7 @@ class JiraClientTest
   //@Ignore
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
     def customFields = client.lookupCustomFields()
     String applicationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Application")
     String organizationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Organization")
@@ -133,7 +133,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
     def resp = client.closeTicket("10772", "Done")
 
     expect:

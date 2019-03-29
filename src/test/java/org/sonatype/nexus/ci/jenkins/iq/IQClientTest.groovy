@@ -28,11 +28,11 @@ class IQClientTest
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out)
+    client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
     client.http = http
   }
 
-  def 'put card has correct url'() {
+  def 'lookup scan report policy threats has correct url'() {
     def url
 
     when:
@@ -45,12 +45,10 @@ class IQClientTest
       url == "http://localhost:${port}/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json"
   }
 
-  @Ignore
+  //@Ignore
   def 'helper test to verify interaction with IQ Server - Get Report Violations'() {
-    def url
-
     setup:
-      def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out)
+      def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
       //make it a real client instead of a mock http
       def resp = client.lookupPolcyDetailsFromIQ("3d0fedc4857f44368e0b501a6b986048", "aaaaaaa-testidegrandfathering")
 

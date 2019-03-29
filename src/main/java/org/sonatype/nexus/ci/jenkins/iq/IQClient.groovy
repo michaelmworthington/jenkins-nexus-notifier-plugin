@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.iq
 
+import groovy.json.JsonBuilder
 import groovyx.net.http.HttpResponseException
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 
@@ -26,12 +27,16 @@ class IQClient
   String username
 
   String password
+  PrintStream logger
+  boolean verboseLogging
 
-  IQClient(String serverUrl, String username, String password, PrintStream logger) {
+  IQClient(String serverUrl, String username, String password, PrintStream logger, final boolean verboseLogging = false) {
     this.http = new SonatypeHTTPBuilder()
     this.serverUrl = serverUrl
     this.username = username
     this.password = password
+    this.logger = logger
+    this.verboseLogging = verboseLogging
 
     if(logger)
     {
@@ -43,6 +48,20 @@ class IQClient
         logger.println("Error Response Code: ${resp.status} with message: ${reader}")
         //[response:resp, reader:reader]
         throw new HttpResponseException(resp)
+      }
+
+      if(verboseLogging)
+      {
+        this.http.handler.success = { resp, parsedData ->
+          logger.println("######################################")
+          logger.println(resp?.context?.delegate?.map?.get("http.request")?.original)
+          logger.println(resp?.responseBase?.statusline)
+          logger.println("######################################")
+          logger.println(new JsonBuilder(parsedData).toPrettyString())
+          logger.println("######################################")
+
+          return this.http.defaultSuccessHandler(resp, parsedData)
+        }
       }
     }
   }
@@ -62,7 +81,11 @@ class IQClient
     ]
   }
 
-  private static String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
+  private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
+    if(verboseLogging){
+      logger.println("Get the Application Policy Threats Report from IQ Server")
+    }
+
     // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
     return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalid}/browseReport/policythreats.json"
   }

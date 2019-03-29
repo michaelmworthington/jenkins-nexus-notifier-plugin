@@ -38,19 +38,22 @@ class JiraNotifierTest
 
   def 'send requires projectKey'() {
     when:
-      jiraNotifier.send(true,
-                        new JiraNotification(true,
-                                             emptyOptions,
-                                             false,
-                                             false,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             false,
-                                             null),
-                        null)
+    jiraNotifier.send(true,
+                      new JiraNotification(true,
+                                           false,
+                                           emptyOptions,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           null,
+                                           null,
+                                           null,
+                                           null,
+                                           null, null, null, null, null, null, null,
+                                           false,
+                                           null, null, null, null, null, null),
+                      null)
 
     then:
       IllegalArgumentException ex = thrown()

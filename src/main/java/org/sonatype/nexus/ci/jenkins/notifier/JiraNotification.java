@@ -34,6 +34,7 @@ public class JiraNotification
     extends AbstractDescribableImpl<JiraNotification>
 {
   private boolean sendJiraNotification;
+  private boolean verboseLogging;
   private String projectKey;
   private String issueTypeName;
   private String priorityName;
@@ -65,7 +66,9 @@ public class JiraNotification
   public boolean getSendJiraNotification() {
     return sendJiraNotification;
   }
-
+  public boolean getVerboseLogging() {
+    return verboseLogging;
+  }
   public String getProjectKey() {
     return projectKey;
   }
@@ -108,6 +111,7 @@ public class JiraNotification
 
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
+                          final boolean verboseLogging,
                           final String projectKey,
                           final String issueTypeName,
                           final String priorityName,
@@ -133,6 +137,7 @@ public class JiraNotification
                           final String toolNameCustomFieldValue)
   {
     this.sendJiraNotification = sendJiraNotification;
+    this.verboseLogging = verboseLogging;
     this.projectKey = projectKey;
     this.issueTypeName = issueTypeName;
     this.priorityName = priorityName;

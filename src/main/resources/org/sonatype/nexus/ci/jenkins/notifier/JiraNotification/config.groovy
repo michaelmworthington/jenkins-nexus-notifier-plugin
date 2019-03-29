@@ -64,6 +64,11 @@ f.section(title: typedDescriptor.displayName) {
       f.entry(title: _('Use job specific credentials for IQ Server'), field: 'jobIQCredentialsId') {
         c.select(context: app, includeUser: false, expressionAllowed: false)
       }
+
+      f.entry(title: _('Verbose Logging'), field: 'verboseLogging') {
+        f.checkbox()
+      }
+
     }
     f.section(title: _('Custom Field Options - Derived Fields')) {
       f.entry(title: _('Jira Custom Field for IQ Application Id'), field: 'applicationCustomFieldName') {
@@ -111,11 +116,11 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
 
-      f.entry(title: _('Jira Custom Field for Tool Name - Field Name'), field: 'toolNameCustomFieldName') {
+      f.entry(title: _('Jira Custom Field for Tool Name - Field Name'), field: 'toolNameCustomFieldName') { //TODO: "Scanning Tool"
         f.textbox()
       }
 
-      f.entry(title: _('Jira Custom Field for Tool Name - Value'), field: 'toolNameCustomFieldValue') {
+      f.entry(title: _('Jira Custom Field for Tool Name - Value'), field: 'toolNameCustomFieldValue') { //TODO: "Nexus IQ"
         f.textbox()
       }
     }

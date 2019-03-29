@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull
 
 class IQClientFactory
 {
-  static IQClient getIQClient(String jobCredentialsId = null, PrintStream logger = null) {
+  static IQClient getIQClient(String jobCredentialsId = null, PrintStream logger = null, final boolean verboseLogging = false) {
     def configuration = NotifierConfiguration.getNotifierConfiguration()
     checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration())
     checkArgument(configuration.jiraConfigs != null, Messages.JiraClientFactory_NoConfiguration())
@@ -38,7 +38,7 @@ class IQClientFactory
 
     def credentials = findCredentials(jiraConfig.iqServerUrl, credentialsId)
 
-    return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger)
+    return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging)
   }
 
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {

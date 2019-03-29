@@ -38,14 +38,15 @@ class JiraNotifier
     this.logger = listener.logger
   }
 
-  void send(final boolean buildPassing,
+  void send(final boolean buildPassing, //TODO: don't run if the build is failed??? Maybe the check on the IQ Report will fail the process, but make sure that we don't close all the jira tickets if there is an upstream failure
             final JiraNotification jiraNotification,
             final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction)
   {
     checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey()) //todo: the proper way to validate input strings - for custom fields in lookupAndValidateCustomField()
+    boolean verboseLogging = jiraNotification.verboseLogging
 
-    IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger)
-    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger)
+    IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, verboseLogging)
+    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger, verboseLogging)
 
     def envVars = run.getEnvironment(listener)
     String projectKey = envVars.expand(jiraNotification.projectKey) //TODO: do I need to expand any other fields?
@@ -60,7 +61,7 @@ class JiraNotifier
     String organizationCustomFieldName = jiraNotification.organizationCustomFieldName
     String scanStageCustomFieldName = jiraNotification.scanStageCustomFieldName
     String violationIdCustomFieldName = jiraNotification.violationIdCustomFieldName
-    String violationDetectDateCustomFieldName = jiraNotification.violationIdCustomFieldName
+    String violationDetectDateCustomFieldName = jiraNotification.violationDetectDateCustomFieldName
     String lastScanDateCustomFieldName = jiraNotification.lastScanDateCustomFieldName
     String severityCustomFieldName = jiraNotification.severityCustomFieldName
     String cveCodeCustomFieldName = jiraNotification.cveCodeCustomFieldName
@@ -211,7 +212,7 @@ class JiraNotifier
       returnValue = pJiraClient.lookupCustomFieldId(pCustomFields, pFieldName)
       if (returnValue)
       {
-        logger.println("Custom Field: ${pFieldName} -> ${returnValue}")
+        logger.println("Custom Field mapping for field description: ${pFieldDescription} created mapping ${pFieldName} -> ${returnValue}")
       } else
       {
         throw new AbortException("Custom Field mapping for field description: ${pFieldDescription}, not found with field name: ${pFieldName}")
