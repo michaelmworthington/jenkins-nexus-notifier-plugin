@@ -12,64 +12,12 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonOutput
-import groovyx.net.http.HttpResponseException
-import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
+import org.sonatype.nexus.ci.jenkins.util.AbstractToolClient
 
-class JiraClient
+class JiraClient extends AbstractToolClient
 {
-  static String USER_AGENT = 'nexus-jenkins-notifier'
-
-  SonatypeHTTPBuilder http
-
-  String serverUrl
-
-  String username
-
-  String password
-  PrintStream logger
-  boolean verboseLogging
-
   JiraClient(String serverUrl, String username, String password, PrintStream logger, final boolean verboseLogging = false) {
-    this.http = new SonatypeHTTPBuilder()
-    this.serverUrl = serverUrl
-    this.username = username
-    this.password = password
-    this.logger = logger
-    this.verboseLogging = verboseLogging
-
-    if(logger)
-    {
-      /*
-       * Jira sends the error message in the body. Let's print that out in addition to the stack trace
-       *   ref: https://stackoverflow.com/questions/19966548/groovy-httpbuilder-get-body-of-failed-response
-       */
-      this.http.handler.failure = { resp, reader ->
-        logger.println("Error Response Code: ${resp.status} with message: ${reader}")
-        //[response:resp, reader:reader]
-        throw new HttpResponseException(resp)
-      }
-
-      if(verboseLogging)
-      {
-        this.http.handler.success = { resp, parsedData ->
-          logger.println("######################################")
-          def req = resp?.context?.delegate?.map?.get("http.request")?.original
-          logger.println("REQUEST:  " + req)
-          if (req.hasProperty('entity'))
-          {
-            logger.println(JsonOutput.prettyPrint(resp?.context?.delegate?.map?.get("http.request")?.original?.entity?.content?.getText()))
-          }
-          logger.println("######################################")
-          logger.println("RESPONSE: " + resp?.responseBase?.statusline)
-          logger.println(new JsonBuilder(parsedData).toPrettyString())
-          logger.println("######################################")
-
-          return this.http.defaultSuccessHandler(resp, parsedData)
-        }
-      }
-    }
+    super(serverUrl, username, password, logger, verboseLogging)
   }
 
   def createIssue(projectKey,
@@ -184,31 +132,18 @@ class JiraClient
 
   private String getExecuteTransitionUrl(String serverUrl, String ticketInternalId)
   {
-    if(verboseLogging){
-      logger.println("Execute an Issue Transition in Jira")
-    }
+    verbosePrintLn("Execute an Issue Transition in Jira")
 
     //POST: /rest/api/2/issue/10110/transitions - [{"transition":{"id":"21"}}]
     return "${serverUrl}/rest/api/2/issue/${ticketInternalId}/transitions"
-
   }
 
   private String getIssueTransitionsUrl(String serverUrl, String ticketInternalId)
   {
-    if(verboseLogging){
-      logger.println("Get the available Issue Transitions from Jira")
-    }
+    verbosePrintLn("Get the available Issue Transitions from Jira")
 
     // "/rest/api/2/issue/{{ticketInternalId}}/transitions?expand=transitions.fields"
     return "${serverUrl}/rest/api/2/issue/${ticketInternalId}/transitions?expand=transitions.fields"
-
-  }
-
-  private static Map getRequestHeaders(username, password) {
-    return [
-            'User-Agent' : USER_AGENT,
-            Authorization: 'Basic ' + ("${username}:${password}").bytes.encodeBase64()
-    ]
   }
 
   private String getLookupTicketsForProjectUrl(String serverUrl,
@@ -217,9 +152,7 @@ class JiraClient
                                                       String applicationCustomFieldName,
                                                       String iqApplicationExternalId)
   {
-    if(verboseLogging){
-      logger.println("Perform a JQL search to get the tickets for a Project, status, and application from Jira")
-    }
+    verbosePrintLn("Perform a JQL search to get the tickets for a Project, status, and application from Jira")
 
     // "/rest/api/2/search?jql=project%3D%22{{jiraProjectKey}}%22"
     // %20AND%20status!%3D%22Done%22
@@ -291,22 +224,17 @@ class JiraClient
    */
   private String getLookupCustomFieldsUrl(String serverUrl)
   {
-    if(verboseLogging){
-      logger.println("Get the list of custom fields from Jira")
-    }
+    verbosePrintLn("Get the list of custom fields from Jira")
 
     return "${serverUrl}/rest/api/2/field"
   }
 
   private String getLookupMetadataConfigurationForCreateIssueUrl(String serverUrl, String pProjectName, String pIssueTypeName)
   {
-    if(verboseLogging){
-      logger.println("Get the list of field metadata needed when creating an issue in Jira")
-    }
+    verbosePrintLn("Get the list of field metadata needed when creating an issue in Jira")
 
     // {{jiraUrl}}/rest/api/2/issue/createmeta?projectKeys=JIRAIQ&issuetypeNames=Task&expand=projects.issuetypes.fields
     return "${serverUrl}/rest/api/2/issue/createmeta?projectKeys=${pProjectName}&issuetypeNames=${pIssueTypeName}&expand=projects.issuetypes.fields"
-
   }
 
   /**
@@ -317,9 +245,7 @@ class JiraClient
    * @return
    */
   private String getCreateIssueRequestUrl(serverUrl) {
-    if(verboseLogging){
-      logger.println("Create a Jira Ticket")
-    }
+    verbosePrintLn("Create a Jira Ticket")
 
     //post: /rest/api/2/issue - [{"fields":{"project":{"key":"DP"},"summary":"Sonatype IQ Server SECURITY-HIGH Policy Violation","description":"\n\tDescription: Sonatype IQ Server SECURITY-HIGH Policy Violation\n\n\tTimestamp: 2019-01-26 01:38:59 -0500\n\n\tSource: SonatypeIQ:IQServerAppId:scanIQ\n\n\tSeverity: 1\n\n\tFingerprint:  57767fa9ecbe0b6271f20ea215e969ac7ed8f24ff7a67ee77dbf090e9e7f469b\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  CVE-2019-1234",
     // "priority":{"name":"Low"},"issuetype":{"name":"Bug"}},"labels":["Glue","triage.git"]}]
@@ -368,12 +294,12 @@ class JiraClient
     addCustomFieldToTicket(returnValue, iqOrgExternalIdCustomFieldId, iqOrgExternalId)
     addCustomFieldToTicket(returnValue, scanStageId, scanStage)
     addCustomFieldToTicket(returnValue, violationDateId, violationDate)
-    addCustomFieldToTicket(returnValue, lastScanDateId, lastScanDate)
+    addCustomFieldToTicket(returnValue, lastScanDateId, lastScanDate) //TODO: Update on each scan if the finding already exists
     addCustomFieldToTicket(returnValue, severityId, severityString)
     addCustomFieldToTicket(returnValue, cveCodeId, cveCode)
     addCustomFieldToTicket(returnValue, cvssId, cvss)
-    addCustomFieldToTicket(returnValue, scanTypeId, scanType) //todo: what if it is a drop down list? - looks like i need to pass an ID or Value
-    addCustomFieldToTicket(returnValue, toolNameId, toolName) //todo: it's a drop down list
+    addCustomFieldToTicket(returnValue, scanTypeId, [ value: scanType ]) //todo: see if i can make these dynamic based on the project metadata
+    addCustomFieldToTicket(returnValue, toolNameId, [ value: toolName ])
     addCustomFieldToTicket(returnValue, violationIdCustomFieldId, violationUniqueId)
 
     return returnValue

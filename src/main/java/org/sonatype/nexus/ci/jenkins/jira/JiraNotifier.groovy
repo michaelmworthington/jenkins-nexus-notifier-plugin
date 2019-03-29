@@ -168,12 +168,12 @@ class JiraNotifier
           createIndividualTicket(jiraClient, projectKey, issueTypeName, priorityName, it,
                                  iqAppExternalId, applicationCustomFieldId,
                                  iqOrgExternalId, organizationCustomFieldId,
-                                 "TODO: Scan Stage", scanStageCustomFieldId,
-                                 "TODO: Violation Date", violationDetectDateCustomFieldId,
-                                 "TODO: last scan date", lastScanDateCustomFieldId,
-                                 "TODO: severity", severityCustomFieldId,
-                                 "TODO: cve code", cveCodeCustomFieldId,
-                                 "TODO: cvss", cvssCustomFieldId,
+                                 "TODO: Scan Stage", scanStageCustomFieldId, //TODO
+                                 "TODO: Violation Date", violationDetectDateCustomFieldId, //TODO
+                                 "TODO: last scan date", lastScanDateCustomFieldId, //TODO
+                                 "TODO: severity", severityCustomFieldId, //TODO
+                                 "TODO: cve code", cveCodeCustomFieldId, //TODO
+                                 "TODO: cvss", cvssCustomFieldId, //TODO
                                  scanTypeCustomFieldValue, scanTypeCustomFieldId,
                                  toolNameCustomFieldValue, toolNameCustomFieldId,
                                  violationIdCustomFieldId)

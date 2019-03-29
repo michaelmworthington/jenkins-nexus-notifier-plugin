@@ -116,11 +116,11 @@ f.section(title: typedDescriptor.displayName) {
       }
     }
     f.section(title: _('Custom Field Options - Pass Through Fields')) { //todo: can i make this a dynamic key/value list
-      f.entry(title: _('Jira Custom Field for Scan Type - Field Name'), field: 'scanTypeCustomFieldName') {
+      f.entry(title: _('Jira Custom Field for Scan Type - Field Name'), field: 'scanTypeCustomFieldName') { //TODO: "Scan Type"
         f.textbox()
       }
 
-      f.entry(title: _('Jira Custom Field for Scan Type - Value'), field: 'scanTypeCustomFieldValue') {
+      f.entry(title: _('Jira Custom Field for Scan Type - Value'), field: 'scanTypeCustomFieldValue') { //TODO: "SCA"
         f.textbox()
       }
 
@@ -131,6 +131,14 @@ f.section(title: typedDescriptor.displayName) {
       f.entry(title: _('Jira Custom Field for Tool Name - Value'), field: 'toolNameCustomFieldValue') { //TODO: "Nexus IQ"
         f.textbox()
       }
+
+//      f.entry(title: _('Jira Custom Field for Finding Template - Field Name'), field: 'findingTemplateCustomFieldName') { //TODO: "Finding Template"
+//        f.textbox()
+//      }
+//
+//      f.entry(title: _('Jira Custom Field for Finding Template - Value'), field: 'findingTemplateCustomFieldValue') { //TODO: "NA" I think? - see 3/28
+//        f.textbox()
+//      }
     }
   }
 }

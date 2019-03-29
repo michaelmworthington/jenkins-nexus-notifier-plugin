@@ -118,6 +118,7 @@ class JiraClientTest
     String applicationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Application")
     String organizationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Organization")
     String violationIdCustomFieldId = client.lookupCustomFieldId(customFields, "Finding ID")
+    String scanTypeCustomFieldId = client.lookupCustomFieldId(customFields, "Scan Type")
 
     def resp = client.createIssue("JIRAIQ",
                                   "Bug",
@@ -135,10 +136,9 @@ class JiraClientTest
                                   null, null,
                                   null, null,
                                   null, null,
+                                  "CI", scanTypeCustomFieldId, //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
                                   null, null,
-                                  null, null,
-                                  "some-sha-value",
-                                  violationIdCustomFieldId)
+                                  "some-sha-value", violationIdCustomFieldId)
 
     expect:
     resp != null
@@ -149,6 +149,41 @@ class JiraClientTest
   def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+
+    //TODO: creating a subtask = https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
+
+    def resp = client.createIssue("JIRAIQ",
+                                  "Task",
+                                  "Low",
+                                  "UnitTest Task",
+                                  "Fun with Spock",
+                                  "SonatypeIQ:IQServerAppId:scanIQ",
+                                  "1",
+                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null, null,
+                                  null,null)
+
+    expect:
+    resp != null
+    resp.key != null
+  }
+
+  //@Ignore
+  def 'helper test to verify interaction with Jira Server - Edit Task'() {
+    setup:
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+
+    //TODO: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#editing-an-issue-examples
+    //TODO: create issue needs the issue key on the URL and it's a PUT instead of a POST
 
     def resp = client.createIssue("JIRAIQ",
                                   "Task",
