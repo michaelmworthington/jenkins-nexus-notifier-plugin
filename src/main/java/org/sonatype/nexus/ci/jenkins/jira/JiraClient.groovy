@@ -30,8 +30,6 @@ class JiraClient extends AbstractToolClient
                   iqAppExternalId,
                   iqOrgExternalId,
                   scanStage,
-                  violationDate,
-                  lastScanDate,
                   severityString,
                   cveCode,
                   cvss,
@@ -47,8 +45,6 @@ class JiraClient extends AbstractToolClient
                                          iqAppExternalId,
                                          iqOrgExternalId,
                                          scanStage,
-                                         violationDate,
-                                         lastScanDate,
                                          severityString,
                                          cveCode,
                                          cvss,
@@ -251,21 +247,27 @@ class JiraClient extends AbstractToolClient
     return "${serverUrl}/rest/api/2/issue"
   }
 
-  private static Map getCreateIssueRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil, description, detail, source, severity, fprint,
+  private static Map getCreateIssueRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil,
+                                               description,
+                                               detail,
+                                               source,
+                                               severity,
+                                               fprint,
                                                iqAppExternalId,
                                                iqOrgExternalId,
                                                scanStage,
-                                               violationDate,
-                                               lastScanDate,
                                                severityString,
                                                cveCode,
                                                cvss,
                                                violationUniqueId)
   {
-    String newdate = new Date().format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500
+    Date now = new Date()
+    String nowFormatted = now.format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500)
+
+
 
     String formatted_summary = "${description}"
-    String formatted_description = "\n\tDescription: ${description}\n\n\tTimestamp: ${newdate}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
+    String formatted_description = "\n\tDescription: ${description}\n\n\tFirst Found Timestamp: ${nowFormatted}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
 
     def returnValue = [
             fields : [
@@ -287,15 +289,18 @@ class JiraClient extends AbstractToolClient
       addCustomFieldToTicket(returnValue, "issuetype", [ name: jiraFieldMappingUtil.issueTypeName ])
     }
 
+    //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
+    //todo: see if i can make these dynamic based on the project metadata
+
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.applicationCustomFieldId, iqAppExternalId)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.organizationCustomFieldId, iqOrgExternalId)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanStageCustomFieldId, scanStage)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationDetectDateCustomFieldId, violationDate)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.lastScanDateCustomFieldId, lastScanDate) //TODO: Update on each scan if the finding already exists
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationDetectDateCustomFieldId, now.format("yyyy-MM-dd'T'HH:mm:ss.SSSXX"))
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.lastScanDateCustomFieldId, now.format("yyyy-MM-dd'T'HH:mm:ss.SSSXX"))
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.severityCustomFieldId, severityString)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cveCodeCustomFieldId, cveCode)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cvssCustomFieldId, cvss)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanTypeCustomFieldId, [ value: jiraFieldMappingUtil.scanTypeCustomFieldValue ]) //todo: see if i can make these dynamic based on the project metadata
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanTypeCustomFieldId, [ value: jiraFieldMappingUtil.scanTypeCustomFieldValue ])
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.toolNameCustomFieldId, [ value: jiraFieldMappingUtil.toolNameCustomFieldValue ])
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.findingTemplateCustomFieldId, [ value: jiraFieldMappingUtil.findingTemplateCustomFieldValue ])
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationIdCustomFieldId, violationUniqueId)

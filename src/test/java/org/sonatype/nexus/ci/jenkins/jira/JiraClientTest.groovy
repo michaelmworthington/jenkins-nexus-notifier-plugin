@@ -120,13 +120,20 @@ class JiraClientTest
     jiraFieldMappingUtil.applicationCustomFieldName = "IQ Application"
     jiraFieldMappingUtil.organizationCustomFieldName = "IQ Organization"
     jiraFieldMappingUtil.violationIdCustomFieldName = "Finding ID"
+    jiraFieldMappingUtil.violationDetectDateCustomFieldName = "Detect Date"
+    jiraFieldMappingUtil.lastScanDateCustomFieldName = "Last Scan Date"
     jiraFieldMappingUtil.scanTypeCustomFieldName = "Scan Type"
+    jiraFieldMappingUtil.toolNameCustomFieldName = "Tool Name"
     jiraFieldMappingUtil.findingTemplateCustomFieldName = "Finding Template"
 
     jiraFieldMappingUtil.projectKey = "JIRAIQ"
     jiraFieldMappingUtil.issueTypeName = "Bug"
+    jiraFieldMappingUtil.subTaskIssueTypeName = "Sub-task"
     jiraFieldMappingUtil.priorityName = "Low"
-    jiraFieldMappingUtil.scanTypeCustomFieldValue = "CI" //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
+
+    //Pass-Through Custom Field Values
+    jiraFieldMappingUtil.scanTypeCustomFieldValue = "CI"
+    jiraFieldMappingUtil.toolNameCustomFieldValue = "Nexus IQ"
     jiraFieldMappingUtil.findingTemplateCustomFieldValue = "NA"
 
     jiraFieldMappingUtil.mapCustomFieldNamesToIds()
@@ -139,8 +146,6 @@ class JiraClientTest
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
                                   "test app",
                                   "test org",
-                                  null,
-                                  null,
                                   null,
                                   null,
                                   null,
@@ -177,8 +182,6 @@ class JiraClientTest
                                   null,
                                   null,
                                   null,
-                                  null,
-                                  null,
                                   null)
 
     expect:
@@ -199,14 +202,14 @@ class JiraClientTest
     jiraFieldMappingUtil.issueTypeName = "Task"
     jiraFieldMappingUtil.priorityName = "Low"
 
+    //TODO: Update on each scan if the finding already exists
+
     def resp = client.createIssue(jiraFieldMappingUtil,
                                   "UnitTest Task",
                                   "Fun with Spock",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  null,
-                                  null,
                                   null,
                                   null,
                                   null,

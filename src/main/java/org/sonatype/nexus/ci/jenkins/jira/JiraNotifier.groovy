@@ -144,12 +144,12 @@ class JiraNotifier
 
         logger.println("Creating ${newFindings.size()} tickets for each policy violation")
         newFindings.each {
-          createIndividualTicket(jiraClient, jiraFieldMappingUtil, it,
+          createIndividualTicket(jiraClient,
+                                 jiraFieldMappingUtil,
+                                 it,
                                  iqAppExternalId,
                                  iqOrgExternalId,
                                  "TODO: Scan Stage", //TODO
-                                 "TODO: Violation Date", //TODO
-                                 "TODO: last scan date", //TODO
                                  "TODO: severity", //TODO
                                  "TODO: cve code", //TODO
                                  "TODO: cvss" ) //TODO
@@ -236,8 +236,6 @@ class JiraNotifier
                                       String iqAppExternalId,
                                       String iqOrgExternalId,
                                       String scanStage,
-                                      String violationDate,
-                                      String lastScanDate,
                                       String severityString,
                                       String cveCode,
                                       String cvss)
@@ -258,8 +256,6 @@ class JiraNotifier
                            iqAppExternalId,
                            iqOrgExternalId,
                            scanStage,
-                           violationDate,
-                           lastScanDate,
                            severityString,
                            cveCode,
                            cvss,
@@ -287,8 +283,6 @@ class JiraNotifier
                            source,
                            severity,
                            fprint,
-                           null,
-                           null,
                            null,
                            null,
                            null,
