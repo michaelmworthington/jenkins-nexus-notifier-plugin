@@ -14,6 +14,7 @@ package org.sonatype.nexus.ci.jenkins.jira
 
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 import org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult
+import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -114,31 +115,37 @@ class JiraClientTest
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
-    def customFields = client.lookupCustomFields()
-    String applicationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Application")
-    String organizationCustomFieldId = client.lookupCustomFieldId(customFields, "IQ Organization")
-    String violationIdCustomFieldId = client.lookupCustomFieldId(customFields, "Finding ID")
-    String scanTypeCustomFieldId = client.lookupCustomFieldId(customFields, "Scan Type")
 
-    def resp = client.createIssue("JIRAIQ",
-                                  "Bug",
-                                  "Low",
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
+    jiraFieldMappingUtil.applicationCustomFieldName = "IQ Application"
+    jiraFieldMappingUtil.organizationCustomFieldName = "IQ Organization"
+    jiraFieldMappingUtil.violationIdCustomFieldName = "Finding ID"
+    jiraFieldMappingUtil.scanTypeCustomFieldName = "Scan Type"
+    jiraFieldMappingUtil.findingTemplateCustomFieldName = "Finding Template"
+
+    jiraFieldMappingUtil.projectKey = "JIRAIQ"
+    jiraFieldMappingUtil.issueTypeName = "Bug"
+    jiraFieldMappingUtil.priorityName = "Low"
+    jiraFieldMappingUtil.scanTypeCustomFieldValue = "CI" //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
+    jiraFieldMappingUtil.findingTemplateCustomFieldValue = "NA"
+
+    jiraFieldMappingUtil.mapCustomFieldNamesToIds()
+
+    def resp = client.createIssue(jiraFieldMappingUtil,
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-1234",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "test app", applicationCustomFieldId,
-                                  "test org", organizationCustomFieldId,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  "CI", scanTypeCustomFieldId, //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
-                                  null, null,
-                                  "some-sha-value", violationIdCustomFieldId)
+                                  "test app",
+                                  "test org",
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  "some-sha-value")
 
     expect:
     resp != null
@@ -152,25 +159,27 @@ class JiraClientTest
 
     //TODO: creating a subtask = https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
 
-    def resp = client.createIssue("JIRAIQ",
-                                  "Task",
-                                  "Low",
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
+    jiraFieldMappingUtil.projectKey = "JIRAIQ"
+    jiraFieldMappingUtil.issueTypeName = "Task"
+    jiraFieldMappingUtil.priorityName = "Low"
+
+
+    def resp = client.createIssue(jiraFieldMappingUtil,
                                   "UnitTest Task",
                                   "Fun with Spock",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null,null)
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null)
 
     expect:
     resp != null
@@ -185,25 +194,26 @@ class JiraClientTest
     //TODO: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#editing-an-issue-examples
     //TODO: create issue needs the issue key on the URL and it's a PUT instead of a POST
 
-    def resp = client.createIssue("JIRAIQ",
-                                  "Task",
-                                  "Low",
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
+    jiraFieldMappingUtil.projectKey = "JIRAIQ"
+    jiraFieldMappingUtil.issueTypeName = "Task"
+    jiraFieldMappingUtil.priorityName = "Low"
+
+    def resp = client.createIssue(jiraFieldMappingUtil,
                                   "UnitTest Task",
                                   "Fun with Spock",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null, null,
-                                  null,null)
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  null)
 
     expect:
     resp != null

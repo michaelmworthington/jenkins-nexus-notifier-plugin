@@ -64,6 +64,8 @@ public class JiraNotification
   private String scanTypeCustomFieldValue;
   private String toolNameCustomFieldName;
   private String toolNameCustomFieldValue;
+  private String findingTemplateCustomFieldName;
+  private String findingTemplateCustomFieldValue;
 
   public boolean getSendJiraNotification() {
     return sendJiraNotification;
@@ -115,6 +117,8 @@ public class JiraNotification
   public String getScanTypeCustomFieldValue() { return scanTypeCustomFieldValue; }
   public String getToolNameCustomFieldName() { return toolNameCustomFieldName; }
   public String getToolNameCustomFieldValue() { return toolNameCustomFieldValue; }
+  public String getFindingTemplateCustomFieldName() { return findingTemplateCustomFieldName; }
+  public String getFindingTemplateCustomFieldValue() { return findingTemplateCustomFieldValue; }
 
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
@@ -143,7 +147,9 @@ public class JiraNotification
                           final String scanTypeCustomFieldName,
                           final String scanTypeCustomFieldValue,
                           final String toolNameCustomFieldName,
-                          final String toolNameCustomFieldValue)
+                          final String toolNameCustomFieldValue,
+                          final String findingTemplateCustomFieldName,
+                          final String findingTemplateCustomFieldValue)
   {
     this.sendJiraNotification = sendJiraNotification;
     this.verboseLogging = verboseLogging;
@@ -172,6 +178,8 @@ public class JiraNotification
     this.scanTypeCustomFieldValue = scanTypeCustomFieldValue;
     this.toolNameCustomFieldName = toolNameCustomFieldName;
     this.toolNameCustomFieldValue = toolNameCustomFieldValue;
+    this.findingTemplateCustomFieldName = findingTemplateCustomFieldName;
+    this.findingTemplateCustomFieldValue = findingTemplateCustomFieldValue;
   }
 
 //  @Override

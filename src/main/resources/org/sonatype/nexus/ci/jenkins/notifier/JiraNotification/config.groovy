@@ -132,13 +132,13 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
 
-//      f.entry(title: _('Jira Custom Field for Finding Template - Field Name'), field: 'findingTemplateCustomFieldName') { //TODO: "Finding Template"
-//        f.textbox()
-//      }
-//
-//      f.entry(title: _('Jira Custom Field for Finding Template - Value'), field: 'findingTemplateCustomFieldValue') { //TODO: "NA" I think? - see 3/28
-//        f.textbox()
-//      }
+      f.entry(title: _('Jira Custom Field for Finding Template - Field Name'), field: 'findingTemplateCustomFieldName') { //TODO: "Finding Template"
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Finding Template - Value'), field: 'findingTemplateCustomFieldValue') { //TODO: "NA"
+        f.textbox()
+      }
     }
   }
 }
