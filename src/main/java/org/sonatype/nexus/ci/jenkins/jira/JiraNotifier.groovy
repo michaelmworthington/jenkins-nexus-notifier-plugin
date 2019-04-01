@@ -63,13 +63,12 @@ class JiraNotifier
       String iqReportInternalid = linkPieces[linkPieces.length-1]
       String iqAppExternalId = linkPieces[linkPieces.length-3]
 
-      //TODO: look up the org
+      //TODO: look up the org from iq server
       String iqOrgExternalId = "org"
 
-      //Just for debugging right now.
-      // todo: Maybe i'll use the response for some validation
+      // todo: use the response for some validation and automatic formatting of the custom fields
       jiraClient.lookupMetadataConfigurationForCreateIssue(jiraFieldMappingUtil.projectKey, jiraFieldMappingUtil.issueTypeName)
-      if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
+      if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)  //TODO: Aggregate by component - epics & stories
       {
         jiraClient.lookupMetadataConfigurationForCreateIssue(jiraFieldMappingUtil.projectKey, jiraFieldMappingUtil.subTaskIssueTypeName)
       }
@@ -78,6 +77,11 @@ class JiraNotifier
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
       {
+        if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
+        {
+          throw new AbortException("Aggregating tickets by component not yet implemented") //TODO: Aggregate by component - epics & stories
+        }
+
         // Data from IQ Server ("potential") and JIRA ("current") mapped by Fingerprint
         Map<String, PolicyViolation> potentialFindingsMap = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> currentFindingsMap = new HashMap<String, PolicyViolation>()

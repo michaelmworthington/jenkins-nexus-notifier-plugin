@@ -111,7 +111,7 @@ class JiraClientTest
     resp.projects[0].issuetypes[0].name == "Task"
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
@@ -162,27 +162,57 @@ class JiraClientTest
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
 
-    //TODO: creating a subtask = https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
-
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
+    jiraFieldMappingUtil.applicationCustomFieldName = "IQ Application"
+    jiraFieldMappingUtil.organizationCustomFieldName = "IQ Organization"
+    jiraFieldMappingUtil.violationIdCustomFieldName = "Finding ID"
+    jiraFieldMappingUtil.violationDetectDateCustomFieldName = "Detect Date"
+    jiraFieldMappingUtil.lastScanDateCustomFieldName = "Last Scan Date"
+    jiraFieldMappingUtil.scanTypeCustomFieldName = "Scan Type"
+    jiraFieldMappingUtil.toolNameCustomFieldName = "Tool Name"
+    jiraFieldMappingUtil.findingTemplateCustomFieldName = "Finding Template"
+
     jiraFieldMappingUtil.projectKey = "JIRAIQ"
-    jiraFieldMappingUtil.issueTypeName = "Task"
+    jiraFieldMappingUtil.issueTypeName = "Bug"
+    jiraFieldMappingUtil.subTaskIssueTypeName = "Sub-task"
     jiraFieldMappingUtil.priorityName = "Low"
 
+    //Pass-Through Custom Field Values
+    jiraFieldMappingUtil.scanTypeCustomFieldValue = "CI"
+    jiraFieldMappingUtil.toolNameCustomFieldValue = "Nexus IQ"
+    jiraFieldMappingUtil.findingTemplateCustomFieldValue = "NA"
+
+    jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
     def resp = client.createIssue(jiraFieldMappingUtil,
-                                  "UnitTest Task",
-                                  "Fun with Spock",
+                                  "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                                  "CVE-2019-1234",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                  "aaaaaaa-testidegrandfathering",
+                                  "test org",
                                   null,
                                   null,
                                   null,
                                   null,
+                                  "some-sha-value")
+
+
+    //TODO: creating a subtask = https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
+    def resp2 = client.createIssue(jiraFieldMappingUtil,
+                                  "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                                  "CVE-2019-1234",
+                                  "SonatypeIQ:IQServerAppId:scanIQ",
+                                  "1",
+                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                  "aaaaaaa-testidegrandfathering",
+                                  "test org",
                                   null,
                                   null,
-                                  null)
+                                  null,
+                                  null,
+                                  "some-sha-value")
 
     expect:
     resp != null

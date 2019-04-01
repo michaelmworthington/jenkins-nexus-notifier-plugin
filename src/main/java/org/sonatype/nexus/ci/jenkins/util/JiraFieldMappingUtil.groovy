@@ -87,8 +87,8 @@ class JiraFieldMappingUtil
     cveCodeCustomFieldName = iJiraNotification.cveCodeCustomFieldName
     cvssCustomFieldName = iJiraNotification.cvssCustomFieldName
     policyFilterPrefix = iJiraNotification.policyFilterPrefix
-    shouldAggregateTicketsByComponent = iJiraNotification.shouldAggregateTicketsByComponent //TODO: Aggregate by component - epics & stories
-    shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets //TODO: Aggregate by component - epics & stories
+    shouldAggregateTicketsByComponent = iJiraNotification.shouldAggregateTicketsByComponent
+    shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets
     scanTypeCustomFieldName = iJiraNotification.scanTypeCustomFieldName
     scanTypeCustomFieldValue = iJiraNotification.scanTypeCustomFieldValue
     toolNameCustomFieldName = iJiraNotification.toolNameCustomFieldName
@@ -99,7 +99,7 @@ class JiraFieldMappingUtil
 
   void mapCustomFieldNamesToIds()
   {
-    def customFields = jiraClient.lookupCustomFields() //todo: streamline this (i'm logging here as well) - just pass the name around and do the lookups inside of jira client when creating the ticket??
+    List customFields = (List) jiraClient.lookupCustomFields()
 
     applicationCustomFieldId = lookupAndValidateCustomField(customFields, applicationCustomFieldName, "App Name")
     organizationCustomFieldId = lookupAndValidateCustomField(customFields, organizationCustomFieldName, "Org Name")
@@ -115,7 +115,7 @@ class JiraFieldMappingUtil
     findingTemplateCustomFieldId = lookupAndValidateCustomField(customFields, findingTemplateCustomFieldName,"Finding Template")
   }
 
-  private String lookupAndValidateCustomField(Object pCustomFields, String pFieldName, String pFieldDescription)
+  private String lookupAndValidateCustomField(List<Map<String, Object>> pCustomFields, String pFieldName, String pFieldDescription)
   {
     String returnValue = null
     if(pFieldName)
@@ -137,7 +137,7 @@ class JiraFieldMappingUtil
     return returnValue
   }
 
-  private String lookupCustomFieldId(Object customFields, String fieldName)
+  private static String lookupCustomFieldId(List<Map<String, Object>> customFields, String fieldName)
   {
     String returnValue = null
     customFields.each {
