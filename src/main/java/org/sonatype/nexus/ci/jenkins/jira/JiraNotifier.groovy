@@ -113,7 +113,7 @@ class JiraNotifier
         def currentFindings = jiraClient.lookupJiraTickets(jiraFieldMappingUtil.projectKey,
                                                            jiraFieldMappingUtil.transitionStatus,
                                                            jiraFieldMappingUtil.applicationCustomFieldName,
-                                                           iqAppExternalId) //todo: update current findings
+                                                           iqAppExternalId)
 
         currentFindings.issues.each {
           PolicyViolation pv = PolicyViolation.buildFromJira(it, jiraFieldMappingUtil.violationIdCustomFieldId)
@@ -156,7 +156,16 @@ class JiraNotifier
         }
 
         /***************************************
-          5. Close Tickets that have no finding (i.e. they have been fixed
+         5. Update Scan Time on repeat findings
+         ***************************************/
+
+        logger.println("Updating ${repeatFindings.size()} repeat finding tickets with the new scan date")
+        repeatFindings.each{
+          updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it)
+        }
+
+        /***************************************
+          6. Close Tickets that have no finding (i.e. they have been fixed)
          ***************************************/
 
         if (jiraFieldMappingUtil.shouldTransitionJiraTickets) {
@@ -167,7 +176,7 @@ class JiraNotifier
         }
 
         /***************************************
-           6. Waive findings where the ticket has been closed
+           7. Waive findings where the ticket has been closed
          ***************************************/
 
         //TODO: What tickets in Jira have been closed where we can apply a waiver in IQ
@@ -200,7 +209,7 @@ class JiraNotifier
       if (pCurrentFindings.containsKey(it.key))
       {
         logger.println("Jira ticket: ${pCurrentFindings.get(it.key).ticketExternalId} already exists for finding: ${it.value.fingerprintPrettyPrint}")
-        repeatFindings.add(it.value)
+        repeatFindings.add(pCurrentFindings.get(it.key))
       } else
       {
         logger.println("Jira ticket: not found for for finding: ${it.value.fingerprintPrettyPrint}")
@@ -221,6 +230,13 @@ class JiraNotifier
         oldFindings.add(it.value)
       }
     }
+  }
+
+  private void updateTicketScanDate(JiraClient jiraClient, JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation)
+  {
+    logger.println("Updating Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} with new scan date in field: ${jiraFieldMappingUtil.lastScanDateCustomFieldName} (${jiraFieldMappingUtil.lastScanDateCustomFieldId})")
+
+    jiraClient.updateIssueScanDate(jiraFieldMappingUtil, pPolicyViolation.ticketInternalId)
   }
 
   private void transitionTicket(JiraClient jiraClient, String transitionStatus, PolicyViolation pPolicyViolation)

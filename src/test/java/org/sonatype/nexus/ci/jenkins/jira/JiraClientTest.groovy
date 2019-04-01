@@ -97,7 +97,7 @@ class JiraClientTest
   }
 
   @Ignore
-  def 'helper test to verify interaction with Jira Server - Get Project Ticket Fields'() {
+  def 'helper test to verify interaction with Jira Server - Get Project Ticket Fields Metadata'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
     def resp = client.lookupMetadataConfigurationForCreateIssue("JIRAIQ", "Task")
@@ -144,7 +144,7 @@ class JiraClientTest
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "test app",
+                                  "aaaaaaa-testidegrandfathering",
                                   "test org",
                                   null,
                                   null,
@@ -189,38 +189,22 @@ class JiraClientTest
     resp.key != null
   }
 
-  //@Ignore
-  def 'helper test to verify interaction with Jira Server - Edit Task'() {
+  @Ignore
+  def 'helper test to verify interaction with Jira Server - Edit Task - Update Last Scan Time'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
 
-    //TODO: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#editing-an-issue-examples
-    //TODO: create issue needs the issue key on the URL and it's a PUT instead of a POST
-
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
-    jiraFieldMappingUtil.projectKey = "JIRAIQ"
-    jiraFieldMappingUtil.issueTypeName = "Task"
-    jiraFieldMappingUtil.priorityName = "Low"
+    jiraFieldMappingUtil.lastScanDateCustomFieldName = "Last Scan Date"
 
-    //TODO: Update on each scan if the finding already exists
+    jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
-    def resp = client.createIssue(jiraFieldMappingUtil,
-                                  "UnitTest Task",
-                                  "Fun with Spock",
-                                  "SonatypeIQ:IQServerAppId:scanIQ",
-                                  "1",
-                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  null,
-                                  null,
-                                  null,
-                                  null,
-                                  null,
-                                  null,
-                                  null)
+    String ticketNumber = "JIRAIQ-156"
+
+    def resp = client.updateIssueScanDate(jiraFieldMappingUtil, ticketNumber)
 
     expect:
-    resp != null
-    resp.key != null
+    resp == null
   }
 
   @Ignore

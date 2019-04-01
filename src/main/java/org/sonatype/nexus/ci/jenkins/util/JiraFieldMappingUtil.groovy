@@ -120,7 +120,7 @@ class JiraFieldMappingUtil
     String returnValue = null
     if(pFieldName)
     {
-      returnValue = jiraClient.lookupCustomFieldId(pCustomFields, pFieldName)
+      returnValue = lookupCustomFieldId(pCustomFields, pFieldName)
       if (returnValue)
       {
         logger.println("Custom Field mapping for field description: ${pFieldDescription} created mapping ${pFieldName} -> ${returnValue}")
@@ -137,5 +137,17 @@ class JiraFieldMappingUtil
     return returnValue
   }
 
+  private String lookupCustomFieldId(Object customFields, String fieldName)
+  {
+    String returnValue = null
+    customFields.each {
+      if(it.name == fieldName)
+      {
+        returnValue = it.id
+      }
+    }
+
+    returnValue
+  }
 
 }

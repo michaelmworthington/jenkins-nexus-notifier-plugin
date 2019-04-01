@@ -54,6 +54,15 @@ class JiraClient extends AbstractToolClient
     http.post(url, body, headers)
   }
 
+  def updateIssueScanDate(JiraFieldMappingUtil jiraFieldMappingUtil, String issueKey)
+  {
+    def url = getUpdateIssueRequestUrl(serverUrl, issueKey)
+    Map body = getUpdateIssueScanDateRequestBody(jiraFieldMappingUtil)
+    def headers = getRequestHeaders(username, password)
+
+    http.put(url, body, headers)
+  }
+
   def lookupJiraTickets(String projectKey,
                         String transitionTargetStatus,
                         String applicationCustomFieldName,
@@ -79,19 +88,6 @@ class JiraClient extends AbstractToolClient
     def headers = getRequestHeaders(username, password)
 
     http.get(url, headers)
-  }
-
-  static String lookupCustomFieldId(Object customFields, String fieldName)
-  {
-    String returnValue = null
-    customFields.each {
-      if(it.name == fieldName)
-      {
-        returnValue = it.id
-      }
-    }
-
-    returnValue
   }
 
   def closeTicket(String ticketInternalId, String pTransitionName)
@@ -247,6 +243,19 @@ class JiraClient extends AbstractToolClient
     return "${serverUrl}/rest/api/2/issue"
   }
 
+  /**
+   * https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#editing-an-issue-examples
+   *
+   * @param serverUrl
+   * @return
+   */
+  private String getUpdateIssueRequestUrl(String serverUrl, String issueKey)
+  {
+    verbosePrintLn("Update a Jira Ticket")
+
+    return "${serverUrl}/rest/api/2/issue/${issueKey}"
+  }
+
   private static Map getCreateIssueRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil,
                                                description,
                                                detail,
@@ -263,8 +272,6 @@ class JiraClient extends AbstractToolClient
   {
     Date now = new Date()
     String nowFormatted = now.format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500)
-
-
 
     String formatted_summary = "${description}"
     String formatted_description = "\n\tDescription: ${description}\n\n\tFirst Found Timestamp: ${nowFormatted}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
@@ -308,7 +315,21 @@ class JiraClient extends AbstractToolClient
     return returnValue
   }
 
-  def static addCustomFieldToTicket(Map ticketFieldsArray, String customFieldId, customFieldValue)
+  private static Map getUpdateIssueScanDateRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil)
+  {
+    String formattedFieldId = "${jiraFieldMappingUtil.lastScanDateCustomFieldId}"
+    String formattedDate = new Date().format("yyyy-MM-dd'T'HH:mm:ss.SSSXX")
+
+    Map<String, String> scanDate = new HashMap<String, String>()
+    scanDate.put(formattedFieldId, formattedDate)
+
+    Map<String, Map> fields = new HashMap<String, Map>()
+    fields.put("fields", scanDate)
+
+    return fields
+  }
+
+  private static addCustomFieldToTicket(Map ticketFieldsArray, String customFieldId, customFieldValue)
   {
     if (customFieldId && customFieldValue)
     {
