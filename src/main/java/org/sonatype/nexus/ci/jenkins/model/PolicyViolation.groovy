@@ -83,7 +83,7 @@ class PolicyViolation
         String fingerprintPrettyPrint = "${componentName} - ${it.policyName}"
         String fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}"
         String cveCode = ""
-        double cvssScore = 0
+        Double cvssScore = 0
         String severity = ""
 
         //Add in CVE - multiple SECURITY-HIGH violations
@@ -97,9 +97,10 @@ class PolicyViolation
           fingerprintPrettyPrint = "${componentName} - ${it.policyName} - ${conditionReasonText}"
           fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}-${conditionReasonText}"
 
-          //TODO: Parse the CVSS Reason
-          cvssScore = 6.5
-          cveCode = "CVE-2019-1234"
+          //Parse the CVSS Reason for CVE Code and CVSS Score
+          String[] parts = conditionReasonText.split(' ')
+          cvssScore = Double.parseDouble(parts[6][0..-2])
+          cveCode = parts[3]
           severity = parseSecuritySeverity(it.policyName)
         }
         else if (licenseCondition)

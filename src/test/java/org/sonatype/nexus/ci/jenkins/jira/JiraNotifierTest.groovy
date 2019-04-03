@@ -68,13 +68,13 @@ class JiraNotifierTest
                                                                   "Done",
                                                                   "IQ Application",
                                                                   "IQ Organization",
-                                                                  null,
+                                                                  "Scan Stage",
                                                                   "Finding ID",
                                                                   "Detect Date",
                                                                   "Last Scan Date",
-                                                                  null,
-                                                                  null,
-                                                                  null,
+                                                                  "Severity",
+                                                                  "CVE Code",
+                                                                  "CVSS",
                                                                   "License",
                                                                   false,
                                                                   false,
@@ -90,38 +90,11 @@ class JiraNotifierTest
   }
 
   def 'send requires projectKey'() {
+    setup:
+      jiraNotificationCreateParentTicketTest.projectKey = emptyOptions
+
     when:
-    jiraNotifier.send(true,
-                      new JiraNotification(true,
-                                           false,
-                                           emptyOptions,
-                                           null,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null,
-                                           null),
-                      null)
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest,null)
 
     then:
       IllegalArgumentException ex = thrown()
@@ -133,6 +106,8 @@ class JiraNotifierTest
 
   def 'creates Jira client with job credentials override'() {
     setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+
       GroovyMock(JiraClientFactory.class, global: true)
       def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
@@ -141,46 +116,25 @@ class JiraNotifierTest
       def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
+      jiraNotificationCreateParentTicketTest.projectKey = 'projectKey'
+      jiraNotificationCreateParentTicketTest.jobJiraCredentialsId = "overrideId"
+      jiraNotificationCreateParentTicketTest.jobIQCredentialsId = "overrideId"
+      jiraNotificationCreateParentTicketTest.shouldCreateIndividualTickets = false
+
     when:
-      jiraNotifier.send(true,
-                        new JiraNotification(true,
-                                             false,
-                                             'projectKey',
-                                             null,
-                                             null,
-                                             null,
-                                             false,
-                                             false,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             false,
-                                             false,
-                                             "overrideId",
-                                             "overrideId",
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null),
-                        policyEvaluationHealthAction)
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     then:
       1 * IQClientFactory.getIQClient('overrideId', *_ ) >> iqClient
       1 * JiraClientFactory.getJiraClient('overrideId', *_) >> jiraClient
+      1 * jiraClient.lookupCustomFields() >> customFields
+
   }
 
   def 'send expands notification arguments'() {
     setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+
       GroovyMock(JiraClientFactory.class, global: true)
       def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
@@ -189,41 +143,15 @@ class JiraNotifierTest
       def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
+      jiraNotificationCreateParentTicketTest.projectKey = '${projectKey}'
+      jiraNotificationCreateParentTicketTest.shouldCreateIndividualTickets = false
+
     when:
       mockRun.getEnvironment(_) >> ['projectKey': 'project']
-      jiraNotifier.send(true,
-                        new JiraNotification(true,
-                                             false,
-                                             '${projectKey}',
-                                             null,
-                                             null,
-                                             null,
-                                             false,
-                                             false,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             false,
-                                             false,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null,
-                                             null),
-                        policyEvaluationHealthAction)
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     then:
+      1 * jiraClient.lookupCustomFields() >> customFields
       1 * jiraClient.createIssue(*_) >> { arguments ->
         def jiraFieldMappingUtil = arguments[0] as JiraFieldMappingUtil
         assert jiraFieldMappingUtil.projectKey == "project"
@@ -269,6 +197,7 @@ class JiraNotifierTest
       def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security-High"
 
     when:
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
@@ -653,7 +582,7 @@ class JiraNotifierTest
       def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
       def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
 
-      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security'
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
