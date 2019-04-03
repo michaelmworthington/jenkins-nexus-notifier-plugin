@@ -12,8 +12,10 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
+import hudson.model.Run
+import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
-import org.sonatype.nexus.ci.jenkins.bitbucket.PolicyEvaluationResult
+import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -27,10 +29,51 @@ class JiraClientTest
   def http
   JiraClient client
 
+  //def mockLogger = Mock(PrintStream)
+  def mockLogger = System.out
+  def mockListener = Mock(TaskListener)
+  def mockRun = Mock(Run)
+
+  JiraNotification jiraNotificationCreateParentTicketTest
+
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
     client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
     client.http = http
+
+    mockListener.getLogger() >> mockLogger
+    mockRun.getEnvironment(_) >> [:]
+
+    jiraNotificationCreateParentTicketTest = new JiraNotification(true,
+                                                                  true,
+                                                                  'JIRAIQ',
+                                                                  "Bug",
+                                                                  "Sub-task",
+                                                                  "Low",
+                                                                  false,
+                                                                  true,
+                                                                  "Done",
+                                                                  "IQ Application",
+                                                                  "IQ Organization",
+                                                                  null,
+                                                                  "Finding ID",
+                                                                  "Detect Date",
+                                                                  "Last Scan Date",
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  "Security-High",
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  "Scan Type",
+                                                                  "SCA",
+                                                                  "Tool Name",
+                                                                  "Nexus IQ",
+                                                                  "Finding Template",
+                                                                  "NA")
+
   }
 
   def 'lookupJiraTickets has correct url - with all params'() {
@@ -72,8 +115,14 @@ class JiraClientTest
     url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22"
   }
 
+  /*
+  ****************************************************************************************************************************************************
+  *                                                     Integration Tests                                                                            *
+  ****************************************************************************************************************************************************
+   */
+
   @Ignore
-  def 'helper test to verify interaction with Jira Server - Get All Tickets'() {
+  def 'helper test to verify interaction with Jira Server - Get Not-Done Tickets for Project and App'() {
     setup:
       def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
       def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "aaaaaaa-testidegrandfathering")
@@ -116,26 +165,10 @@ class JiraClientTest
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
 
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
-    jiraFieldMappingUtil.applicationCustomFieldName = "IQ Application"
-    jiraFieldMappingUtil.organizationCustomFieldName = "IQ Organization"
-    jiraFieldMappingUtil.violationIdCustomFieldName = "Finding ID"
-    jiraFieldMappingUtil.violationDetectDateCustomFieldName = "Detect Date"
-    jiraFieldMappingUtil.lastScanDateCustomFieldName = "Last Scan Date"
-    jiraFieldMappingUtil.scanTypeCustomFieldName = "Scan Type"
-    jiraFieldMappingUtil.toolNameCustomFieldName = "Tool Name"
-    jiraFieldMappingUtil.findingTemplateCustomFieldName = "Finding Template"
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
-    jiraFieldMappingUtil.projectKey = "JIRAIQ"
-    jiraFieldMappingUtil.issueTypeName = "Bug"
-    jiraFieldMappingUtil.subTaskIssueTypeName = "Sub-task"
-    jiraFieldMappingUtil.priorityName = "Low"
-
-    //Pass-Through Custom Field Values
-    jiraFieldMappingUtil.scanTypeCustomFieldValue = "CI"
-    jiraFieldMappingUtil.toolNameCustomFieldValue = "Nexus IQ"
-    jiraFieldMappingUtil.findingTemplateCustomFieldValue = "NA"
-
+    jiraFieldMappingUtil.expandEnvVars()
+    jiraFieldMappingUtil.assignFieldsFromConfig()
     jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
     def resp = client.createIssue(jiraFieldMappingUtil,
@@ -157,66 +190,51 @@ class JiraClientTest
     resp.key != null
   }
 
-  //@Ignore
+  @Ignore
   def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
 
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
-    jiraFieldMappingUtil.applicationCustomFieldName = "IQ Application"
-    jiraFieldMappingUtil.organizationCustomFieldName = "IQ Organization"
-    jiraFieldMappingUtil.violationIdCustomFieldName = "Finding ID"
-    jiraFieldMappingUtil.violationDetectDateCustomFieldName = "Detect Date"
-    jiraFieldMappingUtil.lastScanDateCustomFieldName = "Last Scan Date"
-    jiraFieldMappingUtil.scanTypeCustomFieldName = "Scan Type"
-    jiraFieldMappingUtil.toolNameCustomFieldName = "Tool Name"
-    jiraFieldMappingUtil.findingTemplateCustomFieldName = "Finding Template"
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
-    jiraFieldMappingUtil.projectKey = "JIRAIQ"
-    jiraFieldMappingUtil.issueTypeName = "Bug"
-    jiraFieldMappingUtil.subTaskIssueTypeName = "Sub-task"
-    jiraFieldMappingUtil.priorityName = "Low"
-
-    //Pass-Through Custom Field Values
-    jiraFieldMappingUtil.scanTypeCustomFieldValue = "CI"
-    jiraFieldMappingUtil.toolNameCustomFieldValue = "Nexus IQ"
-    jiraFieldMappingUtil.findingTemplateCustomFieldValue = "NA"
-
+    jiraFieldMappingUtil.expandEnvVars()
+    jiraFieldMappingUtil.assignFieldsFromConfig()
     jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
     def resp = client.createIssue(jiraFieldMappingUtil,
-                                  "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                  "CVE-2019-1234",
+                                  "Component ABC has Policy Violations",
+                                  "Policy Violations are bad",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
-                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                  "SONATYPEIQ-APPID-COMPONENTID",
                                   "aaaaaaa-testidegrandfathering",
                                   "test org",
                                   null,
                                   null,
                                   null,
                                   null,
-                                  "some-sha-value")
+                                  "some-parent-sha-value")
 
-
-    //TODO: creating a subtask = https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
-    def resp2 = client.createIssue(jiraFieldMappingUtil,
-                                  "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                  "CVE-2019-1234",
-                                  "SonatypeIQ:IQServerAppId:scanIQ",
-                                  "1",
-                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "aaaaaaa-testidegrandfathering",
-                                  "test org",
-                                  null,
-                                  null,
-                                  null,
-                                  null,
-                                  "some-sha-value")
+    def resp2 = client.createSubTask(jiraFieldMappingUtil,
+                                     resp.key,
+                                    "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                                    "CVE-2019-1234",
+                                    "SonatypeIQ:IQServerAppId:scanIQ",
+                                    "1",
+                                    "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                    "aaaaaaa-testidegrandfathering",
+                                    "test org",
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    "some-child-sha-value")
 
     expect:
     resp != null
     resp.key != null
+    resp2 != null
+    resp2.key != null
   }
 
   @Ignore

@@ -1,0 +1,1768 @@
+{
+  "expand": "schema,names",
+  "issues": [
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:52.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002of:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@242c64bb[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4a2ef6f8[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@33a8f51c[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@e0c4ca7[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5c2e51d7[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@1a7aae33[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6e8ea875[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@20bb877[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2c05e108[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@6341d98d[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@78971890[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@2780dff5[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "894b6a078b3ac8da3cbed52f2fdc5b48f4e79cb2f6af7e9562ab92a37daa5a7e",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability CVE-2015-8854 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability CVE-2015-8854 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": "2019-04-01T16:52:10.101+0000",
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:31.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-181/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-181/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11526",
+      "key": "JIRAIQ-181",
+      "self": "http://localhost:8080/rest/api/2/issue/11526"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:52.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002o7:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@19a40c26[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4295d751[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@495ef9d3[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@251d80f6[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7638b748[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@168c9bb4[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@28a278d7[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@61715705[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@52c03e94[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@20634e43[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@1b3cee58[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@709e5b45[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "79ac1023e54f05ee4e9f1463634b14d5d80f19ef9e4532ddc6c47876d3450a85",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0367 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:31.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-180/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-180/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11525",
+      "key": "JIRAIQ-180",
+      "self": "http://localhost:8080/rest/api/2/issue/11525"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T16:51:36.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002on:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@4e78f908[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4f8a7f26[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@671597c6[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@7bfaa74d[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@21c65e6f[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@2b7d68f6[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@601d61f8[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@4ef37279[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5d5578ee[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@1daf916a[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@16b63186[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@4383f993[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "test org",
+        "customfield_10300": "some-sha-value",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-01T16:51:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server SECURITY-HIGH Policy Violation\n\n\tFirst Found Timestamp: 2019-04-01 12:51:35 -0400\n\n\tSource: SonatypeIQ:IQServerAppId:scanIQ\n\n\tPolicy Threat Level: 1\n\n\tFingerprint:  SONATYPEIQ-APPID-COMPONENTID-SVCODE\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  CVE-2019-1234",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": "2019-04-02T02:55:32.449+0000",
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-01T16:51:36.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-182/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-182/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11600",
+      "key": "JIRAIQ-182",
+      "self": "http://localhost:8080/rest/api/2/issue/11600"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:50.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002mf:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@38a0e20a[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@367a2b47[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@9097257[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@6ece4022[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@462b58aa[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@4319e9de[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@1c0b020[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@1d932f6a[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@161da7a[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@dba8491[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@9ff74b6[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@d13e29c[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "95bbcb7c4706ffb481beea94c39ea8ec6bbc13e7cb210badfd8ff854da0c7f8d",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0367 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": "2019-04-01T14:54:05.675+0000",
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:31.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-172/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-172/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11517",
+      "key": "JIRAIQ-172",
+      "self": "http://localhost:8080/rest/api/2/issue/11517"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:51.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002nj:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@642315dc[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@a0d0d90[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@199fee18[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@7b9c0136[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5fd0f9f0[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@4e7b22ec[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2872fa15[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@337cdb9c[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6b3bab7a[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@7c4098b3[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@435d777c[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@16a8e4b0[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "9c4026d48ddf77b7f3b4d83479aa43fca7a8280c9fcabd81d94d5e9b35ed87a5",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0008 with severity 7.2.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:32.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-177/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-177/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11522",
+      "key": "JIRAIQ-177",
+      "self": "http://localhost:8080/rest/api/2/issue/11522"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:50.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002mv:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@59eec109[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3e277db[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7a2819d6[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@6a64e5e7[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@60e5748f[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@3e3dd2d5[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4e19a6d[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@49e70ccb[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@26d4874[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@52168996[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5a2c434b[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@2bdc9d91[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "276548a4fee931b436e5cbcff6da2de2dbee3ac88ffe4a79065685c8c0366279",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2018-0076 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:31.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-174/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-174/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11519",
+      "key": "JIRAIQ-174",
+      "self": "http://localhost:8080/rest/api/2/issue/11519"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:50.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002mn:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@41166c24[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@1c500630[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@49a8126d[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@55d5ecee[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3452bedc[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@66de4898[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6f6c0554[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@15a436cb[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3421defd[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@202fda69[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2fe63d9d[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@1b4054c4[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "0a58125da6c95121d942ca64f1490e3625f994cfa8c29001d9494d00b8f1acdc",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0636 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:32.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-173/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-173/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11518",
+      "key": "JIRAIQ-173",
+      "self": "http://localhost:8080/rest/api/2/issue/11518"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:52.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002nz:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@62f6dd3c[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@12124b52[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6893dc26[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@68db52bd[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2d1b6651[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@56757fc7[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2071ebc3[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@120d1bca[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6452de34[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@19241e3e[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@36a4d12a[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@4c0d4f7f[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "7cc9f670e176ea63fe8a83ef7fa7bf9d28c70aea88078ff370b9f109fd958e01",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0636 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:32.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-179/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-179/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11524",
+      "key": "JIRAIQ-179",
+      "self": "http://localhost:8080/rest/api/2/issue/11524"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:51.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002n3:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@57026cb3[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@25fafb4c[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@73d5489b[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@187fd36[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4b1d3033[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@4a037b3f[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@134b7374[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@2d1b4266[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@f25635e[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@5eae3b06[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@16b63374[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@61c95bb6[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "0db0625a439dc0a405fcce636e4a7cd808987d2375a948aa535c2fca1bdb4043",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2018-0076 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": "2019-04-02T02:54:49.955+0000",
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:32.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-175/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-175/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11520",
+      "key": "JIRAIQ-175",
+      "self": "http://localhost:8080/rest/api/2/issue/11520"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:51.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002nr:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@1a46dc45[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3e79dc17[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@dfa2f1e[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@7d13d3d2[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7a8e74f8[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@481236db[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@144c6218[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@7722be00[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7e022da8[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@277f685d[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@50d48208[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@3264e4ac[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "2064bc5d19be977a6dda5470a0953856c171530c3e4d4e279b231441f26a64ba",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0008 with severity 7.2.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:32.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-178/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-178/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11523",
+      "key": "JIRAIQ-178",
+      "self": "http://localhost:8080/rest/api/2/issue/11523"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "aggregatetimeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "aggregatetimespent": null,
+        "assignee": null,
+        "components": [
+
+        ],
+        "created": "2019-04-01T06:36:51.000+0000",
+        "creator": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "customfield_10000": null,
+        "customfield_10001": null,
+        "customfield_10005": "0|i002nb:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@68a625a8[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@37d3d2f6[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7aa68548[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@534bac88[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3013fe00[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@3018445e[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7eda1bd0[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@707bc76f[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5fb7d49e[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@2dff5182[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3d5cb76[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@2d3b34dc[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10200": "aaaaaaa-testidegrandfathering",
+        "customfield_10201": "org",
+        "customfield_10300": "e42ebc9402ff083025a05ba22b04a5c311f3581458d68ae51b04de5f0e461df3",
+        "customfield_10400": {
+          "id": "10300",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+          "value": "SCA"
+        },
+        "customfield_10500": {
+          "id": "10200",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+          "value": "NA"
+        },
+        "customfield_10501": {
+          "id": "10203",
+          "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+          "value": "Nexus IQ"
+        },
+        "customfield_10502": "2019-04-01",
+        "customfield_10503": "2019-04-02T02:54:00.000+0000",
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_10602": null,
+        "customfield_10603": null,
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability CVE-2015-8854 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability CVE-2015-8854 with severity 7.5.",
+        "duedate": null,
+        "environment": null,
+        "fixVersions": [
+
+        ],
+        "issuelinks": [
+
+        ],
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "labels": [
+
+        ],
+        "lastViewed": null,
+        "priority": {
+          "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+          "id": "4",
+          "name": "Low",
+          "self": "http://localhost:8080/rest/api/2/priority/4"
+        },
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "project": {
+          "avatarUrls": {
+            "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+            "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+            "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+            "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+          },
+          "id": "10100",
+          "key": "JIRAIQ",
+          "name": "Jira IQ",
+          "self": "http://localhost:8080/rest/api/2/project/10100"
+        },
+        "reporter": {
+          "active": true,
+          "avatarUrls": {
+            "16x16": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=16",
+            "24x24": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=24",
+            "32x32": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=32",
+            "48x48": "https://www.gravatar.com/avatar/e708388a11ece550c32163f9c3edd03f?d=mm&s=48"
+          },
+          "displayName": "mworthington+localhost@sonatype.com",
+          "emailAddress": "mworthington+localhost@sonatype.com",
+          "key": "admin",
+          "name": "admin",
+          "self": "http://localhost:8080/rest/api/2/user?username=admin",
+          "timeZone": "America/New_York"
+        },
+        "resolution": null,
+        "resolutiondate": null,
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "subtasks": [
+
+        ],
+        "summary": "Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6",
+        "timeestimate": null,
+        "timeoriginalestimate": null,
+        "timespent": null,
+        "updated": "2019-04-02T02:54:32.000+0000",
+        "versions": [
+
+        ],
+        "votes": {
+          "hasVoted": false,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-176/votes",
+          "votes": 0
+        },
+        "watches": {
+          "isWatching": true,
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-176/watchers",
+          "watchCount": 1
+        },
+        "workratio": -1
+      },
+      "id": "11521",
+      "key": "JIRAIQ-176",
+      "self": "http://localhost:8080/rest/api/2/issue/11521"
+    }
+  ],
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 11
+}

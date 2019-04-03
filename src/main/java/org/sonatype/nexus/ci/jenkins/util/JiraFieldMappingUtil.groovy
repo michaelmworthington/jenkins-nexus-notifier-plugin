@@ -16,8 +16,8 @@ class JiraFieldMappingUtil
   String issueTypeName
   String subTaskIssueTypeName
   String priorityName
-  boolean shouldCreateIndividualTickets
-  boolean shouldTransitionJiraTickets
+  Boolean shouldCreateIndividualTickets
+  Boolean shouldTransitionJiraTickets
   String transitionStatus
   String applicationCustomFieldName
   String organizationCustomFieldName
@@ -29,8 +29,8 @@ class JiraFieldMappingUtil
   String cveCodeCustomFieldName
   String cvssCustomFieldName
   String policyFilterPrefix
-  boolean shouldAggregateTicketsByComponent
-  boolean shouldCreateSubTasksForAggregatedTickets
+  Boolean shouldAggregateTicketsByComponent
+  Boolean shouldCreateSubTasksForAggregatedTickets
   String scanTypeCustomFieldName
   String scanTypeCustomFieldValue
   String toolNameCustomFieldName
@@ -99,6 +99,13 @@ class JiraFieldMappingUtil
 
   void mapCustomFieldNamesToIds()
   {
+    // todo: use the response for some validation and automatic formatting of the custom fields
+    jiraClient.lookupMetadataConfigurationForCreateIssue(projectKey, issueTypeName)
+    if (shouldCreateSubTasksForAggregatedTickets)
+    {
+      jiraClient.lookupMetadataConfigurationForCreateIssue(projectKey, subTaskIssueTypeName)
+    }
+
     List customFields = (List) jiraClient.lookupCustomFields()
 
     applicationCustomFieldId = lookupAndValidateCustomField(customFields, applicationCustomFieldName, "App Name")

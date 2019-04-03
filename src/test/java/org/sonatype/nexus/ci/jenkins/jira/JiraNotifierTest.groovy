@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
+import groovy.json.JsonSlurper
 import hudson.model.Run
 import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.iq.IQClient
@@ -22,6 +23,8 @@ import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 import spock.lang.Ignore
 import spock.lang.Specification
 
+//TODO: Think about removing these or making the JiraNotification sharing better
+@SuppressWarnings("GroovyAccessibility")
 class JiraNotifierTest
     extends Specification
 {
@@ -30,10 +33,14 @@ class JiraNotifierTest
   //private static final String iqPort = "60359" //for Charles Proxy
   private static final String iqPort = "8060"
 
+  boolean verboseLogging = true
   //def mockLogger = Mock(PrintStream)
   def mockLogger = System.out
   def mockListener = Mock(TaskListener)
   def mockRun = Mock(Run)
+
+  PolicyEvaluationHealthAction policyEvaluationHealthAction
+  JiraNotification jiraNotificationCreateParentTicketTest
 
   JiraNotifier jiraNotifier
 
@@ -41,6 +48,45 @@ class JiraNotifierTest
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
     jiraNotifier = new JiraNotifier(mockRun, mockListener)
+
+    policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
+            reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70',
+            affectedComponentCount: 1,
+            criticalComponentCount: 2,
+            severeComponentCount: 3,
+            moderateComponentCount: 5
+    )
+
+    jiraNotificationCreateParentTicketTest = new JiraNotification(true,
+                                                                  verboseLogging,
+                                                                  'JIRAIQ',
+                                                                  "Bug",
+                                                                  "Sub-task",
+                                                                  "Low",
+                                                                  true,
+                                                                  true,
+                                                                  "Done",
+                                                                  "IQ Application",
+                                                                  "IQ Organization",
+                                                                  null,
+                                                                  "Finding ID",
+                                                                  "Detect Date",
+                                                                  "Last Scan Date",
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  "License",
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  "Scan Type",
+                                                                  "SCA",
+                                                                  "Tool Name",
+                                                                  "Nexus IQ",
+                                                                  "Finding Template",
+                                                                  "NA")
+
   }
 
   def 'send requires projectKey'() {
@@ -95,9 +141,6 @@ class JiraNotifierTest
       def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
-      PolicyEvaluationHealthAction pehaMock  = Mock(PolicyEvaluationHealthAction)
-      pehaMock.getReportLink() >> "http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70"
-
     when:
       jiraNotifier.send(true,
                         new JiraNotification(true,
@@ -129,7 +172,7 @@ class JiraNotifierTest
                                              null,
                                              null,
                                              null),
-                        pehaMock)
+                        policyEvaluationHealthAction)
 
     then:
       1 * IQClientFactory.getIQClient('overrideId', *_ ) >> iqClient
@@ -145,9 +188,6 @@ class JiraNotifierTest
       GroovyMock(IQClientFactory.class, global: true)
       def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
-
-      PolicyEvaluationHealthAction pehaMock  = Mock(PolicyEvaluationHealthAction)
-      pehaMock.getReportLink() >> "http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70"
 
     when:
       mockRun.getEnvironment(_) >> ['projectKey': 'project']
@@ -181,7 +221,7 @@ class JiraNotifierTest
                                              null,
                                              null,
                                              null),
-                        pehaMock)
+                        policyEvaluationHealthAction)
 
     then:
       1 * jiraClient.createIssue(*_) >> { arguments ->
@@ -190,50 +230,40 @@ class JiraNotifierTest
       }
   }
 
-  @Ignore //todo: read in JSON for Jira & IQ Mocks???
-  def 'putsCard to Jira client'() {
+  def 'Create Summary Ticket'() {
     setup:
-      def policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
-          reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70',
-          affectedComponentCount: 1,
-          criticalComponentCount: 2,
-          severeComponentCount: 3,
-          moderateComponentCount: 5
-        )
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
 
-      def jiraNotification = new JiraNotification(true,
-                                                  true,
-                                                  'JIRAIQ',
-                                                  "Task",
-                                                  "Sub-task",
-                                                  "Low",
-                                                  false,
-                                                  true,
-                                                  "Done",
-                                                  "IQ Application",
-                                                  "IQ Organization",
-                                                  null,
-                                                  "Finding ID",
-                                                  "Detect Date",
-                                                  "Last Scan Date",
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  "Security-High",
-                                                  false,
-                                                  false,
-                                                  null,
-                                                  null,
-                                                  "Scan Type",
-                                                  "SCA",
-                                                  "Tool Name",
-                                                  "Nexus IQ",
-                                                  "Finding Template",
-                                                  "NA")
+      jiraNotificationCreateParentTicketTest.shouldCreateIndividualTickets = false
 
       GroovyMock(JiraClientFactory.class, global: true)
-      def client = Mock(JiraClient.class)
-      JiraClientFactory.getJiraClient(*_) >> client
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      //Load JSON Data
+      1 * jiraClient.lookupCustomFields() >> customFields
+
+      //Expectations
+      1 * jiraClient.createIssue(*_)
+  }
+
+  def 'Create Detail Tickets - No Aggregation - No Jira Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
 
       GroovyMock(IQClientFactory.class, global: true)
       def iqClient = Mock(IQClient.class)
@@ -241,151 +271,401 @@ class JiraNotifierTest
 
 
     when:
-      jiraNotifier.send(buildPassing, jiraNotification, policyEvaluationHealthAction)
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     then:
-      1 * client.lookupMetadataConfigurationForCreateIssue(_) >> { arugments ->
-        def projectKey = arugments[0] as String
-        assert policyEvaluationResult == 'JIRAIQ'
+      //Load JSON Data
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
 
-        def issueTypeName = arugments[1] as String
-        assert issueTypeName == 'Task'
-      }
-
-      1 * client.lookupCustomFields() >> new HashMap()
-
-
-//              { arugments ->
-//        def policyEvaluationResult = arugments[0] as PolicyEvaluationResult
-//        assert policyEvaluationResult.projectKey == jiraNotification.projectKey
-//        assert policyEvaluationResult.repositorySlug == jiraNotification.repositorySlug
-//        assert policyEvaluationResult.commitHash == jiraNotification.commitHash
-//        assert policyEvaluationResult.buildStatus == (buildPassing ? BuildStatus.PASS : BuildStatus.FAIL)
-//        assert policyEvaluationResult.componentsAffected == policyEvaluationHealthAction.affectedComponentCount
-//        assert policyEvaluationResult.critical == policyEvaluationHealthAction.criticalComponentCount
-//        assert policyEvaluationResult.severe == policyEvaluationHealthAction.severeComponentCount
-//        assert policyEvaluationResult.moderate == policyEvaluationHealthAction.moderateComponentCount
-//        assert policyEvaluationResult.reportUrl == policyEvaluationHealthAction.reportLink
-//      }
-
-    where:
-      //buildPassing << [true, false ]
-      buildPassing << true
+      //Expectations when doing License Policy Filter
+      2 * jiraClient.createIssue(*_)
   }
+
+  def 'Create Detail Tickets - No Aggregation - Update Existing License Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-no-aggregation.json'))
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      //Load JSON Data
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      2 * jiraClient.updateIssueScanDate(*_)
+  }
+
+  def 'Create Detail Tickets - No Aggregation - Close Old Security Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-no-aggregation.json'))
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      //Load JSON Data
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      2 * jiraClient.createIssue(*_)
+      11 * jiraClient.closeTicket(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component No SubTasks - No Jira Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
+
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      1 * jiraClient.createIssue(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component No SubTasks - Update Existing License Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-aggregated-no-subtasks.json'))
+
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      1 * jiraClient.updateIssueScanDate(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component No SubTasks - Close Old Security Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-no-subtasks.json'))
+
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      1 * jiraClient.createIssue(*_)
+      2 * jiraClient.closeTicket(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component and SubTask - No Jira Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
+
+      def createParentTicket = new JsonSlurper().parse(new File('src/test/resources/jira-create-parent-ticket-response.json'))
+
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      1 * jiraClient.createIssue(*_) >> createParentTicket
+      2 * jiraClient.createSubTask(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component and SubTask - Update Existing License Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-aggregated-and-subtasks.json'))
+
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      3 * jiraClient.updateIssueScanDate(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component and SubTask - Update Existing Security High Tickets and add other Security Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks.json'))
+
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security"
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      9 * jiraClient.createSubTask(*_)
+      12 * jiraClient.updateIssueScanDate(*_)
+  }
+
+  def 'Create Detail Tickets - Aggregate by Component and SubTask - Close Old Security Tickets'() {
+    setup:
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks.json'))
+
+      def createParentTicket = new JsonSlurper().parse(new File('src/test/resources/jira-create-parent-ticket-response.json'))
+
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      def jiraClient = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      def iqClient = Mock(IQClient.class)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * jiraClient.lookupJiraTickets("JIRAIQ",
+                                       "Done",
+                                       "IQ Application",
+                                       "aaaaaaa-testidegrandfathering") >> openTickets
+
+      //Expectations when doing License Policy Filter
+      1 * jiraClient.createIssue(*_) >> createParentTicket
+      2 * jiraClient.createSubTask(*_)
+      12 * jiraClient.closeTicket(*_)
+  }
+  /*
+  ****************************************************************************************************************************************************
+  *                                                     Integration Tests                                                                            *
+  ****************************************************************************************************************************************************
+   */
 
   @Ignore
   def 'helper test to verify interaction with Jira Server - Create Summary Ticket'() {
     setup:
-    def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', System.out, true)
-    def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', System.out, true)
+      def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
+      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
 
-    def policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
-            reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70',
-            affectedComponentCount: 1,
-            criticalComponentCount: 2,
-            severeComponentCount: 3,
-            moderateComponentCount: 5
-    )
+      jiraNotificationCreateParentTicketTest.shouldCreateIndividualTickets = false
 
-    def jiraNotification = new JiraNotification(true,
-                                                true,
-                                                'JIRAIQ',
-                                                "Bug",
-                                                "Sub-task",
-                                                "Low",
-                                                false,
-                                                true,
-                                                "Done",
-                                                "IQ Application",
-                                                "IQ Organization",
-                                                null,
-                                                "Finding ID",
-                                                "Detect Date",
-                                                "Last Scan Date",
-                                                null,
-                                                null,
-                                                null,
-                                                "Security-High",
-                                                false,
-                                                false,
-                                                null,
-                                                null,
-                                                "Scan Type",
-                                                "SCA",
-                                                "Tool Name",
-                                                "Nexus IQ",
-                                                "Finding Template",
-                                                "NA")
+      GroovyMock(JiraClientFactory.class, global: true)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
 
-    GroovyMock(JiraClientFactory.class, global: true)
-    JiraClientFactory.getJiraClient(*_) >> jiraClient
+      GroovyMock(IQClientFactory.class, global: true)
+      IQClientFactory.getIQClient(*_) >> iqClient
 
-    GroovyMock(IQClientFactory.class, global: true)
-    IQClientFactory.getIQClient(*_) >> iqClient
-
-    jiraNotifier.send(true, jiraNotification, policyEvaluationHealthAction)
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     expect:
-    true //TODO: assert something??
+      true //TODO: assert something??
   }
 
   @Ignore
-  def 'helper test to verify interaction with Jira Server - Create Detail Tickets'() {
+  def 'helper test to verify interaction with Jira Server - Create Detail Tickets - No Aggregation'() {
     setup:
-    boolean verboseLogging = false
+      def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
+      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
 
-    def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', System.out, verboseLogging)
-    def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', System.out, verboseLogging)
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = false
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = false
 
-    def policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
-            reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70',
-            affectedComponentCount: 1,
-            criticalComponentCount: 2,
-            severeComponentCount: 3,
-            moderateComponentCount: 5
-    )
+      GroovyMock(JiraClientFactory.class, global: true)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
 
-    def jiraNotification = new JiraNotification(true,
-                                                verboseLogging,
-                                                'JIRAIQ',
-                                                "Bug",
-                                                "Sub-task",
-                                                "Low",
-                                                true,
-                                                true,
-                                                "Done",
-                                                "IQ Application",
-                                                "IQ Organization",
-                                                null,
-                                                "Finding ID",
-                                                "Detect Date",
-                                                "Last Scan Date",
-                                                null,
-                                                null,
-                                                null,
-                                                "Security-High",
-//                                                "License",
-                                                false,
-                                                false,
-                                                null,
-                                                null,
-                                                "Scan Type",
-                                                "SCA",
-                                                "Tool Name",
-                                                "Nexus IQ",
-                                                "Finding Template",
-                                                "NA")
+      GroovyMock(IQClientFactory.class, global: true)
+      IQClientFactory.getIQClient(*_) >> iqClient
 
-    GroovyMock(JiraClientFactory.class, global: true)
-    JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-    GroovyMock(IQClientFactory.class, global: true)
-    IQClientFactory.getIQClient(*_) >> iqClient
-
-    jiraNotifier.send(true, jiraNotification, policyEvaluationHealthAction)
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     expect:
-    true //TODO: assert something??
+      true //TODO: assert something??
   }
 
+  @Ignore
+  def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component No SubTasks'() {
+    setup:
+      def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
+      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
+
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = false
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    expect:
+      true //TODO: assert something??
+  }
+
+  @Ignore
+  def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component and SubTasks'() {
+    setup:
+      def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
+      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
+
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      GroovyMock(JiraClientFactory.class, global: true)
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+
+      GroovyMock(IQClientFactory.class, global: true)
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    expect:
+      true //TODO: assert something??
+  }
 }

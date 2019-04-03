@@ -54,6 +54,47 @@ class JiraClient extends AbstractToolClient
     http.post(url, body, headers)
   }
 
+  /**
+   * https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
+   */
+  def createSubTask(JiraFieldMappingUtil jiraFieldMappingUtil,
+                    String parentIssueKey,
+                    description,
+                    detail,
+                    source,
+                    severity,
+                    fprint,
+                    iqAppExternalId,
+                    iqOrgExternalId,
+                    scanStage,
+                    severityString,
+                    cveCode,
+                    cvss,
+                    violationUniqueId)
+  {
+    def url = getCreateIssueRequestUrl(serverUrl)
+    Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
+                                         description,
+                                         detail,
+                                         source,
+                                         severity,
+                                         fprint,
+                                         iqAppExternalId,
+                                         iqOrgExternalId,
+                                         scanStage,
+                                         severityString,
+                                         cveCode,
+                                         cvss,
+                                         violationUniqueId)
+
+    getCreateSubTaskRequestBody(jiraFieldMappingUtil,
+                                parentIssueKey,
+                                body)
+    def headers = getRequestHeaders(username, password)
+
+    http.post(url, body, headers)
+  }
+
   def updateIssueScanDate(JiraFieldMappingUtil jiraFieldMappingUtil, String issueKey)
   {
     def url = getUpdateIssueRequestUrl(serverUrl, issueKey)
@@ -148,9 +189,6 @@ class JiraClient extends AbstractToolClient
     // "/rest/api/2/search?jql=project%3D%22{{jiraProjectKey}}%22"
     // %20AND%20status!%3D%22Done%22
     // %20AND%20"IQ%20Application"%20~%20"test"
-
-    //TODO: does this need to change for sub-tasks and waivers?
-
 
     StringBuffer plainSearchString = new StringBuffer()
 
@@ -270,6 +308,7 @@ class JiraClient extends AbstractToolClient
                                                cvss,
                                                violationUniqueId)
   {
+    //TODO: Pull these out and take them in as parameters
     Date now = new Date()
     String nowFormatted = now.format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500)
 
@@ -315,11 +354,29 @@ class JiraClient extends AbstractToolClient
     return returnValue
   }
 
+  private static void getCreateSubTaskRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil,
+                                                  String parentIssueKey,
+                                                  Map returnValue)
+  {
+    if(jiraFieldMappingUtil.issueTypeName)
+    {
+      addCustomFieldToTicket(returnValue, "issuetype", [ name: jiraFieldMappingUtil.subTaskIssueTypeName ])
+    }
+
+    if(parentIssueKey)
+    {
+      addCustomFieldToTicket(returnValue, "parent", [ key: parentIssueKey ])
+    }
+  }
+
+
+
   private static Map getUpdateIssueScanDateRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil)
   {
     String formattedFieldId = "${jiraFieldMappingUtil.lastScanDateCustomFieldId}"
     String formattedDate = new Date().format("yyyy-MM-dd'T'HH:mm:ss.SSSXX")
 
+    //TODO: maybe i could figure out how to do this right in groovy
     Map<String, String> scanDate = new HashMap<String, String>()
     scanDate.put(formattedFieldId, formattedDate)
 

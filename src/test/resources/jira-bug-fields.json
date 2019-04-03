@@ -1,0 +1,480 @@
+{
+  "expand": "projects",
+  "projects": [
+    {
+      "avatarUrls": {
+        "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+        "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+        "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+        "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+      },
+      "expand": "issuetypes",
+      "id": "10100",
+      "issuetypes": [
+        {
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "expand": "fields",
+          "fields": {
+            "assignee": {
+              "autoCompleteUrl": "http://localhost:8080/rest/api/latest/user/assignable/search?issueKey=null&username=",
+              "hasDefaultValue": false,
+              "name": "Assignee",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "system": "assignee",
+                "type": "user"
+              }
+            },
+            "components": {
+              "allowedValues": [
+
+              ],
+              "hasDefaultValue": false,
+              "name": "Component/s",
+              "operations": [
+                "add",
+                "set",
+                "remove"
+              ],
+              "required": false,
+              "schema": {
+                "items": "component",
+                "system": "components",
+                "type": "array"
+              }
+            },
+            "customfield_10001": {
+              "hasDefaultValue": false,
+              "name": "Epic Link",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.pyxis.greenhopper.jira:gh-epic-link",
+                "customId": 10001,
+                "type": "any"
+              }
+            },
+            "customfield_10200": {
+              "hasDefaultValue": false,
+              "name": "IQ Application",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                "customId": 10200,
+                "type": "string"
+              }
+            },
+            "customfield_10201": {
+              "hasDefaultValue": false,
+              "name": "IQ Organization",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                "customId": 10201,
+                "type": "string"
+              }
+            },
+            "customfield_10300": {
+              "hasDefaultValue": false,
+              "name": "Finding ID",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                "customId": 10300,
+                "type": "string"
+              }
+            },
+            "customfield_10400": {
+              "allowedValues": [
+                {
+                  "id": "10100",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10100",
+                  "value": "CI"
+                },
+                {
+                  "id": "10101",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10101",
+                  "value": "Policy"
+                },
+                {
+                  "id": "10300",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
+                  "value": "SCA"
+                }
+              ],
+              "hasDefaultValue": false,
+              "name": "Scan Type",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:select",
+                "customId": 10400,
+                "type": "option"
+              }
+            },
+            "customfield_10500": {
+              "allowedValues": [
+                {
+                  "id": "10200",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10200",
+                  "value": "NA"
+                },
+                {
+                  "id": "10201",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10201",
+                  "value": "XSS"
+                },
+                {
+                  "id": "10202",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10202",
+                  "value": "SQL Injection"
+                }
+              ],
+              "hasDefaultValue": false,
+              "name": "Finding Template",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:select",
+                "customId": 10500,
+                "type": "option"
+              }
+            },
+            "customfield_10501": {
+              "allowedValues": [
+                {
+                  "id": "10203",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
+                  "value": "Nexus IQ"
+                },
+                {
+                  "id": "10204",
+                  "self": "http://localhost:8080/rest/api/2/customFieldOption/10204",
+                  "value": "Veracode"
+                }
+              ],
+              "hasDefaultValue": false,
+              "name": "Tool Name",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:select",
+                "customId": 10501,
+                "type": "option"
+              }
+            },
+            "customfield_10502": {
+              "hasDefaultValue": false,
+              "name": "Detect Date",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:datepicker",
+                "customId": 10502,
+                "type": "date"
+              }
+            },
+            "customfield_10503": {
+              "hasDefaultValue": false,
+              "name": "Last Scan Date",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:datetime",
+                "customId": 10503,
+                "type": "datetime"
+              }
+            },
+            "customfield_10600": {
+              "hasDefaultValue": false,
+              "name": "CVE Code",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                "customId": 10600,
+                "type": "string"
+              }
+            },
+            "customfield_10601": {
+              "hasDefaultValue": false,
+              "name": "CVSS",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:float",
+                "customId": 10601,
+                "type": "number"
+              }
+            },
+            "customfield_10602": {
+              "hasDefaultValue": false,
+              "name": "Scan Stage",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                "customId": 10602,
+                "type": "string"
+              }
+            },
+            "customfield_10603": {
+              "hasDefaultValue": false,
+              "name": "Severity",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+                "customId": 10603,
+                "type": "string"
+              }
+            },
+            "description": {
+              "hasDefaultValue": false,
+              "name": "Description",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "system": "description",
+                "type": "string"
+              }
+            },
+            "duedate": {
+              "hasDefaultValue": false,
+              "name": "Due Date",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "system": "duedate",
+                "type": "date"
+              }
+            },
+            "fixVersions": {
+              "allowedValues": [
+
+              ],
+              "hasDefaultValue": false,
+              "name": "Fix Version/s",
+              "operations": [
+                "set",
+                "add",
+                "remove"
+              ],
+              "required": false,
+              "schema": {
+                "items": "version",
+                "system": "fixVersions",
+                "type": "array"
+              }
+            },
+            "issuelinks": {
+              "autoCompleteUrl": "http://localhost:8080/rest/api/2/issue/picker?currentProjectId=&showSubTaskParent=true&showSubTasks=true&currentIssueKey=null&query=",
+              "hasDefaultValue": false,
+              "name": "Linked Issues",
+              "operations": [
+                "add"
+              ],
+              "required": false,
+              "schema": {
+                "items": "issuelinks",
+                "system": "issuelinks",
+                "type": "array"
+              }
+            },
+            "issuetype": {
+              "allowedValues": [
+                {
+                  "avatarId": 10303,
+                  "description": "A problem which impairs or prevents the functions of the product.",
+                  "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+                  "id": "10004",
+                  "name": "Bug",
+                  "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+                  "subtask": false
+                }
+              ],
+              "hasDefaultValue": false,
+              "name": "Issue Type",
+              "operations": [
+
+              ],
+              "required": true,
+              "schema": {
+                "system": "issuetype",
+                "type": "issuetype"
+              }
+            },
+            "labels": {
+              "autoCompleteUrl": "http://localhost:8080/rest/api/1.0/labels/suggest?query=",
+              "hasDefaultValue": false,
+              "name": "Labels",
+              "operations": [
+                "add",
+                "set",
+                "remove"
+              ],
+              "required": false,
+              "schema": {
+                "items": "string",
+                "system": "labels",
+                "type": "array"
+              }
+            },
+            "priority": {
+              "allowedValues": [
+                {
+                  "iconUrl": "http://localhost:8080/images/icons/priorities/highest.svg",
+                  "id": "1",
+                  "name": "Highest",
+                  "self": "http://localhost:8080/rest/api/2/priority/1"
+                },
+                {
+                  "iconUrl": "http://localhost:8080/images/icons/priorities/high.svg",
+                  "id": "2",
+                  "name": "High",
+                  "self": "http://localhost:8080/rest/api/2/priority/2"
+                },
+                {
+                  "iconUrl": "http://localhost:8080/images/icons/priorities/medium.svg",
+                  "id": "3",
+                  "name": "Medium",
+                  "self": "http://localhost:8080/rest/api/2/priority/3"
+                },
+                {
+                  "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
+                  "id": "4",
+                  "name": "Low",
+                  "self": "http://localhost:8080/rest/api/2/priority/4"
+                },
+                {
+                  "iconUrl": "http://localhost:8080/images/icons/priorities/lowest.svg",
+                  "id": "5",
+                  "name": "Lowest",
+                  "self": "http://localhost:8080/rest/api/2/priority/5"
+                }
+              ],
+              "hasDefaultValue": true,
+              "name": "Priority",
+              "operations": [
+                "set"
+              ],
+              "required": false,
+              "schema": {
+                "system": "priority",
+                "type": "priority"
+              }
+            },
+            "project": {
+              "allowedValues": [
+                {
+                  "avatarUrls": {
+                    "16x16": "http://localhost:8080/secure/projectavatar?size=xsmall&avatarId=10324",
+                    "24x24": "http://localhost:8080/secure/projectavatar?size=small&avatarId=10324",
+                    "32x32": "http://localhost:8080/secure/projectavatar?size=medium&avatarId=10324",
+                    "48x48": "http://localhost:8080/secure/projectavatar?avatarId=10324"
+                  },
+                  "id": "10100",
+                  "key": "JIRAIQ",
+                  "name": "Jira IQ",
+                  "self": "http://localhost:8080/rest/api/2/project/10100"
+                }
+              ],
+              "hasDefaultValue": false,
+              "name": "Project",
+              "operations": [
+                "set"
+              ],
+              "required": true,
+              "schema": {
+                "system": "project",
+                "type": "project"
+              }
+            },
+            "reporter": {
+              "autoCompleteUrl": "http://localhost:8080/rest/api/latest/user/search?username=",
+              "hasDefaultValue": false,
+              "name": "Reporter",
+              "operations": [
+                "set"
+              ],
+              "required": true,
+              "schema": {
+                "system": "reporter",
+                "type": "user"
+              }
+            },
+            "summary": {
+              "hasDefaultValue": false,
+              "name": "Summary",
+              "operations": [
+                "set"
+              ],
+              "required": true,
+              "schema": {
+                "system": "summary",
+                "type": "string"
+              }
+            },
+            "timetracking": {
+              "hasDefaultValue": false,
+              "name": "Time Tracking",
+              "operations": [
+                "set",
+                "edit"
+              ],
+              "required": false,
+              "schema": {
+                "system": "timetracking",
+                "type": "timetracking"
+              }
+            }
+          },
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        }
+      ],
+      "key": "JIRAIQ",
+      "name": "Jira IQ",
+      "self": "http://localhost:8080/rest/api/2/project/10100"
+    }
+  ]
+}

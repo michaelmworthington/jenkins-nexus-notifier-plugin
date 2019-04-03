@@ -516,6 +516,23 @@
   },
   {
     "clauseNames": [
+      "cf[10600]",
+      "CVE Code"
+    ],
+    "custom": true,
+    "id": "customfield_10600",
+    "name": "CVE Code",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10600,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
       "cf[10006]",
       "Story Points"
     ],
@@ -543,6 +560,40 @@
     "schema": {
       "system": "security",
       "type": "securitylevel"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10601]",
+      "CVSS"
+    ],
+    "custom": true,
+    "id": "customfield_10601",
+    "name": "CVSS",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:float",
+      "customId": 10601,
+      "type": "number"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10602]",
+      "Scan Stage"
+    ],
+    "custom": true,
+    "id": "customfield_10602",
+    "name": "Scan Stage",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10602,
+      "type": "string"
     },
     "searchable": true
   },
@@ -576,6 +627,23 @@
       "type": "number"
     },
     "searchable": false
+  },
+  {
+    "clauseNames": [
+      "cf[10603]",
+      "Severity"
+    ],
+    "custom": true,
+    "id": "customfield_10603",
+    "name": "Severity",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10603,
+      "type": "string"
+    },
+    "searchable": true
   },
   {
     "clauseNames": [

@@ -135,7 +135,7 @@ class JiraFieldMappingUtilTest
       assert jiraFieldMappingUtil.organizationCustomFieldId == "customfield_10201"
       assert jiraFieldMappingUtil.violationIdCustomFieldId == "customfield_10300"
       assert jiraFieldMappingUtil.violationDetectDateCustomFieldId == "customfield_10502"
-      assert jiraFieldMappingUtil.lastScanDateCustomFieldId == "customfield_1010503"
+      assert jiraFieldMappingUtil.lastScanDateCustomFieldId == "customfield_10503"
       assert jiraFieldMappingUtil.scanTypeCustomFieldId == "customfield_10400"
       assert jiraFieldMappingUtil.toolNameCustomFieldId == "customfield_10501"
       assert jiraFieldMappingUtil.findingTemplateCustomFieldId == "customfield_10500"

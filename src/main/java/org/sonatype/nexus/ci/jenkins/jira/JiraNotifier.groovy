@@ -54,7 +54,9 @@ class JiraNotifier
       jiraFieldMappingUtil.expandEnvVars()
       jiraFieldMappingUtil.assignFieldsFromConfig()
 
+      logger.println("######################################")
       logger.println("Creating Jira Tickets for Project: ${jiraFieldMappingUtil.projectKey} with issue type: ${jiraFieldMappingUtil.issueTypeName} and priority: ${jiraFieldMappingUtil.priorityName}")
+      logger.println("######################################")
 
       // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
       logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
@@ -66,30 +68,24 @@ class JiraNotifier
       //TODO: look up the org from iq server
       String iqOrgExternalId = "org"
 
-      // todo: use the response for some validation and automatic formatting of the custom fields
-      jiraClient.lookupMetadataConfigurationForCreateIssue(jiraFieldMappingUtil.projectKey, jiraFieldMappingUtil.issueTypeName)
-      if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)  //TODO: Aggregate by component - epics & stories
-      {
-        jiraClient.lookupMetadataConfigurationForCreateIssue(jiraFieldMappingUtil.projectKey, jiraFieldMappingUtil.subTaskIssueTypeName)
-      }
-
       jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
       {
-        if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
-        {
-          throw new AbortException("Aggregating tickets by component not yet implemented") //TODO: Aggregate by component - epics & stories
-        }
-
         // Data from IQ Server ("potential") and JIRA ("current") mapped by Fingerprint
+        Map<String, PolicyViolation> potentialComponentsMap = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> potentialFindingsMap = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> currentComponentsMap = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> currentFindingsMap = new HashMap<String, PolicyViolation>()
 
         // Deduplicated findings
-        Set<PolicyViolation> newFindings = new HashSet<PolicyViolation>()
-        Set<PolicyViolation> repeatFindings = new HashSet<PolicyViolation>()
-        Set<PolicyViolation> oldFindings = new HashSet<PolicyViolation>()
+        Map<String, PolicyViolation> newIQComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> newIQFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> oldJiraComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> oldJiraFindings = new HashMap<String, PolicyViolation>()
 
 
         /***************************************
@@ -99,14 +95,14 @@ class JiraNotifier
         //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
         def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, iqAppExternalId)
 
+        logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
         potentialFindings.aaData.each {
-          PolicyViolation.buildFromIQ(it,
+          PolicyViolation.buildFromIQ(potentialComponentsMap,
+                                      potentialFindingsMap,
+                                      it,
                                       policyEvaluationHealthAction.reportLink,
                                       iqAppExternalId,
                                       jiraFieldMappingUtil.policyFilterPrefix)
-                  .each {
-                    potentialFindingsMap.put(it.fingerprint, it)
-                  }
         }
 
         /***************************************
@@ -119,63 +115,112 @@ class JiraNotifier
                                                            jiraFieldMappingUtil.applicationCustomFieldName,
                                                            iqAppExternalId)
 
+        logger.println("Parsing findings from Jira: ${currentFindings.issues.size}")
         currentFindings.issues.each {
           PolicyViolation pv = PolicyViolation.buildFromJira(it, jiraFieldMappingUtil.violationIdCustomFieldId)
-          currentFindingsMap.put(pv.fingerprint, pv)
+
+          if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
+          {
+            if("Sub-task".equals(pv.ticketType))
+            {
+              currentFindingsMap.put(pv.fingerprint, pv)
+            }
+            else
+            {
+              currentComponentsMap.put(pv.fingerprint, pv)
+            }
+          }
+          else
+          {
+            if("Sub-task".equals(pv.ticketType))
+            {
+              logger.println("WARNING: Skipping Jira Ticket ${pv.ticketExternalId} since it is a Sub-task and tickets are not being aggregated")
+            }
+            else
+            {
+              currentFindingsMap.put(pv.fingerprint, pv)
+            }
+          }
         }
 
         /***************************************
             3. Filter out Existing Tickets
          ***************************************/
-
-        //todo : aggregate by component - how to track all the violations?
-        logger.println("Potential Components with Findings from the IQ Server Report: ${potentialFindings.aaData.size}")
-        logger.println("Potential Policy Violation Findings from the IQ Server Report: ${potentialFindingsMap.size()}")
-        logger.println("Current Findings in Jira before filtering: ${currentFindings.issues.size}")
+        logger.println("######################################")
+        logger.println("        Compare Input")
+        logger.println("######################################")
+        logger.println("Potential Components from the IQ Server Report : ${potentialComponentsMap.size()}")
+        logger.println("Potential Findings   from the IQ Server Report : ${potentialFindingsMap.size()}")
+        logger.println("Current Components   in Jira before filtering  : ${currentComponentsMap.size()}")
+        logger.println("Current Findings     in Jira before filtering  : ${currentFindingsMap.size()}")
+        logger.println("######################################")
+        logger.println("######################################")
 
         //which results from IQ do we need to create, and which alredy exist, and which need to be closed
         //  Loop through potential findings map and current findings map
-        calculateNewAndRepeatFindings(potentialFindingsMap, currentFindingsMap, newFindings, repeatFindings)
-        calculateOldFindings(potentialFindingsMap, currentFindingsMap, oldFindings)
+        compareIQServerAndJira(jiraFieldMappingUtil,
+                               potentialComponentsMap,
+                               potentialFindingsMap,
+                               currentComponentsMap,
+                               currentFindingsMap,
+                               newIQComponents,
+                               repeatJiraComponentsWithNewFindings,
+                               newIQFindings,
+                               repeatJiraComponents,
+                               repeatJiraFindings,
+                               oldJiraComponents,
+                               oldJiraFindings)
 
-        logger.println("Number of findings that do not have tickets: ${newFindings.size()}")
-        logger.println("Number of findings that have existing tickets: ${repeatFindings.size()}")
-        logger.println("Number of tickets that no longer have findings: ${oldFindings.size()}")
+        logger.println("######################################")
+        logger.println("        Compare Output")
+        logger.println("######################################")
+        logger.println("Number of components that do not have tickets      : ${newIQComponents.size()}")
+        logger.println("Number of findings   that do not have tickets      : ${newIQFindings.size()}")
+        logger.println("Number of components that have existing tickets    : ${repeatJiraComponents.size()} (${repeatJiraComponentsWithNewFindings.size()} have new findings)")
+        logger.println("Number of findings   that have existing tickets    : ${repeatJiraFindings.size()}")
+        logger.println("Number of tickets    that no longer have components: ${oldJiraComponents.size()}")
+        logger.println("Number of tickets    that no longer have findings  : ${oldJiraFindings.size()}")
+        logger.println("######################################")
+        logger.println("######################################")
 
         /***************************************
           4. Create New Tickets
          ***************************************/
 
-        logger.println("Creating ${newFindings.size()} tickets for each policy violation")
-        newFindings.each {
-          createIndividualTicket(jiraClient,
-                                 jiraFieldMappingUtil,
-                                 it,
-                                 iqAppExternalId,
-                                 iqOrgExternalId,
-                                 "TODO: Scan Stage", //TODO
-                                 "TODO: severity", //TODO
-                                 "TODO: cve code", //TODO
-                                 "TODO: cvss" ) //TODO
-        }
+        createJiraTickets(newIQComponents,
+                          repeatJiraComponentsWithNewFindings,
+                          newIQFindings,
+                          jiraClient,
+                          jiraFieldMappingUtil,
+                          iqAppExternalId,
+                          iqOrgExternalId)
 
         /***************************************
          5. Update Scan Time on repeat findings
          ***************************************/
 
-        logger.println("Updating ${repeatFindings.size()} repeat finding tickets with the new scan date")
-        repeatFindings.each{
-          updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it)
+        logger.println("Updating ${repeatJiraComponents.size()} repeat component tickets with the new scan date")
+        repeatJiraComponents.each{
+          updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
+        }
+
+        logger.println("Updating ${repeatJiraFindings.size()} repeat finding tickets with the new scan date")
+        repeatJiraFindings.each{
+          updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
         }
 
         /***************************************
           6. Close Tickets that have no finding (i.e. they have been fixed)
          ***************************************/
-
         if (jiraFieldMappingUtil.shouldTransitionJiraTickets) {
-          logger.println("Transitioning ${oldFindings.size()} old tickets to: ${jiraFieldMappingUtil.transitionStatus}")
-          oldFindings.each{
-            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it)
+          logger.println("Transitioning ${oldJiraFindings.size()} old finding tickets to: ${jiraFieldMappingUtil.transitionStatus}")
+          oldJiraFindings.each{
+            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it.value)
+          }
+
+          logger.println("Transitioning ${oldJiraComponents.size()} old component tickets to: ${jiraFieldMappingUtil.transitionStatus}")
+          oldJiraComponents.each{
+            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it.value)
           }
         }
 
@@ -186,7 +231,7 @@ class JiraNotifier
         //TODO: What tickets in Jira have been closed where we can apply a waiver in IQ
         //      need to deal with the edge cases on this one
         //
-        // loop through **repeatFindings**
+        // loop through **repeatJiraFindings**
       }
       else {
         logger.println("Creating just one ticket with a violation summary in the description")
@@ -204,34 +249,177 @@ class JiraNotifier
     }
   }
 
-  private void calculateNewAndRepeatFindings(HashMap<String, PolicyViolation> pPotentialFindings,
-                                             HashMap<String, PolicyViolation> pCurrentFindings,
-                                             Set<PolicyViolation> newFindings,
-                                             Set<PolicyViolation> repeatFindings)
+  private void createJiraTickets(Map<String, PolicyViolation> newIQComponents,
+                                 Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings,
+                                 Map<String, PolicyViolation> newIQFindings,
+                                 JiraClient jiraClient,
+                                 JiraFieldMappingUtil jiraFieldMappingUtil,
+                                 String iqAppExternalId,
+                                 String iqOrgExternalId)
   {
-    pPotentialFindings.each {
-      if (pCurrentFindings.containsKey(it.key))
+    if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
+    {
+      Set<String> createdSubTasks = new HashSet<String>();
+      def resp
+
+      logger.println("Creating ${newIQComponents.size()} component tickets")
+
+      newIQComponents.each {
+        if (it.value.findingFingerprints.isEmpty())
+        {
+          logger.println("Skipping Jira Ticket for Component: ${it.value.fingerprintPrettyPrint} - findings have been filtered out")
+        }
+        else
+        {
+          resp = createIndividualTicket(jiraClient,
+                                        jiraFieldMappingUtil,
+                                        it.value,
+                                        iqAppExternalId,
+                                        iqOrgExternalId,
+                                        "TODO: Scan Stage") //TODO
+
+          if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
+          {
+            logger.println("Creating ${it.value.findingFingerprints.size()} finding tickets")
+            it.value.findingFingerprints.each {
+              createSubTask(jiraClient,
+                            jiraFieldMappingUtil,
+                            resp.key,
+                            newIQFindings.get(it),
+                            iqAppExternalId,
+                            iqOrgExternalId,
+                            "TODO: Scan Stage") //TODO
+
+              createdSubTasks.add(it)
+            }
+          }
+        }
+      }
+
+      if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
       {
-        logger.println("Jira ticket: ${pCurrentFindings.get(it.key).ticketExternalId} already exists for finding: ${it.value.fingerprintPrettyPrint}")
-        repeatFindings.add(pCurrentFindings.get(it.key))
-      } else
+        int moreFindings = newIQFindings.size() - createdSubTasks.size()
+        logger.println("Creating ${moreFindings} finding tickets for repeat components")
+
+        newIQFindings.each {
+          if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint))
+          {
+            if (createdSubTasks.contains(it.key) == false)
+            {
+              createSubTask(jiraClient,
+                            jiraFieldMappingUtil,
+                            repeatJiraComponentsWithNewFindings.get(it.value.componentFingerprint).ticketExternalId,
+                            it.value,
+                            iqAppExternalId,
+                            iqOrgExternalId,
+                            "TODO: Scan Stage") //TODO
+            }
+          } else
+          {
+            logger.println("WARNING: skipping creating Jira Sub-task for finding: ${it.value.fingerprintPrettyPrint} because I could not find the parent task for fingerprint: ${it.value.componentFingerprintPrettyPrint}")
+          }
+        }
+      }
+    }
+    else
+    {
+      logger.println("Creating ${newIQFindings.size()} finding tickets")
+      newIQFindings.each {
+        createIndividualTicket(jiraClient,
+                               jiraFieldMappingUtil,
+                               it.value,
+                               iqAppExternalId,
+                               iqOrgExternalId,
+                               "TODO: Scan Stage") //TODO
+        }
+    }
+  }
+
+  /**
+   *
+   * @param jiraFieldMappingUtil
+   * @param potentialComponentsMap component information from IQ Server
+   * @param potentialFindingsMap   policy violations from IQ Server
+   * @param currentComponentsMap   component Ticket from Jira
+   * @param currentFindingsMap     finding Ticket from Jira
+   * @param newIQComponents
+   * @param newIQFindings
+   * @param repeatJiraComponents
+   * @param repeatJiraFindings
+   * @param oldJiraComponents
+   * @param oldJiraFindings
+   */
+  private void compareIQServerAndJira(JiraFieldMappingUtil jiraFieldMappingUtil,
+                                      Map<String, PolicyViolation> potentialComponentsMap,
+                                      Map<String, PolicyViolation> potentialFindingsMap,
+                                      Map<String, PolicyViolation> currentComponentsMap,
+                                      Map<String, PolicyViolation> currentFindingsMap,
+                                      Map<String, PolicyViolation> newIQComponents,
+                                      Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings,
+                                      Map<String, PolicyViolation> newIQFindings,
+                                      Map<String, PolicyViolation> repeatJiraComponents,
+                                      Map<String, PolicyViolation> repeatJiraFindings,
+                                      Map<String, PolicyViolation> oldJiraComponents,
+                                      Map<String, PolicyViolation> oldJiraFindings)
+  {
+    if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
+    {
+      calculateNewAndRepeatFindings("Component", potentialComponentsMap, currentComponentsMap, newIQComponents, repeatJiraComponents)
+      calculateOldFindings("Component", potentialComponentsMap, currentComponentsMap, oldJiraComponents)
+    }
+
+    if(jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets || jiraFieldMappingUtil.shouldAggregateTicketsByComponent == false)
+    {
+      calculateNewAndRepeatFindings("Finding", potentialFindingsMap, currentFindingsMap, newIQFindings, repeatJiraFindings)
+      calculateOldFindings("Finding", potentialFindingsMap, currentFindingsMap, oldJiraFindings)
+
+      calculateRepeatComponentsWithNewFindings(newIQFindings, repeatJiraComponents, repeatJiraComponentsWithNewFindings)
+    }
+  }
+
+  static private void calculateRepeatComponentsWithNewFindings(Map<String, PolicyViolation> pNewIQFindings,
+                                                               Map<String, PolicyViolation> pRepeatJiraComponents,
+                                                               Map<String, PolicyViolation> pRepeatJiraComponentsWithNewFindings)
+  {
+    pNewIQFindings.each {
+      if (pRepeatJiraComponents.containsKey(it.value.componentFingerprint))
       {
-        logger.println("Jira ticket: not found for for finding: ${it.value.fingerprintPrettyPrint}")
-        newFindings.add(it.value)
+        pRepeatJiraComponentsWithNewFindings.put(it.value.componentFingerprint, pRepeatJiraComponents.get(it.value.componentFingerprint))
       }
     }
   }
 
-  private void calculateOldFindings(HashMap<String, PolicyViolation> pPotentialFindings,
-                                                    HashMap<String, PolicyViolation> pCurrentFindings,
-                                                    Set<PolicyViolation> oldFindings)
+  private void calculateNewAndRepeatFindings(String pLoggingLabel,
+                                             Map<String, PolicyViolation> pPotentialFindings,
+                                             Map<String, PolicyViolation> pCurrentFindings,
+                                             Map<String, PolicyViolation> pNewFindings,
+                                             Map<String, PolicyViolation> pRepeatFindings)
+  {
+    pPotentialFindings.each {
+      if (pCurrentFindings.containsKey(it.key))
+      {
+        logger.println("Jira ticket: ${pCurrentFindings.get(it.key).ticketExternalId} already exists for ${pLoggingLabel}: ${it.value.fingerprintPrettyPrint}")
+        PolicyViolation pv = pCurrentFindings.get(it.key)
+        pRepeatFindings.put(pv.fingerprint, pv)
+      } else
+      {
+        logger.println("Jira ticket: not found for for ${pLoggingLabel}: ${it.value.fingerprintPrettyPrint}")
+        pNewFindings.put(it.value.fingerprint, it.value)
+      }
+    }
+  }
+
+  private void calculateOldFindings(String pLoggingLabel,
+                                    Map<String, PolicyViolation> pPotentialFindings,
+                                    Map<String, PolicyViolation> pCurrentFindings,
+                                    Map<String, PolicyViolation> oldFindings)
   {
     pCurrentFindings.each{
       if (pPotentialFindings.containsKey(it.key)){
-        logger.println("Finding: ${pPotentialFindings.get(it.key).fingerprintPrettyPrint} still exists for Jira Ticket: ${it.value.ticketExternalId}")
+        logger.println("${pLoggingLabel}: ${pPotentialFindings.get(it.key).fingerprintPrettyPrint} still exists for Jira Ticket: ${it.value.ticketExternalId}")
       } else {
-        logger.println("Finding no longer exists for Jira Ticket: ${it.value.ticketExternalId} - ${it.value.ticketSummary}")
-        oldFindings.add(it.value)
+        logger.println("${pLoggingLabel} no longer exists for Jira Ticket: ${it.value.ticketExternalId} - ${it.value.ticketSummary}")
+        oldFindings.put(it.value.fingerprint, it.value)
       }
     }
   }
@@ -250,19 +438,25 @@ class JiraNotifier
     jiraClient.closeTicket(pPolicyViolation.ticketInternalId, transitionStatus)
   }
 
-  private void createIndividualTicket(JiraClient jiraClient,
-                                      JiraFieldMappingUtil jiraFieldMappingUtil,
-                                      PolicyViolation pPolicyViolation,
-                                      String iqAppExternalId,
-                                      String iqOrgExternalId,
-                                      String scanStage,
-                                      String severityString,
-                                      String cveCode,
-                                      String cvss)
+  private def createIndividualTicket(JiraClient jiraClient,
+                                     JiraFieldMappingUtil jiraFieldMappingUtil,
+                                     PolicyViolation pPolicyViolation,
+                                     String iqAppExternalId,
+                                     String iqOrgExternalId,
+                                     String scanStage)
   {
     logger.println("Creating Jira Ticket in Project: ${jiraFieldMappingUtil.projectKey} for Component: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    def description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
+    def description
+    if (pPolicyViolation.policyName)
+    {
+      description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
+    }
+    else
+    {
+      description = "Sonatype IQ Server Policy Violation - ${pPolicyViolation.componentName}"
+    }
+
     def detail = "$pPolicyViolation.cvssReason"
     def source = pPolicyViolation.reportLink
     def severity = pPolicyViolation.policyThreatLevel
@@ -276,10 +470,41 @@ class JiraNotifier
                            iqAppExternalId,
                            iqOrgExternalId,
                            scanStage,
-                           severityString,
-                           cveCode,
-                           cvss,
+                           pPolicyViolation.severity,
+                           pPolicyViolation.cveCode,
+                           pPolicyViolation.cvssScore,
                            pPolicyViolation.fingerprint)
+  }
+
+  private def createSubTask(JiraClient jiraClient,
+                                     JiraFieldMappingUtil jiraFieldMappingUtil,
+                                     String pParentIssueKey,
+                                     PolicyViolation pPolicyViolation,
+                                     String iqAppExternalId,
+                                     String iqOrgExternalId,
+                                     String scanStage)
+  {
+    logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
+
+    def description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
+    def detail = "$pPolicyViolation.cvssReason"
+    def source = pPolicyViolation.reportLink
+    def severity = pPolicyViolation.policyThreatLevel
+
+    jiraClient.createSubTask(jiraFieldMappingUtil,
+                             pParentIssueKey,
+                             description,
+                             detail,
+                             source,
+                             severity,
+                             pPolicyViolation.fingerprintKey,
+                             iqAppExternalId,
+                             iqOrgExternalId,
+                             scanStage,
+                             pPolicyViolation.severity,
+                             pPolicyViolation.cveCode,
+                             pPolicyViolation.cvssScore,
+                             pPolicyViolation.fingerprint)
   }
 
   private void createSummaryTicket(JiraClient jiraClient,
@@ -288,7 +513,7 @@ class JiraNotifier
                                    String iqAppExternalId,
                                    String iqReportId)
   {
-    //TODO: Create a summary ticket from the policyEvaluationHealthAction
+    //TODO: Create a summary ticket from the policyEvaluationHealthAction - what else should be in a summary ticket?
     logger.println("Creating Summary Jira Ticket for Project: ${jiraFieldMappingUtil.projectKey}")
 
     def description = "Sonatype IQ Server Summary of Violations"
