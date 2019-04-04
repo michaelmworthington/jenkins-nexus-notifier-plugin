@@ -63,6 +63,7 @@ class JiraClientTest
                                                                   null,
                                                                   null,
                                                                   "Security-High",
+                                                                  null,
                                                                   false,
                                                                   false,
                                                                   null,
@@ -167,10 +168,6 @@ class JiraClientTest
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
-    jiraFieldMappingUtil.expandEnvVars()
-    jiraFieldMappingUtil.assignFieldsFromConfig()
-    jiraFieldMappingUtil.mapCustomFieldNamesToIds()
-
     def resp = client.createIssue(jiraFieldMappingUtil,
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-1234",
@@ -196,10 +193,6 @@ class JiraClientTest
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
-
-    jiraFieldMappingUtil.expandEnvVars()
-    jiraFieldMappingUtil.assignFieldsFromConfig()
-    jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
     def resp = client.createIssue(jiraFieldMappingUtil,
                                   "Component ABC has Policy Violations",
@@ -242,10 +235,7 @@ class JiraClientTest
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
 
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, client, null, System.out)
-    jiraFieldMappingUtil.lastScanDateCustomFieldName = "Last Scan Date"
-
-    jiraFieldMappingUtil.mapCustomFieldNamesToIds()
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     String ticketNumber = "JIRAIQ-156"
 

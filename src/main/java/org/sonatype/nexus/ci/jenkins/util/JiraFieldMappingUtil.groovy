@@ -29,6 +29,7 @@ class JiraFieldMappingUtil
   String cveCodeCustomFieldName
   String cvssCustomFieldName
   String policyFilterPrefix
+  String jiraDateFormatOverride
   Boolean shouldAggregateTicketsByComponent
   Boolean shouldCreateSubTasksForAggregatedTickets
   String scanTypeCustomFieldName
@@ -60,14 +61,18 @@ class JiraFieldMappingUtil
     jiraClient = pJiraClient
     iEnvVars = pEnvVars
     this.logger = pLogger
+
+    expandEnvVars()
+    assignFieldsFromConfig()
+    mapCustomFieldNamesToIds()
   }
 
-  void expandEnvVars()
+  private void expandEnvVars()
   {
     projectKey = iEnvVars.expand(iJiraNotification.projectKey) //TODO: do I need to expand any other fields?
   }
 
-  void assignFieldsFromConfig()
+  private void assignFieldsFromConfig()
   {
     issueTypeName = iJiraNotification.issueTypeName //TODO: this appears to be required on the API - the default value only comes in through the UI
     subTaskIssueTypeName = iJiraNotification.subTaskIssueTypeName
@@ -87,6 +92,7 @@ class JiraFieldMappingUtil
     cveCodeCustomFieldName = iJiraNotification.cveCodeCustomFieldName
     cvssCustomFieldName = iJiraNotification.cvssCustomFieldName
     policyFilterPrefix = iJiraNotification.policyFilterPrefix
+    jiraDateFormatOverride = iJiraNotification.jiraDateFormatOverride
     shouldAggregateTicketsByComponent = iJiraNotification.shouldAggregateTicketsByComponent
     shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets
     scanTypeCustomFieldName = iJiraNotification.scanTypeCustomFieldName
@@ -97,7 +103,7 @@ class JiraFieldMappingUtil
     findingTemplateCustomFieldValue = iJiraNotification.findingTemplateCustomFieldValue
   }
 
-  void mapCustomFieldNamesToIds()
+  private void mapCustomFieldNamesToIds()
   {
     // todo: use the response for some validation and automatic formatting of the custom fields
     jiraClient.lookupMetadataConfigurationForCreateIssue(projectKey, issueTypeName)
@@ -157,4 +163,45 @@ class JiraFieldMappingUtil
     returnValue
   }
 
+  String formatDateForJira(Date pDate)
+  {
+    if (jiraDateFormatOverride)
+    {
+      return pDate.format(jiraDateFormatOverride)
+    }
+    else
+    {
+      return pDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    }
+  }
+
+  /**
+   * Jira wants this:
+   *      "customfield_10003": "2011-10-19T10:29:29.908+1100"
+   * @param pDate
+   * @return
+   */
+  String formatDateForJira(Date pDate, TimeZone pTz)
+  {
+    if (jiraDateFormatOverride)
+    {
+      return pDate.format(jiraDateFormatOverride, pTz)
+    }
+    else
+    {
+      return pDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSZ", pTz)
+    }
+  }
+
+  Date parseDateForJira(String pDateString)
+  {
+    if (jiraDateFormatOverride)
+    {
+      return Date.parse(jiraDateFormatOverride, pDateString)
+    }
+    else
+    {
+      return Date.parse("yyyy-MM-dd'T'HH:mm:ss.SSSZ", pDateString)
+    }
+  }
 }

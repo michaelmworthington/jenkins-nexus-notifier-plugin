@@ -76,6 +76,7 @@ class JiraNotifierTest
                                                                   "CVE Code",
                                                                   "CVSS",
                                                                   "License",
+                                                                  null,
                                                                   false,
                                                                   false,
                                                                   null,
@@ -506,6 +507,7 @@ class JiraNotifierTest
       2 * jiraClient.createSubTask(*_)
       12 * jiraClient.closeTicket(*_)
   }
+
   /*
   ****************************************************************************************************************************************************
   *                                                     Integration Tests                                                                            *

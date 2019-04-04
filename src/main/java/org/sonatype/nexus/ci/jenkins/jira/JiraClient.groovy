@@ -309,8 +309,7 @@ class JiraClient extends AbstractToolClient
                                                violationUniqueId)
   {
     //TODO: Pull these out and take them in as parameters
-    Date now = new Date()
-    String nowFormatted = now.format("yyyy-MM-dd HH:mm:ss Z") //2019-01-26 01:38:59 -0500)
+    String nowFormatted = jiraFieldMappingUtil.formatDateForJira(new Date())
 
     String formatted_summary = "${description}"
     String formatted_description = "\n\tDescription: ${description}\n\n\tFirst Found Timestamp: ${nowFormatted}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
@@ -341,8 +340,8 @@ class JiraClient extends AbstractToolClient
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.applicationCustomFieldId, iqAppExternalId)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.organizationCustomFieldId, iqOrgExternalId)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanStageCustomFieldId, scanStage)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationDetectDateCustomFieldId, now.format("yyyy-MM-dd'T'HH:mm:ss.SSSXX"))
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.lastScanDateCustomFieldId, now.format("yyyy-MM-dd'T'HH:mm:ss.SSSXX"))
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationDetectDateCustomFieldId, nowFormatted)
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.lastScanDateCustomFieldId, nowFormatted)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.severityCustomFieldId, severityString)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cveCodeCustomFieldId, cveCode)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cvssCustomFieldId, cvss)
@@ -374,7 +373,7 @@ class JiraClient extends AbstractToolClient
   private static Map getUpdateIssueScanDateRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil)
   {
     String formattedFieldId = "${jiraFieldMappingUtil.lastScanDateCustomFieldId}"
-    String formattedDate = new Date().format("yyyy-MM-dd'T'HH:mm:ss.SSSXX")
+    String formattedDate = jiraFieldMappingUtil.formatDateForJira(new Date())
 
     //TODO: maybe i could figure out how to do this right in groovy
     Map<String, String> scanDate = new HashMap<String, String>()

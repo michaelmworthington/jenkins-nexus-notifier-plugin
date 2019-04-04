@@ -51,9 +51,6 @@ class JiraNotifier
     PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
 
     try {
-      jiraFieldMappingUtil.expandEnvVars()
-      jiraFieldMappingUtil.assignFieldsFromConfig()
-
       logger.println("######################################")
       logger.println("Creating Jira Tickets for Project: ${jiraFieldMappingUtil.projectKey} with issue type: ${jiraFieldMappingUtil.issueTypeName} and priority: ${jiraFieldMappingUtil.priorityName}")
       logger.println("######################################")
@@ -67,8 +64,6 @@ class JiraNotifier
 
       //TODO: look up the org from iq server
       String iqOrgExternalId = "org"
-
-      jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
       {
@@ -285,7 +280,7 @@ class JiraNotifier
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
                             resp.key,
-                            newIQFindings.get(it),
+                            newIQFindings.get(it), //TODO: I think I need to tie these together more tightly. There's a scenario where a Parent is closed, but the children are open. That should not prevent the creation of a new parent and children (although they'll have the same fingerprint) - What happens then when we go to close the children and there are two of them??? I"ll guess we close one of them.
                             iqAppExternalId,
                             iqOrgExternalId,
                             "TODO: Scan Stage") //TODO

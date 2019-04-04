@@ -14,12 +14,10 @@ package org.sonatype.nexus.ci.jenkins.notifier;
 
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
-import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.Job;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
-import jenkins.model.Jenkins;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -54,6 +52,7 @@ public class JiraNotification
   private String cveCodeCustomFieldName;
   private String cvssCustomFieldName;
   private String policyFilterPrefix;
+  private String jiraDateFormatOverride;
   private boolean shouldAggregateTicketsByComponent;
   private boolean shouldCreateSubTasksForAggregatedTickets;
 
@@ -105,7 +104,7 @@ public class JiraNotification
   public String getCvssCustomFieldName() { return cvssCustomFieldName; }
 
   public String getPolicyFilterPrefix() { return policyFilterPrefix; }
-
+  public String getJiraDateFormatOverride() { return jiraDateFormatOverride; }
   public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
   public boolean getShouldCreateSubTasksForAggregatedTickets() { return shouldCreateSubTasksForAggregatedTickets; }
 
@@ -140,6 +139,7 @@ public class JiraNotification
                           final String cveCodeCustomFieldName,
                           final String cvssCustomFieldName,
                           final String policyFilterPrefix,
+                          String jiraDateFormatOverride,
                           final boolean shouldAggregateTicketsByComponent,
                           final boolean shouldCreateSubTasksForAggregatedTickets,
                           final String jobJiraCredentialsId,
@@ -170,6 +170,7 @@ public class JiraNotification
     this.cveCodeCustomFieldName = cveCodeCustomFieldName;
     this.cvssCustomFieldName = cvssCustomFieldName;
     this.policyFilterPrefix = policyFilterPrefix;
+    this.jiraDateFormatOverride = jiraDateFormatOverride;
     this.shouldAggregateTicketsByComponent = shouldAggregateTicketsByComponent;
     this.shouldCreateSubTasksForAggregatedTickets = shouldCreateSubTasksForAggregatedTickets;
     this.jobJiraCredentialsId = jobJiraCredentialsId;

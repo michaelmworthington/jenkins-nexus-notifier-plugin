@@ -36,51 +36,86 @@ class JiraFieldMappingUtilTest
   def mockRun = Mock(Run)
 
   JiraNotification jiraNotificationCustomFieldMapTest
+  JiraNotification jiraNotificationMinimalTest
 
   def setup() {
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
 
+    jiraNotificationMinimalTest = new JiraNotification(true,
+                                                       false,
+                                                       'JIRAIQ',
+                                                       "Task",
+                                                       null,
+                                                       "Low",
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null)
+
     jiraNotificationCustomFieldMapTest = new JiraNotification(true,
-                                                true,
-                                                'JIRAIQ',
-                                                "Task",
-                                                "Sub-task",
-                                                "Low",
-                                                false,
-                                                true,
-                                                "Done",
-                                                "IQ Application",
-                                                "IQ Organization",
-                                                null,
-                                                "Finding ID",
-                                                "Detect Date",
-                                                "Last Scan Date",
-                                                null,
-                                                null,
-                                                null,
-                                                "Security-High",
-                                                false,
-                                                false,
-                                                null,
-                                                null,
-                                                "Scan Type",
-                                                "SCA",
-                                                "Tool Name",
-                                                "Nexus IQ",
-                                                "Finding Template",
-                                                "NA")
+                                                              true,
+                                                              'JIRAIQ',
+                                                              "Task",
+                                                              "Sub-task",
+                                                              "Low",
+                                                              false,
+                                                              true,
+                                                              "Done",
+                                                              "IQ Application",
+                                                              "IQ Organization",
+                                                              null,
+                                                              "Finding ID",
+                                                              "Detect Date",
+                                                              "Last Scan Date",
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              "Security-High",
+                                                              null,
+                                                              false,
+                                                              false,
+                                                              null,
+                                                              null,
+                                                              "Scan Type",
+                                                              "SCA",
+                                                              "Tool Name",
+                                                              "Nexus IQ",
+                                                              "Finding Template",
+                                                              "NA")
   }
 
   def 'expands arguments'() {
     setup:
-      EnvVars ev = ['projectKey': 'project']
-      jiraNotificationCustomFieldMapTest.projectKey = '${projectKey}'
+      GroovyMock(JiraClientFactory.class, global: true)
+      def client = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> client
 
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, null, ev, mockLogger)
+      EnvVars ev = ['projectKey': 'project']
+      jiraNotificationMinimalTest.projectKey = '${projectKey}'
 
     when:
-      jiraFieldMappingUtil.expandEnvVars()
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, ev, mockLogger)
 
     then:
       assert jiraFieldMappingUtil.projectKey == "project"
@@ -92,8 +127,7 @@ class JiraFieldMappingUtilTest
       def client = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> client
 
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
-      jiraFieldMappingUtil.applicationCustomFieldName = jiraNotificationCustomFieldMapTest.applicationCustomFieldName
+      jiraNotificationMinimalTest.applicationCustomFieldName = "IQ Application"
 
       List<Map<String, Object>> customFields = [
                   [
@@ -103,9 +137,7 @@ class JiraFieldMappingUtilTest
           ]
 
     when:
-      //jiraFieldMappingUtil.expandEnvVars()
-      //jiraFieldMappingUtil.assignFieldsFromConfig()
-      jiraFieldMappingUtil.mapCustomFieldNamesToIds()
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     then:
       1 * client.lookupCustomFields() >> customFields
@@ -119,14 +151,10 @@ class JiraFieldMappingUtilTest
       def client = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> client
 
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
-
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
 
     when:
-      jiraFieldMappingUtil.expandEnvVars()
-      jiraFieldMappingUtil.assignFieldsFromConfig()
-      jiraFieldMappingUtil.mapCustomFieldNamesToIds()
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     then:
       1 * client.lookupCustomFields() >> customFields
@@ -142,16 +170,84 @@ class JiraFieldMappingUtilTest
       //TODO: update with the rest of the fields
   }
 
+  def 'format date to string'() {
+    setup:
+    GroovyMock(JiraClientFactory.class, global: true)
+    def client = Mock(JiraClient.class)
+    JiraClientFactory.getJiraClient(*_) >> client
+
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+
+    def url
+    def d = new Date(1318980569908)
+    //def d = new Date(2019 - 1900, 3, 4, 12, 53, 13)
+    //def tz = TimeZone.getTimeZone('GMT')
+    def tz = TimeZone.getTimeZone('Australia/Sydney')
+    //def tz = TimeZone.getDefault()
+
+    when:
+    url = jiraFieldMappingUtil.formatDateForJira(d, tz)
+
+    then:
+    //url != null
+    //url == "2011-10-18T23:29:29.908+0000"
+    url == "2011-10-19T10:29:29.908+1100"
+  }
+
+  def 'format date to string with format override'() {
+    setup:
+    GroovyMock(JiraClientFactory.class, global: true)
+    def client = Mock(JiraClient.class)
+    JiraClientFactory.getJiraClient(*_) >> client
+
+    jiraNotificationMinimalTest.jiraDateFormatOverride = "yyyy-MM-dd"
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+
+    def url
+    def d = new Date(2011 - 1900, 9, 19)
+
+    when:
+      url = jiraFieldMappingUtil.formatDateForJira(d)
+
+    then:
+      url == "2011-10-19"
+  }
+
+  def 'parse string to date'() {
+    setup:
+    GroovyMock(JiraClientFactory.class, global: true)
+    def client = Mock(JiraClient.class)
+    JiraClientFactory.getJiraClient(*_) >> client
+
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+
+    //def url = "1969-12-31T19:00:00.000-0500"
+    def url = "2011-10-19T10:29:29.908+1100"
+    //String url = "2019-04-04T12:53:13.000-0400"
+    Date d
+    Long millis
+
+    when:
+    d = jiraFieldMappingUtil.parseDateForJira(url)
+    millis = d.getTime()
+
+    then:
+    d != null
+    millis.equals(new Long(1318980569908))
+  }
+
+  /*
+  ****************************************************************************************************************************************************
+  *                                                     Integration Tests                                                                            *
+  ****************************************************************************************************************************************************
+   */
+
   @Ignore
   def 'helper test to verify interaction with Jira Server - Map Custom Fields'() {
     setup:
       def client = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', System.out, true)
 
       JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
-
-      jiraFieldMappingUtil.expandEnvVars()
-      jiraFieldMappingUtil.assignFieldsFromConfig()
-      jiraFieldMappingUtil.mapCustomFieldNamesToIds()
 
     expect:
       jiraFieldMappingUtil.applicationCustomFieldId == "customfield_10200"
