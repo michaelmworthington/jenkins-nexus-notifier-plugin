@@ -30,6 +30,7 @@ class JiraFieldMappingUtilTest
   //private static final String iqPort = "60359" //for Charles Proxy
   private static final String iqPort = "8060"
 
+  boolean verboseLogging = true
   //def mockLogger = Mock(PrintStream)
   def mockLogger = System.out
   def mockListener = Mock(TaskListener)
@@ -74,24 +75,24 @@ class JiraFieldMappingUtilTest
                                                        null)
 
     jiraNotificationCustomFieldMapTest = new JiraNotification(true,
-                                                              true,
+                                                              verboseLogging,
                                                               'JIRAIQ',
-                                                              "Task",
+                                                              "Bug",
                                                               "Sub-task",
                                                               "Low",
-                                                              false,
+                                                              true,
                                                               true,
                                                               "Done",
                                                               "IQ Application",
                                                               "IQ Organization",
-                                                              null,
+                                                              "Scan Stage",
                                                               "Finding ID",
                                                               "Detect Date",
                                                               "Last Scan Date",
-                                                              null,
-                                                              null,
-                                                              null,
-                                                              "Security-High",
+                                                              "Severity",
+                                                              "CVE Code",
+                                                              "CVSS",
+                                                              "License",
                                                               null,
                                                               false,
                                                               false,

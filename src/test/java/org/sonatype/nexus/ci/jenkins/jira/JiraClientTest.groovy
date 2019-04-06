@@ -29,6 +29,7 @@ class JiraClientTest
   def http
   JiraClient client
 
+  boolean verboseLogging = true
   //def mockLogger = Mock(PrintStream)
   def mockLogger = System.out
   def mockListener = Mock(TaskListener)
@@ -45,24 +46,24 @@ class JiraClientTest
     mockRun.getEnvironment(_) >> [:]
 
     jiraNotificationCreateParentTicketTest = new JiraNotification(true,
-                                                                  true,
+                                                                  verboseLogging,
                                                                   'JIRAIQ',
                                                                   "Bug",
                                                                   "Sub-task",
                                                                   "Low",
-                                                                  false,
+                                                                  true,
                                                                   true,
                                                                   "Done",
                                                                   "IQ Application",
                                                                   "IQ Organization",
-                                                                  null,
+                                                                  "Scan Stage",
                                                                   "Finding ID",
                                                                   "Detect Date",
                                                                   "Last Scan Date",
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  "Security-High",
+                                                                  "Severity",
+                                                                  "CVE Code",
+                                                                  "CVSS",
+                                                                  "License",
                                                                   null,
                                                                   false,
                                                                   false,
@@ -176,10 +177,10 @@ class JiraClientTest
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
                                   "aaaaaaa-testidegrandfathering",
                                   "test org",
-                                  null,
-                                  null,
-                                  null,
-                                  null,
+                                  "Build",
+                                  "Low",
+                                  "CVE-2019-1234",
+                                  2.3,
                                   "some-sha-value")
 
     expect:

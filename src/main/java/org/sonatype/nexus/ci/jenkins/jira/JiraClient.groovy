@@ -32,7 +32,7 @@ class JiraClient extends AbstractToolClient
                   scanStage,
                   severityString,
                   cveCode,
-                  cvss,
+                  double cvss,
                   violationUniqueId)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
@@ -305,7 +305,7 @@ class JiraClient extends AbstractToolClient
                                                scanStage,
                                                severityString,
                                                cveCode,
-                                               cvss,
+                                               double cvss,
                                                violationUniqueId)
   {
     //TODO: Pull these out and take them in as parameters
@@ -336,15 +336,16 @@ class JiraClient extends AbstractToolClient
 
     //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
     //todo: see if i can make these dynamic based on the project metadata
+    //       todo; review fields - https://mail.google.com/mail/u/0/#inbox/QgrcJHsHsJScdtsQNFlKnWrWCwwblmVFScB
 
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.applicationCustomFieldId, iqAppExternalId)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.organizationCustomFieldId, iqOrgExternalId)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanStageCustomFieldId, scanStage)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationDetectDateCustomFieldId, nowFormatted)
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.lastScanDateCustomFieldId, nowFormatted)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.severityCustomFieldId, severityString)
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.severityCustomFieldId, [ value: severityString ])
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cveCodeCustomFieldId, cveCode)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cvssCustomFieldId, cvss)
+    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cvssCustomFieldId, cvss) //TODO: how to detect and format number fields?
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanTypeCustomFieldId, [ value: jiraFieldMappingUtil.scanTypeCustomFieldValue ])
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.toolNameCustomFieldId, [ value: jiraFieldMappingUtil.toolNameCustomFieldValue ])
     addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.findingTemplateCustomFieldId, [ value: jiraFieldMappingUtil.findingTemplateCustomFieldValue ])
