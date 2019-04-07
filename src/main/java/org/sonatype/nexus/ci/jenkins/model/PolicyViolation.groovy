@@ -23,7 +23,7 @@ class PolicyViolation
   String componentName
   String policyId
   String policyName
-  int policyThreatLevel
+  Integer policyThreatLevel
   String cvssReason
 
   //Jira Fields
@@ -41,7 +41,7 @@ class PolicyViolation
   String fingerprintPrettyPrint
   String fingerprintKey
   String fingerprint
-  double cvssScore
+  Double cvssScore
   String cveCode
   String severity
 

@@ -26,6 +26,8 @@ import org.sonatype.nexus.ci.jenkins.config.JiraConfiguration;
 import org.sonatype.nexus.ci.jenkins.config.NotifierConfiguration;
 import org.sonatype.nexus.ci.jenkins.util.FormUtil;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class JiraNotification
@@ -65,6 +67,7 @@ public class JiraNotification
   private String toolNameCustomFieldValue;
   private String findingTemplateCustomFieldName;
   private String findingTemplateCustomFieldValue;
+  private List<JiraCustomFieldMappings> jiraCustomFieldMappings;
 
   public boolean getSendJiraNotification() {
     return sendJiraNotification;
@@ -118,6 +121,7 @@ public class JiraNotification
   public String getToolNameCustomFieldValue() { return toolNameCustomFieldValue; }
   public String getFindingTemplateCustomFieldName() { return findingTemplateCustomFieldName; }
   public String getFindingTemplateCustomFieldValue() { return findingTemplateCustomFieldValue; }
+  public List<JiraCustomFieldMappings> getJiraCustomFieldMappings() { return jiraCustomFieldMappings; }
 
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
@@ -139,7 +143,7 @@ public class JiraNotification
                           final String cveCodeCustomFieldName,
                           final String cvssCustomFieldName,
                           final String policyFilterPrefix,
-                          String jiraDateFormatOverride,
+                          final String jiraDateFormatOverride,
                           final boolean shouldAggregateTicketsByComponent,
                           final boolean shouldCreateSubTasksForAggregatedTickets,
                           final String jobJiraCredentialsId,
@@ -149,7 +153,8 @@ public class JiraNotification
                           final String toolNameCustomFieldName,
                           final String toolNameCustomFieldValue,
                           final String findingTemplateCustomFieldName,
-                          final String findingTemplateCustomFieldValue)
+                          final String findingTemplateCustomFieldValue,
+                          final List<JiraCustomFieldMappings> jiraCustomFieldMappings)
   {
     this.sendJiraNotification = sendJiraNotification;
     this.verboseLogging = verboseLogging;
@@ -181,6 +186,7 @@ public class JiraNotification
     this.toolNameCustomFieldValue = toolNameCustomFieldValue;
     this.findingTemplateCustomFieldName = findingTemplateCustomFieldName;
     this.findingTemplateCustomFieldValue = findingTemplateCustomFieldValue;
+    this.jiraCustomFieldMappings = jiraCustomFieldMappings;
   }
 
 //  @Override

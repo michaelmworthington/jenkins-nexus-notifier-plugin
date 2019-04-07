@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
+import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 import org.sonatype.nexus.ci.jenkins.util.AbstractToolClient
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 
@@ -27,13 +28,13 @@ class JiraClient extends AbstractToolClient
                   source,
                   severity,
                   fprint,
-                  iqAppExternalId,
-                  iqOrgExternalId,
-                  scanStage,
-                  severityString,
-                  cveCode,
-                  double cvss,
-                  violationUniqueId)
+                  String iqAppExternalId,
+                  String iqOrgExternalId,
+                  String scanStage,
+                  String severityString,
+                  String cveCode,
+                  Double cvss,
+                  String violationUniqueId)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
     Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
@@ -59,18 +60,18 @@ class JiraClient extends AbstractToolClient
    */
   def createSubTask(JiraFieldMappingUtil jiraFieldMappingUtil,
                     String parentIssueKey,
-                    description,
-                    detail,
-                    source,
-                    severity,
-                    fprint,
-                    iqAppExternalId,
-                    iqOrgExternalId,
-                    scanStage,
-                    severityString,
-                    cveCode,
-                    cvss,
-                    violationUniqueId)
+                    String description,
+                    String detail,
+                    String source,
+                    def severity,
+                    String fprint,
+                    String iqAppExternalId,
+                    String iqOrgExternalId,
+                    String scanStage,
+                    String severityString,
+                    String cveCode,
+                    Double cvss,
+                    String violationUniqueId)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
     Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
@@ -300,13 +301,13 @@ class JiraClient extends AbstractToolClient
                                                source,
                                                severity,
                                                fprint,
-                                               iqAppExternalId,
-                                               iqOrgExternalId,
-                                               scanStage,
-                                               severityString,
-                                               cveCode,
-                                               double cvss,
-                                               violationUniqueId)
+                                               String iqAppExternalId,
+                                               String iqOrgExternalId,
+                                               String scanStage,
+                                               String severityString,
+                                               String cveCode,
+                                               Double cvss,
+                                               String violationUniqueId)
   {
     //TODO: Pull these out and take them in as parameters
     String nowFormatted = jiraFieldMappingUtil.formatDateForJira(new Date())
@@ -326,30 +327,23 @@ class JiraClient extends AbstractToolClient
 
     if(jiraFieldMappingUtil.priorityName)
     {
-      addCustomFieldToTicket(returnValue, "priority", [ name: jiraFieldMappingUtil.priorityName ])
+      returnValue.fields.put("priority", [ name: jiraFieldMappingUtil.priorityName ])
     }
 
     if(jiraFieldMappingUtil.issueTypeName)
     {
-      addCustomFieldToTicket(returnValue, "issuetype", [ name: jiraFieldMappingUtil.issueTypeName ])
+      returnValue.fields.put("issuetype", [ name: jiraFieldMappingUtil.issueTypeName ])
     }
 
-    //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
-    //todo: see if i can make these dynamic based on the project metadata
-    //       todo; review fields - https://mail.google.com/mail/u/0/#inbox/QgrcJHsHsJScdtsQNFlKnWrWCwwblmVFScB
-
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.applicationCustomFieldId, iqAppExternalId)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.organizationCustomFieldId, iqOrgExternalId)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanStageCustomFieldId, scanStage)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationDetectDateCustomFieldId, nowFormatted)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.lastScanDateCustomFieldId, nowFormatted)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.severityCustomFieldId, [ value: severityString ])
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cveCodeCustomFieldId, cveCode)
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.cvssCustomFieldId, cvss) //TODO: how to detect and format number fields?
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.scanTypeCustomFieldId, [ value: jiraFieldMappingUtil.scanTypeCustomFieldValue ])
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.toolNameCustomFieldId, [ value: jiraFieldMappingUtil.toolNameCustomFieldValue ])
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.findingTemplateCustomFieldId, [ value: jiraFieldMappingUtil.findingTemplateCustomFieldValue ])
-    addCustomFieldToTicket(returnValue, jiraFieldMappingUtil.violationIdCustomFieldId, violationUniqueId)
+    jiraFieldMappingUtil.addCustomFieldsToTicket(returnValue,
+                                                 iqAppExternalId,
+                                                 iqOrgExternalId,
+                                                 scanStage,
+                                                 nowFormatted,
+                                                 severityString,
+                                                 cveCode,
+                                                 cvss,
+                                                 violationUniqueId)
 
     return returnValue
   }
@@ -360,20 +354,19 @@ class JiraClient extends AbstractToolClient
   {
     if(jiraFieldMappingUtil.issueTypeName)
     {
-      addCustomFieldToTicket(returnValue, "issuetype", [ name: jiraFieldMappingUtil.subTaskIssueTypeName ])
+      returnValue.fields.put("issuetype", [ name: jiraFieldMappingUtil.subTaskIssueTypeName ])
     }
 
     if(parentIssueKey)
     {
-      addCustomFieldToTicket(returnValue, "parent", [ key: parentIssueKey ])
+      returnValue.fields.put("parent", [ key: parentIssueKey ])
     }
   }
 
-
-
   private static Map getUpdateIssueScanDateRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil)
   {
-    String formattedFieldId = "${jiraFieldMappingUtil.lastScanDateCustomFieldId}"
+    JiraCustomFieldMappings lastScanDateField = jiraFieldMappingUtil.getLastScanDateCustomField()
+    String formattedFieldId = "${lastScanDateField.customFieldId}"
     String formattedDate = jiraFieldMappingUtil.formatDateForJira(new Date())
 
     //TODO: maybe i could figure out how to do this right in groovy
@@ -384,13 +377,5 @@ class JiraClient extends AbstractToolClient
     fields.put("fields", scanDate)
 
     return fields
-  }
-
-  private static addCustomFieldToTicket(Map ticketFieldsArray, String customFieldId, customFieldValue)
-  {
-    if (customFieldId && customFieldValue)
-    {
-      ticketFieldsArray.fields.put(customFieldId, customFieldValue)
-    }
   }
 }

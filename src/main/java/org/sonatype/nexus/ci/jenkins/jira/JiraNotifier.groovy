@@ -19,6 +19,7 @@ import org.sonatype.nexus.ci.jenkins.iq.IQClient
 import org.sonatype.nexus.ci.jenkins.iq.IQClientFactory
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction
 import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
+import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 
@@ -107,12 +108,12 @@ class JiraNotifier
         //http://localhost:8080/rest/api/2/search?jql=project%3D%22JIRAIQ%22
         def currentFindings = jiraClient.lookupJiraTickets(jiraFieldMappingUtil.projectKey,
                                                            jiraFieldMappingUtil.transitionStatus,
-                                                           jiraFieldMappingUtil.applicationCustomFieldName,
+                                                           jiraFieldMappingUtil.getApplicationCustomField().customFieldName,
                                                            iqAppExternalId)
 
         logger.println("Parsing findings from Jira: ${currentFindings.issues.size}")
         currentFindings.issues.each {
-          PolicyViolation pv = PolicyViolation.buildFromJira(it, jiraFieldMappingUtil.violationIdCustomFieldId)
+          PolicyViolation pv = PolicyViolation.buildFromJira(it, jiraFieldMappingUtil.getViolationIdCustomField().customFieldId)
 
           if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
           {
@@ -280,7 +281,7 @@ class JiraNotifier
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
                             resp.key,
-                            newIQFindings.get(it), //TODO: I think I need to tie these together more tightly. There's a scenario where a Parent is closed, but the children are open. That should not prevent the creation of a new parent and children (although they'll have the same fingerprint) - What happens then when we go to close the children and there are two of them??? I"ll guess we close one of them.
+                            newIQFindings.get(it), //TODO: I think I need to tie these together more tightly. There's a scenario where a Parent is closed, but the children are open. That should not prevent the creation of a new parent and children (although they'll have the same fingerprint) - What happens then when we go to close the children and there are two of them??? I"ll guess we close one of them. WHAAAAAA
                             iqAppExternalId,
                             iqOrgExternalId,
                             "TODO: Scan Stage") //TODO
@@ -421,7 +422,8 @@ class JiraNotifier
 
   private void updateTicketScanDate(JiraClient jiraClient, JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation)
   {
-    logger.println("Updating Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} with new scan date in field: ${jiraFieldMappingUtil.lastScanDateCustomFieldName} (${jiraFieldMappingUtil.lastScanDateCustomFieldId})")
+    JiraCustomFieldMappings lastScanDateField = jiraFieldMappingUtil.getLastScanDateCustomField()
+    logger.println("Updating Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} with new scan date in field: ${lastScanDateField.customFieldName} (${lastScanDateField.customFieldId})")
 
     jiraClient.updateIssueScanDate(jiraFieldMappingUtil, pPolicyViolation.ticketInternalId)
   }
@@ -452,15 +454,11 @@ class JiraNotifier
       description = "Sonatype IQ Server Policy Violation - ${pPolicyViolation.componentName}"
     }
 
-    def detail = "$pPolicyViolation.cvssReason"
-    def source = pPolicyViolation.reportLink
-    def severity = pPolicyViolation.policyThreatLevel
-
     jiraClient.createIssue(jiraFieldMappingUtil,
                            description,
-                           detail,
-                           source,
-                           severity,
+                           pPolicyViolation.cvssReason,
+                           pPolicyViolation.reportLink,
+                           pPolicyViolation.policyThreatLevel,
                            pPolicyViolation.fingerprintKey,
                            iqAppExternalId,
                            iqOrgExternalId,
@@ -481,17 +479,14 @@ class JiraNotifier
   {
     logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    def description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
-    def detail = "$pPolicyViolation.cvssReason"
-    def source = pPolicyViolation.reportLink
-    def severity = pPolicyViolation.policyThreatLevel
+    String description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
 
     jiraClient.createSubTask(jiraFieldMappingUtil,
                              pParentIssueKey,
                              description,
-                             detail,
-                             source,
-                             severity,
+                             pPolicyViolation.cvssReason,
+                             pPolicyViolation.reportLink,
+                             pPolicyViolation.policyThreatLevel,
                              pPolicyViolation.fingerprintKey,
                              iqAppExternalId,
                              iqOrgExternalId,

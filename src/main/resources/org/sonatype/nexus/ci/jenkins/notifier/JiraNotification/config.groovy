@@ -119,7 +119,7 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
     }
-    f.section(title: _('Custom Field Options - Pass Through Fields')) { //todo: can i make this a dynamic key/value list
+    f.section(title: _('Custom Field Options - Pass Through Fields')) { //todo: can i make this a dynamic key/value list = f.repeatable() & f.validate() - https://www.cloudbees.com/blog/introducing-variability-jenkins-plugins & https://wiki.jenkins.io/display/JENKINS/Create+a+new+Plugin+with+a+custom+build+Step
       f.entry(title: _('Jira Custom Field for Scan Type - Field Name'), field: 'scanTypeCustomFieldName') { //TODO: "Scan Type"
         f.textbox()
       }
@@ -142,6 +142,12 @@ f.section(title: typedDescriptor.displayName) {
 
       f.entry(title: _('Jira Custom Field for Finding Template - Value'), field: 'findingTemplateCustomFieldValue') { //TODO: "NA"
         f.textbox()
+      }
+
+      f.entry(title: _("Jira Custom Field Mappings")) {
+        f.repeatableHeteroProperty(
+                field: 'jiraCustomFieldMappings'
+        )
       }
     }
   }

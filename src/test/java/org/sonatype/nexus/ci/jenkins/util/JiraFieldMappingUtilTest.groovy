@@ -72,6 +72,7 @@ class JiraFieldMappingUtilTest
                                                        null,
                                                        null,
                                                        null,
+                                                       null,
                                                        null)
 
     jiraNotificationCustomFieldMapTest = new JiraNotification(true,
@@ -100,10 +101,14 @@ class JiraFieldMappingUtilTest
                                                               null,
                                                               "Scan Type",
                                                               "SCA",
-                                                              "Tool Name",
-                                                              "Nexus IQ",
-                                                              "Finding Template",
-                                                              "NA")
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              [
+                                                                      [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
+                                                                      [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
+                                                              ])
   }
 
   def 'expands arguments'() {
@@ -143,7 +148,7 @@ class JiraFieldMappingUtilTest
     then:
       1 * client.lookupCustomFields() >> customFields
 
-      assert jiraFieldMappingUtil.applicationCustomFieldId == "customfield_10200"
+      assert jiraFieldMappingUtil.getApplicationCustomField().customFieldId == "customfield_10200"
   }
 
   def 'validate custom fields names are mapped to ids - all fields from jsonslurper'() {
@@ -160,14 +165,16 @@ class JiraFieldMappingUtilTest
     then:
       1 * client.lookupCustomFields() >> customFields
 
-      assert jiraFieldMappingUtil.applicationCustomFieldId == "customfield_10200"
-      assert jiraFieldMappingUtil.organizationCustomFieldId == "customfield_10201"
-      assert jiraFieldMappingUtil.violationIdCustomFieldId == "customfield_10300"
-      assert jiraFieldMappingUtil.violationDetectDateCustomFieldId == "customfield_10502"
-      assert jiraFieldMappingUtil.lastScanDateCustomFieldId == "customfield_10503"
-      assert jiraFieldMappingUtil.scanTypeCustomFieldId == "customfield_10400"
-      assert jiraFieldMappingUtil.toolNameCustomFieldId == "customfield_10501"
-      assert jiraFieldMappingUtil.findingTemplateCustomFieldId == "customfield_10500"
+      assert jiraFieldMappingUtil.getApplicationCustomField().customFieldId == "customfield_10200"
+      assert jiraFieldMappingUtil.getOrganizationCustomField().customFieldId == "customfield_10201"
+      assert jiraFieldMappingUtil.getViolationIdCustomField().customFieldId == "customfield_10300"
+      assert jiraFieldMappingUtil.getViolationDetectDateCustomField().customFieldId == "customfield_10502"
+      assert jiraFieldMappingUtil.getLastScanDateCustomField().customFieldId == "customfield_10503"
+
+      //TODO: these are dynamic, how to test the dynamic fields. they won't have getters - getPassThrough("name")??
+      //assert jiraFieldMappingUtil.getscanTypeCustomField().customFieldId == "customfield_10400"
+      //assert jiraFieldMappingUtil.getToolNameCustomField().customFieldId == "customfield_10501"
+      //assert jiraFieldMappingUtil.getFindingTemplateCustomField().customFieldId == "customfield_10500"
       //TODO: update with the rest of the fields
   }
 
@@ -251,6 +258,8 @@ class JiraFieldMappingUtilTest
       JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     expect:
-      jiraFieldMappingUtil.applicationCustomFieldId == "customfield_10200"
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldName == "IQ Application"
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldId == "customfield_10200"
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldType == "string"
   }
 }

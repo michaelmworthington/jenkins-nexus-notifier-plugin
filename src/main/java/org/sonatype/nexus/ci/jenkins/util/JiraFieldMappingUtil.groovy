@@ -3,6 +3,7 @@ package org.sonatype.nexus.ci.jenkins.util
 import hudson.AbortException
 import hudson.EnvVars
 import org.sonatype.nexus.ci.jenkins.jira.JiraClient
+import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 
 class JiraFieldMappingUtil
@@ -19,41 +20,48 @@ class JiraFieldMappingUtil
   Boolean shouldCreateIndividualTickets
   Boolean shouldTransitionJiraTickets
   String transitionStatus
-  String applicationCustomFieldName
-  String organizationCustomFieldName
-  String scanStageCustomFieldName
-  String violationIdCustomFieldName
-  String violationDetectDateCustomFieldName
-  String lastScanDateCustomFieldName
-  String severityCustomFieldName
-  String cveCodeCustomFieldName
-  String cvssCustomFieldName
+
+  private String applicationCustomFieldName //todo: limit access to custom fields via the getter
+  private String organizationCustomFieldName
+  private String scanStageCustomFieldName
+  private String violationIdCustomFieldName
+  private String violationDetectDateCustomFieldName
+  private String lastScanDateCustomFieldName
+  private String severityCustomFieldName
+  private String cveCodeCustomFieldName
+  private String cvssCustomFieldName
+
   String policyFilterPrefix
   String jiraDateFormatOverride
   Boolean shouldAggregateTicketsByComponent
   Boolean shouldCreateSubTasksForAggregatedTickets
-  String scanTypeCustomFieldName
-  String scanTypeCustomFieldValue
-  String toolNameCustomFieldName
-  String toolNameCustomFieldValue
-  String findingTemplateCustomFieldName
-  String findingTemplateCustomFieldValue
+
+  String scanTypeCustomFieldName //TODO: Remove
+  String scanTypeCustomFieldValue //TODO: Remove
+  String toolNameCustomFieldName //TODO: Remove
+  String toolNameCustomFieldValue //TODO: Remove
+  String findingTemplateCustomFieldName //TODO: Remove
+  String findingTemplateCustomFieldValue //TODO: Remove
+  List<JiraCustomFieldMappings> jiraCustomFieldMappings
 
   //Custom Field IDs
   //  Populated by calling the JIRA REST API to get all of the custom fields,
   //  then looking up by name to get the ID
-  String applicationCustomFieldId
-  String organizationCustomFieldId
-  String scanStageCustomFieldId
-  String violationIdCustomFieldId
-  String violationDetectDateCustomFieldId
-  String lastScanDateCustomFieldId
-  String severityCustomFieldId
-  String cveCodeCustomFieldId
-  String cvssCustomFieldId
-  String scanTypeCustomFieldId
-  String toolNameCustomFieldId
-  String findingTemplateCustomFieldId
+  private Map<String, JiraCustomFieldMappings> validatedCustomFieldMappings
+
+  JiraCustomFieldMappings getApplicationCustomField() { return validatedCustomFieldMappings.get(applicationCustomFieldName) }
+  JiraCustomFieldMappings getOrganizationCustomField() { return validatedCustomFieldMappings.get(organizationCustomFieldName) }
+  JiraCustomFieldMappings getScanStageCustomField() { return validatedCustomFieldMappings.get(scanStageCustomFieldName) }
+  JiraCustomFieldMappings getViolationIdCustomField() { return validatedCustomFieldMappings.get(violationIdCustomFieldName) }
+  JiraCustomFieldMappings getViolationDetectDateCustomField() { return validatedCustomFieldMappings.get(violationDetectDateCustomFieldName) }
+  JiraCustomFieldMappings getLastScanDateCustomField() { return validatedCustomFieldMappings.get(lastScanDateCustomFieldName) }
+  JiraCustomFieldMappings getSeverityCustomField() { return validatedCustomFieldMappings.get(severityCustomFieldName) }
+  JiraCustomFieldMappings getCveCodeCustomField() { return validatedCustomFieldMappings.get(cveCodeCustomFieldName) }
+  JiraCustomFieldMappings getCvssCustomField() { return validatedCustomFieldMappings.get(cvssCustomFieldName) }
+
+  JiraCustomFieldMappings getScanTypeCustomField() { return validatedCustomFieldMappings.get(scanTypeCustomFieldName) } //TODO: Remove
+  JiraCustomFieldMappings getToolNameCustomField() { return validatedCustomFieldMappings.get(toolNameCustomFieldName) } //TODO: Remove
+  JiraCustomFieldMappings getFindingTemplateCustomField() { return validatedCustomFieldMappings.get(findingTemplateCustomFieldName) } //TODO: Remove
 
   JiraFieldMappingUtil(JiraNotification pJiraNotification, JiraClient pJiraClient, EnvVars pEnvVars, PrintStream pLogger)
   {
@@ -61,6 +69,8 @@ class JiraFieldMappingUtil
     jiraClient = pJiraClient
     iEnvVars = pEnvVars
     this.logger = pLogger
+
+    validatedCustomFieldMappings = [:]
 
     expandEnvVars()
     assignFieldsFromConfig()
@@ -95,12 +105,14 @@ class JiraFieldMappingUtil
     jiraDateFormatOverride = iJiraNotification.jiraDateFormatOverride
     shouldAggregateTicketsByComponent = iJiraNotification.shouldAggregateTicketsByComponent
     shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets
-    scanTypeCustomFieldName = iJiraNotification.scanTypeCustomFieldName
-    scanTypeCustomFieldValue = iJiraNotification.scanTypeCustomFieldValue
-    toolNameCustomFieldName = iJiraNotification.toolNameCustomFieldName
-    toolNameCustomFieldValue = iJiraNotification.toolNameCustomFieldValue
-    findingTemplateCustomFieldName = iJiraNotification.findingTemplateCustomFieldName
-    findingTemplateCustomFieldValue = iJiraNotification.findingTemplateCustomFieldValue
+
+    scanTypeCustomFieldName = iJiraNotification.scanTypeCustomFieldName //TODO: Remove
+    scanTypeCustomFieldValue = iJiraNotification.scanTypeCustomFieldValue //TODO: Remove
+    toolNameCustomFieldName = iJiraNotification.toolNameCustomFieldName //TODO: Remove
+    toolNameCustomFieldValue = iJiraNotification.toolNameCustomFieldValue //TODO: Remove
+    findingTemplateCustomFieldName = iJiraNotification.findingTemplateCustomFieldName //TODO: Remove
+    findingTemplateCustomFieldValue = iJiraNotification.findingTemplateCustomFieldValue //TODO: Remove
+    jiraCustomFieldMappings = iJiraNotification.jiraCustomFieldMappings ?: []
   }
 
   private void mapCustomFieldNamesToIds()
@@ -114,30 +126,40 @@ class JiraFieldMappingUtil
 
     List customFields = (List) jiraClient.lookupCustomFields()
 
-    applicationCustomFieldId = lookupAndValidateCustomField(customFields, applicationCustomFieldName, "App Name")
-    organizationCustomFieldId = lookupAndValidateCustomField(customFields, organizationCustomFieldName, "Org Name")
-    scanStageCustomFieldId = lookupAndValidateCustomField(customFields, scanStageCustomFieldName, "Scan Stage")
-    violationIdCustomFieldId = lookupAndValidateCustomField(customFields, violationIdCustomFieldName, "Violation ID")
-    violationDetectDateCustomFieldId = lookupAndValidateCustomField(customFields, violationDetectDateCustomFieldName,"Detect Date")
-    lastScanDateCustomFieldId = lookupAndValidateCustomField(customFields, lastScanDateCustomFieldName,"Last Scan Date")
-    severityCustomFieldId = lookupAndValidateCustomField(customFields, severityCustomFieldName, "Severity")
-    cveCodeCustomFieldId = lookupAndValidateCustomField(customFields, cveCodeCustomFieldName, "CVE Code")
-    cvssCustomFieldId = lookupAndValidateCustomField(customFields, cvssCustomFieldName, "CVSS")
-    scanTypeCustomFieldId = lookupAndValidateCustomField(customFields, scanTypeCustomFieldName, "Scan Type")
-    toolNameCustomFieldId = lookupAndValidateCustomField(customFields, toolNameCustomFieldName, "Tool Name")
-    findingTemplateCustomFieldId = lookupAndValidateCustomField(customFields, findingTemplateCustomFieldName,"Finding Template")
+    //todo: can we use a getter here?
+    lookupAndValidateCustomField(customFields, applicationCustomFieldName, "App Name")
+    lookupAndValidateCustomField(customFields, organizationCustomFieldName, "Org Name")
+    lookupAndValidateCustomField(customFields, scanStageCustomFieldName, "Scan Stage")
+    lookupAndValidateCustomField(customFields, violationIdCustomFieldName, "Violation ID")
+    lookupAndValidateCustomField(customFields, violationDetectDateCustomFieldName,"Detect Date")
+    lookupAndValidateCustomField(customFields, lastScanDateCustomFieldName,"Last Scan Date")
+    lookupAndValidateCustomField(customFields, severityCustomFieldName, "Severity")
+    lookupAndValidateCustomField(customFields, cveCodeCustomFieldName, "CVE Code")
+    lookupAndValidateCustomField(customFields, cvssCustomFieldName, "CVSS")
+
+    lookupAndValidateCustomField(customFields, scanTypeCustomFieldName, "Scan Type") //TODO: Remove
+    lookupAndValidateCustomField(customFields, toolNameCustomFieldName, "Tool Name") //TODO: Remove
+    lookupAndValidateCustomField(customFields, findingTemplateCustomFieldName,"Finding Template") //TODO: Remove
+
+    jiraCustomFieldMappings.each {
+      it.customFieldId = lookupAndValidateCustomField(customFields, it.customFieldName, "Passthrough Custom Field: ${it.customFieldName}")
+    }
+
   }
 
-  private String lookupAndValidateCustomField(List<Map<String, Object>> pCustomFields, String pFieldName, String pFieldDescription)
+  private void lookupAndValidateCustomField(List<Map<String, Object>> pCustomFields, String pFieldName, String pFieldDescription)
   {
-    String returnValue = null
-    if(pFieldName)
+    if (pFieldName)
     {
-      returnValue = lookupCustomFieldId(pCustomFields, pFieldName)
+      JiraCustomFieldMappings returnValue = lookupCustomFieldId(pCustomFields, pFieldName)
       if (returnValue)
       {
-        logger.println("Custom Field mapping for field description: ${pFieldDescription} created mapping ${pFieldName} -> ${returnValue}")
-      } else
+        //TODO: show Required, but that's going back to the Issue Type Specific REST API
+        logger.println("Custom Field mapping for field description: ${pFieldDescription} created mapping ${pFieldName} -> ${returnValue.customFieldId} (${returnValue.customFieldType})")
+
+        validatedCustomFieldMappings.put(pFieldName, returnValue)
+      }
+      else
       {
         throw new AbortException("Custom Field mapping for field description: ${pFieldDescription}, not found with field name: ${pFieldName}")
       }
@@ -146,17 +168,17 @@ class JiraFieldMappingUtil
     {
       logger.println("Custom Field mapping not provided for field description: ${pFieldDescription}")
     }
-
-    return returnValue
   }
 
-  private static String lookupCustomFieldId(List<Map<String, Object>> customFields, String fieldName)
+  private static JiraCustomFieldMappings lookupCustomFieldId(List<Map<String, Object>> customFields, String fieldName)
   {
-    String returnValue = null
+    JiraCustomFieldMappings returnValue = null
     customFields.each {
       if(it.name == fieldName)
       {
-        returnValue = it.id
+        returnValue = new JiraCustomFieldMappings(fieldName, null)
+        returnValue.customFieldId = it.id
+        returnValue.customFieldType = it.schema?.type //TODO: create an override mapping
       }
     }
 
@@ -181,7 +203,7 @@ class JiraFieldMappingUtil
    * @param pDate
    * @return
    */
-  String formatDateForJira(Date pDate, TimeZone pTz)
+  protected String formatDateForJira(Date pDate, TimeZone pTz)
   {
     if (jiraDateFormatOverride)
     {
@@ -193,7 +215,7 @@ class JiraFieldMappingUtil
     }
   }
 
-  Date parseDateForJira(String pDateString)
+  protected Date parseDateForJira(String pDateString)
   {
     if (jiraDateFormatOverride)
     {
@@ -202,6 +224,69 @@ class JiraFieldMappingUtil
     else
     {
       return Date.parse("yyyy-MM-dd'T'HH:mm:ss.SSSZ", pDateString)
+    }
+  }
+
+  void addCustomFieldsToTicket(Map returnValue,
+                               String iqAppExternalId,
+                               String iqOrgExternalId,
+                               String scanStage,
+                               String nowFormatted,
+                               String severityString,
+                               String cveCode,
+                               Double cvss,
+                               String violationUniqueId)
+  {
+    //TODO: are these available anywhere else (i.e. where they're defined) so i don't have to pass them all over the place
+    getApplicationCustomField().customFieldValue = iqAppExternalId
+    getOrganizationCustomField().customFieldValue = iqOrgExternalId
+    getScanStageCustomField().customFieldValue = scanStage
+    getViolationIdCustomField().customFieldValue =  violationUniqueId
+    getViolationDetectDateCustomField().customFieldValue = nowFormatted
+    getLastScanDateCustomField().customFieldValue =  nowFormatted
+    getSeverityCustomField().customFieldValue =  severityString
+    getCveCodeCustomField().customFieldValue =  cveCode
+    getCvssCustomField().customFieldValue =  cvss
+
+    getScanTypeCustomField().customFieldValue =  scanTypeCustomFieldValue //TODO: remove
+    getToolNameCustomField().customFieldValue =  toolNameCustomFieldValue //TODO: remove
+    getFindingTemplateCustomField().customFieldValue =  findingTemplateCustomFieldValue  //TODO: remove
+
+    validatedCustomFieldMappings.each {
+      addCustomFieldToTicket(returnValue, it.value)
+    }
+  }
+
+  //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
+  //todo: see if i can make these dynamic based on the project metadata
+  //       todo; review fields - https://mail.google.com/mail/u/0/#inbox/QgrcJHsHsJScdtsQNFlKnWrWCwwblmVFScB
+  private static addCustomFieldToTicket(Map ticketFieldsArray, JiraCustomFieldMappings pField)
+  {
+    if (pField.customFieldId && pField.customFieldValue)
+    {
+      def returnValue
+      switch (pField.customFieldType)
+      {
+        case "date": //todo: short date
+        case "datetime":
+        case "string":
+          returnValue = pField.customFieldValue
+          break
+        case "option":
+          returnValue = [ value: pField.customFieldValue ]
+          break
+        case "number":
+            returnValue = Double.valueOf(pField.customFieldValue)
+          break
+        default:
+          returnValue = null
+          break
+      }
+
+      if (returnValue)
+      {
+        ticketFieldsArray.fields.put(pField.customFieldId, returnValue)
+      }
     }
   }
 }
