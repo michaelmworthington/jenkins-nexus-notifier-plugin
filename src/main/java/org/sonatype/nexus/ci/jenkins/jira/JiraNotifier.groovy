@@ -77,6 +77,7 @@ class JiraNotifier
         // Deduplicated findings
         Map<String, PolicyViolation> newIQComponents = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraFindingsWithNewComponents = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> newIQFindings = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> repeatJiraComponents = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> repeatJiraFindings = new HashMap<String, PolicyViolation>()
@@ -161,6 +162,7 @@ class JiraNotifier
                                currentFindingsMap,
                                newIQComponents,
                                repeatJiraComponentsWithNewFindings,
+                               repeatJiraFindingsWithNewComponents,
                                newIQFindings,
                                repeatJiraComponents,
                                repeatJiraFindings,
@@ -173,7 +175,7 @@ class JiraNotifier
         logger.println("Number of components that do not have tickets      : ${newIQComponents.size()}")
         logger.println("Number of findings   that do not have tickets      : ${newIQFindings.size()}")
         logger.println("Number of components that have existing tickets    : ${repeatJiraComponents.size()} (${repeatJiraComponentsWithNewFindings.size()} have new findings)")
-        logger.println("Number of findings   that have existing tickets    : ${repeatJiraFindings.size()}")
+        logger.println("Number of findings   that have existing tickets    : ${repeatJiraFindings.size()} (${repeatJiraFindingsWithNewComponents.size()} have new components)")
         logger.println("Number of tickets    that no longer have components: ${oldJiraComponents.size()}")
         logger.println("Number of tickets    that no longer have findings  : ${oldJiraFindings.size()}")
         logger.println("######################################")
@@ -182,6 +184,9 @@ class JiraNotifier
         /***************************************
           4. Create New Tickets
          ***************************************/
+
+        //From now on, we can treat the repeat jira findings as new iq findings
+        newIQFindings.putAll(repeatJiraFindingsWithNewComponents)
 
         createJiraTickets(newIQComponents,
                           repeatJiraComponentsWithNewFindings,
@@ -281,7 +286,7 @@ class JiraNotifier
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
                             resp.key,
-                            newIQFindings.get(it), //TODO: I think I need to tie these together more tightly. There's a scenario where a Parent is closed, but the children are open. That should not prevent the creation of a new parent and children (although they'll have the same fingerprint) - What happens then when we go to close the children and there are two of them??? I"ll guess we close one of them. WHAAAAAA
+                            newIQFindings.get(it),
                             iqAppExternalId,
                             iqOrgExternalId,
                             "TODO: Scan Stage") //TODO
@@ -298,7 +303,7 @@ class JiraNotifier
         logger.println("Creating ${moreFindings} finding tickets for repeat components")
 
         newIQFindings.each {
-          if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint))
+          if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint)) //TODO: this is failing in my jenkins job - i think it's trying to create the tickets twice
           {
             if (createdSubTasks.contains(it.key) == false)
             {
@@ -310,8 +315,10 @@ class JiraNotifier
                             iqOrgExternalId,
                             "TODO: Scan Stage") //TODO
             }
-          } else
+          }
+          else
           {
+            //TODO: i think this is actually ok, because it's just a note that the finding's parent component was new and not a repeat
             logger.println("WARNING: skipping creating Jira Sub-task for finding: ${it.value.fingerprintPrettyPrint} because I could not find the parent task for fingerprint: ${it.value.componentFingerprintPrettyPrint}")
           }
         }
@@ -352,6 +359,7 @@ class JiraNotifier
                                       Map<String, PolicyViolation> currentFindingsMap,
                                       Map<String, PolicyViolation> newIQComponents,
                                       Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings,
+                                      Map<String, PolicyViolation> repeatJiraFindingsWithNewComponents,
                                       Map<String, PolicyViolation> newIQFindings,
                                       Map<String, PolicyViolation> repeatJiraComponents,
                                       Map<String, PolicyViolation> repeatJiraFindings,
@@ -369,7 +377,12 @@ class JiraNotifier
       calculateNewAndRepeatFindings("Finding", potentialFindingsMap, currentFindingsMap, newIQFindings, repeatJiraFindings)
       calculateOldFindings("Finding", potentialFindingsMap, currentFindingsMap, oldJiraFindings)
 
+      // This is to find new violations for existing components (i.e. a newly discovered security vuln for a component that already had vulns)
       calculateRepeatComponentsWithNewFindings(newIQFindings, repeatJiraComponents, repeatJiraComponentsWithNewFindings)
+      //this is for an edge case where the parent ticket is closed, but the sub-task is still open, and we are creating a new component
+      // TODO: what if there is an existing component, probably, the sub-task still doesn't get created
+      // TODO: they'll have the same fingerprint - What happens then when we go to close the children and there are two of them??? I"ll guess we close one of them. WHAAAAAA
+      calculateRepeatFindingsWithNewComponents(newIQComponents, repeatJiraFindings, potentialFindingsMap, repeatJiraFindingsWithNewComponents)
     }
   }
 
@@ -381,6 +394,20 @@ class JiraNotifier
       if (pRepeatJiraComponents.containsKey(it.value.componentFingerprint))
       {
         pRepeatJiraComponentsWithNewFindings.put(it.value.componentFingerprint, pRepeatJiraComponents.get(it.value.componentFingerprint))
+      }
+    }
+  }
+
+  static private void calculateRepeatFindingsWithNewComponents(Map<String, PolicyViolation> pNewIQComponents,
+                                                               Map<String, PolicyViolation> pRepeatJiraFindings,
+                                                               Map<String, PolicyViolation> pPotentialFindingsMap,
+                                                               Map<String, PolicyViolation> pRepeatJiraFindingsWithNewComponents)
+  {
+    pRepeatJiraFindings.each {
+      PolicyViolation repeatIQFinding = pPotentialFindingsMap.get(it.key)
+      if (pNewIQComponents.containsKey(repeatIQFinding.componentFingerprint))
+      {
+        pRepeatJiraFindingsWithNewComponents.put(repeatIQFinding.fingerprint, repeatIQFinding)
       }
     }
   }
@@ -477,7 +504,6 @@ class JiraNotifier
                                      String iqOrgExternalId,
                                      String scanStage)
   {
-    //TODO: Null Pointer if JiraNotifierTest is run twice
     logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
 
     String description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
