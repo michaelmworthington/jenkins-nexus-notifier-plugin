@@ -81,14 +81,12 @@ class JiraNotifierTest
                                                                   false,
                                                                   null,
                                                                   null,
-                                                                  "Scan Type",
-                                                                  "SCA",
-                                                                  "Tool Name",
-                                                                  "Nexus IQ",
-                                                                  "Finding Template",
-                                                                  "NA",
-                                                                  null) //TODO: update
-
+                                                                  [
+                                                                          [ customFieldName: 'Random Number', customFieldValue: '17'],
+                                                                          [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
+                                                                          [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
+                                                                          [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
+                                                                  ])
   }
 
   def 'send requires projectKey'() {

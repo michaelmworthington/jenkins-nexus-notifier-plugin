@@ -22,6 +22,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
  * Jenkins Ref for Dynamic Field Lists:
  *     https://reports.jenkins.io/core-taglib/jelly-taglib-ref.html
  *     https://javadoc.jenkins-ci.org/lib/FormTagLib.html
+ *     https://www.cloudbees.com/blog/introducing-variability-jenkins-plugins
+ *     https://wiki.jenkins.io/display/JENKINS/Create+a+new+Plugin+with+a+custom+build+Step
  */
 public class JiraCustomFieldMappings
         extends AbstractDescribableImpl<JiraCustomFieldMappings>

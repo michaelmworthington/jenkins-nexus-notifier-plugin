@@ -82,7 +82,7 @@ f.section(title: typedDescriptor.displayName) {
       }
 
     }
-    f.section(title: _('Custom Field Options - Derived Fields')) {
+    f.section(title: _('Custom Field Options')) {
       f.entry(title: _('Jira Custom Field for IQ Application Id'), field: 'applicationCustomFieldName') {
         f.textbox()
       }
@@ -118,33 +118,8 @@ f.section(title: typedDescriptor.displayName) {
       f.entry(title: _('Jira Custom Field for CVSS'), field: 'cvssCustomFieldName') {
         f.textbox()
       }
-    }
-    f.section(title: _('Custom Field Options - Pass Through Fields')) { //todo: can i make this a dynamic key/value list = f.repeatable() & f.validate() - https://www.cloudbees.com/blog/introducing-variability-jenkins-plugins & https://wiki.jenkins.io/display/JENKINS/Create+a+new+Plugin+with+a+custom+build+Step
-      f.entry(title: _('Jira Custom Field for Scan Type - Field Name'), field: 'scanTypeCustomFieldName') { //TODO: "Scan Type"
-        f.textbox()
-      }
 
-      f.entry(title: _('Jira Custom Field for Scan Type - Value'), field: 'scanTypeCustomFieldValue') { //TODO: "SCA"
-        f.textbox()
-      }
-
-      f.entry(title: _('Jira Custom Field for Tool Name - Field Name'), field: 'toolNameCustomFieldName') { //TODO: "Scanning Tool"
-        f.textbox()
-      }
-
-      f.entry(title: _('Jira Custom Field for Tool Name - Value'), field: 'toolNameCustomFieldValue') { //TODO: "Nexus IQ"
-        f.textbox()
-      }
-
-      f.entry(title: _('Jira Custom Field for Finding Template - Field Name'), field: 'findingTemplateCustomFieldName') { //TODO: "Finding Template"
-        f.textbox()
-      }
-
-      f.entry(title: _('Jira Custom Field for Finding Template - Value'), field: 'findingTemplateCustomFieldValue') { //TODO: "NA"
-        f.textbox()
-      }
-
-      f.entry(title: _("Jira Custom Field Mappings")) {
+      f.entry(title: _("Jira Passthrough Custom Field Mappings")) {
         f.repeatableHeteroProperty(
                 field: 'jiraCustomFieldMappings'
         )

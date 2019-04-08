@@ -63,7 +63,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "aggregatetimespent",
@@ -144,6 +143,23 @@
   },
   {
     "clauseNames": [
+      "cf[10700]",
+      "Severity"
+    ],
+    "custom": true,
+    "id": "customfield_10700",
+    "name": "Severity",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:select",
+      "customId": 10700,
+      "type": "option"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
       "cf[10503]",
       "Last Scan Date"
     ],
@@ -156,6 +172,23 @@
       "custom": "com.atlassian.jira.plugin.system.customfieldtypes:datetime",
       "customId": 10503,
       "type": "datetime"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10701]",
+      "Random Number"
+    ],
+    "custom": true,
+    "id": "customfield_10701",
+    "name": "Random Number",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:float",
+      "customId": 10701,
+      "type": "number"
     },
     "searchable": true
   },
@@ -222,7 +255,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "thumbnail",
@@ -330,7 +362,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "aggregatetimeoriginalestimate",
@@ -361,7 +392,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "issuelinks",
@@ -484,7 +514,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "timetracking",
@@ -615,7 +644,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "aggregatetimeestimate",
@@ -627,23 +655,6 @@
       "type": "number"
     },
     "searchable": false
-  },
-  {
-    "clauseNames": [
-      "cf[10603]",
-      "Severity"
-    ],
-    "custom": true,
-    "id": "customfield_10603",
-    "name": "Severity",
-    "navigable": true,
-    "orderable": true,
-    "schema": {
-      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
-      "customId": 10603,
-      "type": "string"
-    },
-    "searchable": true
   },
   {
     "clauseNames": [
@@ -708,7 +719,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "aggregateprogress",
@@ -936,7 +946,6 @@
   },
   {
     "clauseNames": [
-
     ],
     "custom": false,
     "id": "worklog",

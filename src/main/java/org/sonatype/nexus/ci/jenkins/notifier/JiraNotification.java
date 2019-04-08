@@ -39,9 +39,7 @@ public class JiraNotification
   private String issueTypeName;
   private String subTaskIssueTypeName;
   private String priorityName;
-
   private boolean shouldCreateIndividualTickets;
-
   private boolean shouldTransitionJiraTickets;
   private String jiraTransitionStatus;
   private String applicationCustomFieldName;
@@ -61,12 +59,6 @@ public class JiraNotification
   private String jobJiraCredentialsId;
   private String jobIQCredentialsId;
 
-  private String scanTypeCustomFieldName;
-  private String scanTypeCustomFieldValue;
-  private String toolNameCustomFieldName;
-  private String toolNameCustomFieldValue;
-  private String findingTemplateCustomFieldName;
-  private String findingTemplateCustomFieldValue;
   private List<JiraCustomFieldMappings> jiraCustomFieldMappings;
 
   public boolean getSendJiraNotification() {
@@ -87,40 +79,26 @@ public class JiraNotification
   public String getPriorityName() {
     return priorityName;
   }
-
   public boolean getShouldCreateIndividualTickets() { return shouldCreateIndividualTickets; }
-
   public boolean getShouldTransitionJiraTickets() { return shouldTransitionJiraTickets; }
-
   public String getJiraTransitionStatus() { return jiraTransitionStatus; }
-
   public String getApplicationCustomFieldName() { return applicationCustomFieldName; }
-
   public String getOrganizationCustomFieldName() { return organizationCustomFieldName; }
   public String getScanStageCustomFieldName() { return scanStageCustomFieldName; }
   public String getViolationIdCustomFieldName() { return violationIdCustomFieldName; }
-
   public String getViolationDetectDateCustomFieldName() { return violationDetectDateCustomFieldName; }
   public String getLastScanDateCustomFieldName() { return lastScanDateCustomFieldName; }
   public String getSeverityCustomFieldName() { return severityCustomFieldName; }
   public String getCveCodeCustomFieldName() { return cveCodeCustomFieldName; }
   public String getCvssCustomFieldName() { return cvssCustomFieldName; }
-
   public String getPolicyFilterPrefix() { return policyFilterPrefix; }
   public String getJiraDateFormatOverride() { return jiraDateFormatOverride; }
   public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
   public boolean getShouldCreateSubTasksForAggregatedTickets() { return shouldCreateSubTasksForAggregatedTickets; }
 
-
   public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
   public String getJobIQCredentialsId() { return jobIQCredentialsId; }
 
-  public String getScanTypeCustomFieldName() { return scanTypeCustomFieldName; }
-  public String getScanTypeCustomFieldValue() { return scanTypeCustomFieldValue; }
-  public String getToolNameCustomFieldName() { return toolNameCustomFieldName; }
-  public String getToolNameCustomFieldValue() { return toolNameCustomFieldValue; }
-  public String getFindingTemplateCustomFieldName() { return findingTemplateCustomFieldName; }
-  public String getFindingTemplateCustomFieldValue() { return findingTemplateCustomFieldValue; }
   public List<JiraCustomFieldMappings> getJiraCustomFieldMappings() { return jiraCustomFieldMappings; }
 
   @DataBoundConstructor
@@ -148,12 +126,6 @@ public class JiraNotification
                           final boolean shouldCreateSubTasksForAggregatedTickets,
                           final String jobJiraCredentialsId,
                           final String jobIQCredentialsId,
-                          final String scanTypeCustomFieldName,
-                          final String scanTypeCustomFieldValue,
-                          final String toolNameCustomFieldName,
-                          final String toolNameCustomFieldValue,
-                          final String findingTemplateCustomFieldName,
-                          final String findingTemplateCustomFieldValue,
                           final List<JiraCustomFieldMappings> jiraCustomFieldMappings)
   {
     this.sendJiraNotification = sendJiraNotification;
@@ -180,12 +152,6 @@ public class JiraNotification
     this.shouldCreateSubTasksForAggregatedTickets = shouldCreateSubTasksForAggregatedTickets;
     this.jobJiraCredentialsId = jobJiraCredentialsId;
     this.jobIQCredentialsId = jobIQCredentialsId;
-    this.scanTypeCustomFieldName = scanTypeCustomFieldName;
-    this.scanTypeCustomFieldValue = scanTypeCustomFieldValue;
-    this.toolNameCustomFieldName = toolNameCustomFieldName;
-    this.toolNameCustomFieldValue = toolNameCustomFieldValue;
-    this.findingTemplateCustomFieldName = findingTemplateCustomFieldName;
-    this.findingTemplateCustomFieldValue = findingTemplateCustomFieldValue;
     this.jiraCustomFieldMappings = jiraCustomFieldMappings;
   }
 

@@ -67,12 +67,6 @@ class JiraFieldMappingUtilTest
                                                        false,
                                                        null,
                                                        null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
                                                        null)
 
     jiraNotificationCustomFieldMapTest = new JiraNotification(true,
@@ -99,13 +93,9 @@ class JiraFieldMappingUtilTest
                                                               false,
                                                               null,
                                                               null,
-                                                              "Scan Type",
-                                                              "SCA",
-                                                              null,
-                                                              null,
-                                                              null,
-                                                              null,
                                                               [
+                                                                      [ customFieldName: 'Random Number', customFieldValue: '17'],
+                                                                      [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
                                                                       [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
                                                                       [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
                                                               ])
@@ -174,9 +164,6 @@ class JiraFieldMappingUtilTest
       assert jiraFieldMappingUtil.getViolationDetectDateCustomField().customFieldId == "customfield_10502"
       assert jiraFieldMappingUtil.getLastScanDateCustomField().customFieldId == "customfield_10503"
 
-      assert jiraFieldMappingUtil.getScanTypeCustomField().customFieldId == "customfield_10400" //todo: remove
-      assert jiraFieldMappingUtil.getToolNameCustomField().customFieldId != "customfield_10501" //TODO: remove - JiraFieldMappingUtil Null Pointer
-      assert jiraFieldMappingUtil.getFindingTemplateCustomField().customFieldId != "customfield_10500"//todo: remove
       //TODO: update with the rest of the fields
 
       assert jiraFieldMappingUtil.getPassthroughCustomField("Scan Type").customFieldId == "customfield_10400"

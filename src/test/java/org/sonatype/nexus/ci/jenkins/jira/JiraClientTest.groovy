@@ -69,14 +69,12 @@ class JiraClientTest
                                                                   false,
                                                                   null,
                                                                   null,
-                                                                  "Scan Type",
-                                                                  "SCA",
-                                                                  "Tool Name",
-                                                                  "Nexus IQ",
-                                                                  "Finding Template",
-                                                                  "NA",
-                                                                  [])
-
+                                                                  [
+                                                                          [ customFieldName: 'Random Number', customFieldValue: '17'],
+                                                                          [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
+                                                                          [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
+                                                                          [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
+                                                                  ])
   }
 
   def 'lookupJiraTickets has correct url - with all params'() {
