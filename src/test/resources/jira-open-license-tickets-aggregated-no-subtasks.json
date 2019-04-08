@@ -59,7 +59,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server null Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 14:30:02 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 0\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-maven:json::jar:org.json:20080701\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  null",
+        "description": "\n\tDescription: Sonatype IQ Server null Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 14:30:02 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 0\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-maven:json::jar:org.json:20080701\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  null",
         "duedate": null,
         "environment": null,
         "fixVersions": [

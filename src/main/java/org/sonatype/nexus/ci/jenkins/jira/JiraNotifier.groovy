@@ -477,6 +477,7 @@ class JiraNotifier
                                      String iqOrgExternalId,
                                      String scanStage)
   {
+    //TODO: Null Pointer if JiraNotifierTest is run twice
     logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
 
     String description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"

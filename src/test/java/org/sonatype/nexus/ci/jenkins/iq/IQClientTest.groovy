@@ -50,7 +50,7 @@ class IQClientTest
     setup:
       def client = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
       //make it a real client instead of a mock http
-      def resp = client.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering")
+      def resp = client.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
 
     expect:
       resp != null

@@ -59,7 +59,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server License-Non Standard Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 15:43:05 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 5\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-eec9d05f2395437db702c414d017a276-maven:json::jar:org.json:20080701-Found a license in the 'Non Standard' license threat group.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found a license in the 'Non Standard' license threat group.",
+        "description": "\n\tDescription: Sonatype IQ Server License-Non Standard Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 15:43:05 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 5\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-eec9d05f2395437db702c414d017a276-maven:json::jar:org.json:20080701-Found a license in the 'Non Standard' license threat group.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found a license in the 'Non Standard' license threat group.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -255,7 +255,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 15:43:04 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 0\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-maven:json::jar:org.json:20080701\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  null",
+        "description": "\n\tDescription: Sonatype IQ Server Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 15:43:04 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 0\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-maven:json::jar:org.json:20080701\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  null",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -486,7 +486,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server License Policy Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 15:43:05 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-352bef903f2f401da0bcc6c45367b278-maven:json::jar:org.json:20080701-Found 'Nonsensical-Clause' and 'JSON' Licenses\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found 'Nonsensical-Clause' and 'JSON' Licenses",
+        "description": "\n\tDescription: Sonatype IQ Server License Policy Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 15:43:05 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-352bef903f2f401da0bcc6c45367b278-maven:json::jar:org.json:20080701-Found 'Nonsensical-Clause' and 'JSON' Licenses\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found 'Nonsensical-Clause' and 'JSON' Licenses",
         "duedate": null,
         "environment": null,
         "fixVersions": [

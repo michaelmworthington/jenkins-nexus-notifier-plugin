@@ -59,7 +59,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability CVE-2015-8854 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability CVE-2015-8854 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability CVE-2015-8854 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability CVE-2015-8854 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -219,7 +219,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0367 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0367 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0367 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -539,7 +539,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0367 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0367 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0367 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -699,7 +699,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0008 with severity 7.2.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0008 with severity 7.2.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0008 with severity 7.2.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -859,7 +859,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2018-0076 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2018-0076 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2018-0076 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -1019,7 +1019,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0636 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - a-name:marked::0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:50 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-a-name:marked::0.3.6-Found security vulnerability sonatype-2017-0636 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0636 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -1179,7 +1179,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0636 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:52 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0636 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0636 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -1339,7 +1339,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2018-0076 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2018-0076 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2018-0076 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -1499,7 +1499,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0008 with severity 7.2.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability sonatype-2017-0008 with severity 7.2.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability sonatype-2017-0008 with severity 7.2.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -1659,7 +1659,7 @@
         "customfield_10601": null,
         "customfield_10602": null,
         "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability CVE-2015-8854 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability CVE-2015-8854 with severity 7.5.",
+        "description": "\n\tDescription: Sonatype IQ Server Security-High Policy Violation - npm:marked:0.3.6\n\n\tFirst Found Timestamp: 2019-04-01 02:36:51 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-7b292e1d588e4838a02858bc7b314531-npm:marked:0.3.6-Found security vulnerability CVE-2015-8854 with severity 7.5.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found security vulnerability CVE-2015-8854 with severity 7.5.",
         "duedate": null,
         "environment": null,
         "fixVersions": [

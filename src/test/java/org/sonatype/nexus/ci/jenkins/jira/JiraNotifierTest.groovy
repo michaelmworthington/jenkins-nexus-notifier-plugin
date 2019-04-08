@@ -50,7 +50,7 @@ class JiraNotifierTest
     jiraNotifier = new JiraNotifier(mockRun, mockListener)
 
     policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
-            reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/6aeee85d9f8d45abbd91859352742c70',
+            reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453',
             affectedComponentCount: 1,
             criticalComponentCount: 2,
             severeComponentCount: 3,
@@ -86,7 +86,8 @@ class JiraNotifierTest
                                                                   "Tool Name",
                                                                   "Nexus IQ",
                                                                   "Finding Template",
-                                                                  "NA")
+                                                                  "NA",
+                                                                  null) //TODO: update
 
   }
 
@@ -187,7 +188,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - No Aggregation - No Jira Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
 
       GroovyMock(JiraClientFactory.class, global: true)
@@ -206,7 +207,7 @@ class JiraNotifierTest
     then:
       //Load JSON Data
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -219,7 +220,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - No Aggregation - Update Existing License Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-no-aggregation.json'))
 
       GroovyMock(JiraClientFactory.class, global: true)
@@ -236,7 +237,7 @@ class JiraNotifierTest
     then:
       //Load JSON Data
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -249,7 +250,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - No Aggregation - Close Old Security Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-no-aggregation.json'))
 
       GroovyMock(JiraClientFactory.class, global: true)
@@ -266,7 +267,7 @@ class JiraNotifierTest
     then:
       //Load JSON Data
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -280,7 +281,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component No SubTasks - No Jira Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
@@ -298,7 +299,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -311,7 +312,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component No SubTasks - Update Existing License Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-aggregated-no-subtasks.json'))
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
@@ -329,7 +330,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -342,7 +343,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component No SubTasks - Close Old Security Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-no-subtasks.json'))
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
@@ -360,7 +361,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -374,7 +375,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component and SubTask - No Jira Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
 
       def createParentTicket = new JsonSlurper().parse(new File('src/test/resources/jira-create-parent-ticket-response.json'))
@@ -395,7 +396,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -409,7 +410,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component and SubTask - Update Existing License Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-aggregated-and-subtasks.json'))
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
@@ -428,7 +429,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -441,7 +442,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component and SubTask - Update Existing Security High Tickets and add other Security Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks.json'))
 
       jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security"
@@ -461,7 +462,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -475,7 +476,7 @@ class JiraNotifierTest
   def 'Create Detail Tickets - Aggregate by Component and SubTask - Close Old Security Tickets'() {
     setup:
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
-      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-6aeee85d9f8d45abbd91859352742c70-policythreats.json'))
+      def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks.json'))
 
       def createParentTicket = new JsonSlurper().parse(new File('src/test/resources/jira-create-parent-ticket-response.json'))
@@ -496,7 +497,7 @@ class JiraNotifierTest
 
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
-      1 * iqClient.lookupPolcyDetailsFromIQ("6aeee85d9f8d45abbd91859352742c70", "aaaaaaa-testidegrandfathering") >> iqReport
+      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
       1 * jiraClient.lookupJiraTickets("JIRAIQ",
                                        "Done",
                                        "IQ Application",
@@ -597,6 +598,6 @@ class JiraNotifierTest
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     expect:
-      true //TODO: assert something??
+      true //TODO: assert something?? -- this fails if you run it twice
   }
 }

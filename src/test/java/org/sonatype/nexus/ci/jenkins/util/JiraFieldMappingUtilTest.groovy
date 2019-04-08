@@ -166,16 +166,50 @@ class JiraFieldMappingUtilTest
       1 * client.lookupCustomFields() >> customFields
 
       assert jiraFieldMappingUtil.getApplicationCustomField().customFieldId == "customfield_10200"
+      assert jiraFieldMappingUtil.getApplicationCustomField().customFieldName == "IQ Application"
+      assert jiraFieldMappingUtil.getApplicationCustomField().customFieldType == "string"
+
       assert jiraFieldMappingUtil.getOrganizationCustomField().customFieldId == "customfield_10201"
       assert jiraFieldMappingUtil.getViolationIdCustomField().customFieldId == "customfield_10300"
       assert jiraFieldMappingUtil.getViolationDetectDateCustomField().customFieldId == "customfield_10502"
       assert jiraFieldMappingUtil.getLastScanDateCustomField().customFieldId == "customfield_10503"
 
-      //TODO: these are dynamic, how to test the dynamic fields. they won't have getters - getPassThrough("name")??
-      //assert jiraFieldMappingUtil.getscanTypeCustomField().customFieldId == "customfield_10400"
-      //assert jiraFieldMappingUtil.getToolNameCustomField().customFieldId == "customfield_10501"
-      //assert jiraFieldMappingUtil.getFindingTemplateCustomField().customFieldId == "customfield_10500"
+      assert jiraFieldMappingUtil.getScanTypeCustomField().customFieldId == "customfield_10400" //todo: remove
+      assert jiraFieldMappingUtil.getToolNameCustomField().customFieldId != "customfield_10501" //TODO: remove - JiraFieldMappingUtil Null Pointer
+      assert jiraFieldMappingUtil.getFindingTemplateCustomField().customFieldId != "customfield_10500"//todo: remove
       //TODO: update with the rest of the fields
+
+      assert jiraFieldMappingUtil.getPassthroughCustomField("Scan Type").customFieldId == "customfield_10400"
+
+      assert jiraFieldMappingUtil.getPassthroughCustomField("Tool Name").customFieldId == "customfield_10501"
+      assert jiraFieldMappingUtil.getPassthroughCustomField("Tool Name").customFieldValue == "Nexus IQ"
+      assert jiraFieldMappingUtil.getPassthroughCustomField("Tool Name").customFieldType == "option"
+
+      assert jiraFieldMappingUtil.getPassthroughCustomField("Finding Template").customFieldId == "customfield_10500"
+  }
+
+  def 'validate minimal custom fields names are mapped to stubs and not null pointers - all fields from jsonslurper'() {
+    setup:
+      GroovyMock(JiraClientFactory.class, global: true)
+      def client = Mock(JiraClient.class)
+      JiraClientFactory.getJiraClient(*_) >> client
+
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+
+    when:
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+
+    then:
+      1 * client.lookupCustomFields() >> customFields
+
+      assert jiraFieldMappingUtil.getApplicationCustomField().customFieldId == null
+      assert jiraFieldMappingUtil.getOrganizationCustomField().customFieldId == null
+      assert jiraFieldMappingUtil.getViolationIdCustomField().customFieldId == null
+      assert jiraFieldMappingUtil.getViolationDetectDateCustomField().customFieldId == null
+      assert jiraFieldMappingUtil.getLastScanDateCustomField().customFieldId == null
+
+      //TODO: update with the rest of the fields
+      jiraFieldMappingUtil.getPassthroughCustomField("Tool Name").customFieldId == null
   }
 
   def 'format date to string'() {

@@ -39,7 +39,7 @@ class JiraClientTest
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
     client.http = http
 
     mockListener.getLogger() >> mockLogger
@@ -74,7 +74,8 @@ class JiraClientTest
                                                                   "Tool Name",
                                                                   "Nexus IQ",
                                                                   "Finding Template",
-                                                                  "NA")
+                                                                  "NA",
+                                                                  [])
 
   }
 
@@ -126,7 +127,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Get Not-Done Tickets for Project and App'() {
     setup:
-      def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+      def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
       def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "aaaaaaa-testidegrandfathering")
 
     expect:
@@ -138,7 +139,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
     def resp = client.lookupCustomFields()
 
     expect:
@@ -150,7 +151,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Get Project Ticket Fields Metadata'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
     def resp = client.lookupMetadataConfigurationForCreateIssue("JIRAIQ", "Task")
 
     expect:
@@ -165,7 +166,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
@@ -191,7 +192,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
@@ -203,9 +204,9 @@ class JiraClientTest
                                   "SONATYPEIQ-APPID-COMPONENTID",
                                   "aaaaaaa-testidegrandfathering",
                                   "test org",
-                                  null,
-                                  null,
-                                  null,
+                                  "Build",
+                                  "Low",
+                                  "CVS-2019-1234",
                                   null,
                                   "some-parent-sha-value")
 
@@ -218,10 +219,10 @@ class JiraClientTest
                                     "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
                                     "aaaaaaa-testidegrandfathering",
                                     "test org",
-                                    null,
-                                    null,
-                                    null,
-                                    null,
+                                    "Build",
+                                    "Low",
+                                    "CVE-2019-1234",
+                                    2.4,
                                     "some-child-sha-value")
 
     expect:
@@ -234,7 +235,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Edit Task - Update Last Scan Time'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
@@ -249,7 +250,7 @@ class JiraClientTest
   @Ignore
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', System.out, true)
+    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
     def resp = client.closeTicket("10772", "Done")
 
     expect:

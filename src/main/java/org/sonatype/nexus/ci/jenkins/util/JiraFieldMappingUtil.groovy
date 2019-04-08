@@ -49,19 +49,20 @@ class JiraFieldMappingUtil
   //  then looking up by name to get the ID
   private Map<String, JiraCustomFieldMappings> validatedCustomFieldMappings
 
-  JiraCustomFieldMappings getApplicationCustomField() { return validatedCustomFieldMappings.get(applicationCustomFieldName) }
-  JiraCustomFieldMappings getOrganizationCustomField() { return validatedCustomFieldMappings.get(organizationCustomFieldName) }
-  JiraCustomFieldMappings getScanStageCustomField() { return validatedCustomFieldMappings.get(scanStageCustomFieldName) }
-  JiraCustomFieldMappings getViolationIdCustomField() { return validatedCustomFieldMappings.get(violationIdCustomFieldName) }
-  JiraCustomFieldMappings getViolationDetectDateCustomField() { return validatedCustomFieldMappings.get(violationDetectDateCustomFieldName) }
-  JiraCustomFieldMappings getLastScanDateCustomField() { return validatedCustomFieldMappings.get(lastScanDateCustomFieldName) }
-  JiraCustomFieldMappings getSeverityCustomField() { return validatedCustomFieldMappings.get(severityCustomFieldName) }
-  JiraCustomFieldMappings getCveCodeCustomField() { return validatedCustomFieldMappings.get(cveCodeCustomFieldName) }
-  JiraCustomFieldMappings getCvssCustomField() { return validatedCustomFieldMappings.get(cvssCustomFieldName) }
+  JiraCustomFieldMappings getApplicationCustomField() { return validatedCustomFieldMappings.get(applicationCustomFieldName)  ?: new JiraCustomFieldMappings("Stub App", null) }
+  JiraCustomFieldMappings getOrganizationCustomField() { return validatedCustomFieldMappings.get(organizationCustomFieldName) ?: new JiraCustomFieldMappings("Stub Org", null) }
+  JiraCustomFieldMappings getScanStageCustomField() { return validatedCustomFieldMappings.get(scanStageCustomFieldName) ?: new JiraCustomFieldMappings("Stub Scan Stage", null) }
+  JiraCustomFieldMappings getViolationIdCustomField() { return validatedCustomFieldMappings.get(violationIdCustomFieldName) ?: new JiraCustomFieldMappings("Stub Violation ID", null) }
+  JiraCustomFieldMappings getViolationDetectDateCustomField() { return validatedCustomFieldMappings.get(violationDetectDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Detect Date", null) }
+  JiraCustomFieldMappings getLastScanDateCustomField() { return validatedCustomFieldMappings.get(lastScanDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Last Scan Date", null) }
+  JiraCustomFieldMappings getSeverityCustomField() { return validatedCustomFieldMappings.get(severityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Severity", null) }
+  JiraCustomFieldMappings getCveCodeCustomField() { return validatedCustomFieldMappings.get(cveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVE", null) }
+  JiraCustomFieldMappings getCvssCustomField() { return validatedCustomFieldMappings.get(cvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVSS", null) }
+  JiraCustomFieldMappings getPassthroughCustomField(String pFieldName) { return validatedCustomFieldMappings.get(pFieldName) ?: new JiraCustomFieldMappings("Stub Passthrough ${pFieldName}", null) }
 
-  JiraCustomFieldMappings getScanTypeCustomField() { return validatedCustomFieldMappings.get(scanTypeCustomFieldName) } //TODO: Remove
-  JiraCustomFieldMappings getToolNameCustomField() { return validatedCustomFieldMappings.get(toolNameCustomFieldName) } //TODO: Remove
-  JiraCustomFieldMappings getFindingTemplateCustomField() { return validatedCustomFieldMappings.get(findingTemplateCustomFieldName) } //TODO: Remove
+  JiraCustomFieldMappings getScanTypeCustomField() { return validatedCustomFieldMappings.get(scanTypeCustomFieldName) ?: new JiraCustomFieldMappings("Stub Scan Type", null) } //TODO: Remove
+  JiraCustomFieldMappings getToolNameCustomField() { return validatedCustomFieldMappings.get(toolNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Tool Name", null) } //TODO: Remove
+  JiraCustomFieldMappings getFindingTemplateCustomField() { return validatedCustomFieldMappings.get(findingTemplateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Finding TEmplate", null) } //TODO: Remove
 
   JiraFieldMappingUtil(JiraNotification pJiraNotification, JiraClient pJiraClient, EnvVars pEnvVars, PrintStream pLogger)
   {
@@ -142,9 +143,9 @@ class JiraFieldMappingUtil
     lookupAndValidateCustomField(customFields, findingTemplateCustomFieldName,"Finding Template") //TODO: Remove
 
     jiraCustomFieldMappings.each {
-      it.customFieldId = lookupAndValidateCustomField(customFields, it.customFieldName, "Passthrough Custom Field: ${it.customFieldName}")
+      lookupAndValidateCustomField(customFields, it.customFieldName, "Passthrough Custom Field: ${it.customFieldName}")
+      getPassthroughCustomField(it.customFieldName).customFieldValue = it.customFieldValue
     }
-
   }
 
   private void lookupAndValidateCustomField(List<Map<String, Object>> pCustomFields, String pFieldName, String pFieldDescription)
@@ -258,7 +259,6 @@ class JiraFieldMappingUtil
   }
 
   //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
-  //todo: see if i can make these dynamic based on the project metadata
   //       todo; review fields - https://mail.google.com/mail/u/0/#inbox/QgrcJHsHsJScdtsQNFlKnWrWCwwblmVFScB
   private static addCustomFieldToTicket(Map ticketFieldsArray, JiraCustomFieldMappings pField)
   {
