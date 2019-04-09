@@ -143,6 +143,7 @@ class JiraNotifier
         /***************************************
             3. Filter out Existing Tickets
          ***************************************/
+        //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
         logger.println("######################################")
         logger.println("        Compare Input")
         logger.println("######################################")
@@ -450,9 +451,15 @@ class JiraNotifier
   private void updateTicketScanDate(JiraClient jiraClient, JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation)
   {
     JiraCustomFieldMappings lastScanDateField = jiraFieldMappingUtil.getLastScanDateCustomField()
-    logger.println("Updating Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} with new scan date in field: ${lastScanDateField.customFieldName} (${lastScanDateField.customFieldId})")
-
-    jiraClient.updateIssueScanDate(jiraFieldMappingUtil, pPolicyViolation.ticketInternalId)
+    if(lastScanDateField.customFieldId)
+    {
+      logger.println("Updating Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} with new scan date in field: ${lastScanDateField.customFieldName} (${lastScanDateField.customFieldId})")
+      jiraClient.updateIssueScanDate(jiraFieldMappingUtil, pPolicyViolation.ticketInternalId)
+    }
+    else
+    {
+      logger.println("Skipping updating Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} because scan date field has not been mapped: ${lastScanDateField.customFieldName} (${lastScanDateField.customFieldId})")
+    }
   }
 
   private void transitionTicket(JiraClient jiraClient, String transitionStatus, PolicyViolation pPolicyViolation)

@@ -217,9 +217,11 @@ class JiraNotifierTest
 
   def 'Create Detail Tickets - No Aggregation - Update Existing License Tickets'() {
     setup:
-      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+      def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json')) //todo: can these be put at the class level??
       def iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-no-aggregation.json'))
+
+      jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = lastScanDateFieldName
 
       GroovyMock(JiraClientFactory.class, global: true)
       def jiraClient = Mock(JiraClient.class)
@@ -242,7 +244,12 @@ class JiraNotifierTest
                                        "aaaaaaa-testidegrandfathering") >> openTickets
 
       //Expectations when doing License Policy Filter
-      2 * jiraClient.updateIssueScanDate(*_)
+      updateCount * jiraClient.updateIssueScanDate(*_)
+
+    where:
+      lastScanDateFieldName | updateCount
+      'Last Scan Date'      | 2
+      null                  | 0
   }
 
   def 'Create Detail Tickets - No Aggregation - Close Old Security Tickets'() {
@@ -583,7 +590,8 @@ class JiraNotifierTest
       def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
       def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
 
-      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security'
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security'
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'License-Non'
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
@@ -596,6 +604,6 @@ class JiraNotifierTest
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     expect:
-      true //TODO: assert something?? -- this fails if you run it twice
+      true //TODO: assert something??
   }
 }
