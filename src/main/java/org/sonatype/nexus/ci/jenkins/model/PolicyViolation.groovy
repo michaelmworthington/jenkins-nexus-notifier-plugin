@@ -139,6 +139,7 @@ class PolicyViolation
 
   static PolicyViolation buildFromJira(Object ticket, String violationIdCustomFieldId)
   {
+    //TODO: I am filtering these when querying, add a jenkins option to remove that filter, need to update the filter if i add to these
     String ticketInternalId = ticket.id
     String ticketExternalId = ticket.key
     String ticketType = ticket.fields.issuetype.name

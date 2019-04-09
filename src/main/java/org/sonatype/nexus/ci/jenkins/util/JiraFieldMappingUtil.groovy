@@ -12,6 +12,7 @@ class JiraFieldMappingUtil
   private JiraClient jiraClient
   private EnvVars iEnvVars
   private PrintStream logger
+  private Date scanDate
 
   String projectKey
   String issueTypeName
@@ -60,6 +61,8 @@ class JiraFieldMappingUtil
     jiraClient = pJiraClient
     iEnvVars = pEnvVars
     this.logger = pLogger
+
+    scanDate = new Date()
 
     validatedCustomFieldMappings = [:]
 
@@ -190,6 +193,18 @@ class JiraFieldMappingUtil
     }
 
     returnValue
+  }
+
+  String getFormattedScanDateForJira()
+  {
+    if (jiraDateFormatOverride)
+    {
+      return scanDate.format(jiraDateFormatOverride)
+    }
+    else
+    {
+      return scanDate.format("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    }
   }
 
   String formatDateForJira(Date pDate)

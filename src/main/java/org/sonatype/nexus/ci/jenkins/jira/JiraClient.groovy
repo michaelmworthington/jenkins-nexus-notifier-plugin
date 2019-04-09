@@ -12,7 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
-import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
+
 import org.sonatype.nexus.ci.jenkins.util.AbstractToolClient
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 
@@ -75,7 +75,7 @@ class JiraClient extends AbstractToolClient
   {
     def url = getCreateIssueRequestUrl(serverUrl)
     Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
-                                         description,
+                                         description, //todo: update the title with the CVE number
                                          detail,
                                          source,
                                          severity,
@@ -105,15 +105,29 @@ class JiraClient extends AbstractToolClient
     http.put(url, body, headers)
   }
 
+//  def lookupJiraTicketsWithGet(String projectKey,
+//                        String transitionTargetStatus,
+//                        String applicationCustomFieldName,
+//                        String iqApplicationExternalId)
+//  {
+//    def url = getLookupTicketsForProjectUrl(serverUrl, projectKey, transitionTargetStatus, applicationCustomFieldName, iqApplicationExternalId)
+//    def headers = getRequestHeaders(username, password)
+//
+//    http.get(url, headers)
+//  }
+
   def lookupJiraTickets(String projectKey,
                         String transitionTargetStatus,
                         String applicationCustomFieldName,
-                        String iqApplicationExternalId)
+                        String iqApplicationExternalId,
+                        String violationIdCustomFieldId,
+                        int pStartAtIndex)
   {
-    def url = getLookupTicketsForProjectUrl(serverUrl, projectKey, transitionTargetStatus, applicationCustomFieldName, iqApplicationExternalId)
+    def url = getLookupTicketsForProjectUrl(serverUrl)
+    Map body = getLookupTicketsForProjectBody(projectKey, transitionTargetStatus, applicationCustomFieldName, iqApplicationExternalId, violationIdCustomFieldId, pStartAtIndex)
     def headers = getRequestHeaders(username, password)
 
-    http.get(url, headers)
+    http.post(url, body, headers)
   }
 
   def lookupCustomFields()
@@ -179,36 +193,88 @@ class JiraClient extends AbstractToolClient
     return "${serverUrl}/rest/api/2/issue/${ticketInternalId}/transitions?expand=transitions.fields"
   }
 
-  private String getLookupTicketsForProjectUrl(String serverUrl,
-                                                      String projectKey,
-                                                      String transitionTargetStatus,
-                                                      String applicationCustomFieldName,
-                                                      String iqApplicationExternalId)
+//  private String getLookupTicketsForProjectUrl(String serverUrl,
+//                                               String projectKey,
+//                                               String transitionTargetStatus,
+//                                               String applicationCustomFieldName,
+//                                               String iqApplicationExternalId)
+//  {
+//    verbosePrintLn("Perform a JQL search with GET to get the tickets for a Project, status, and application from Jira")
+//
+//    // "/rest/api/2/search?jql=project%3D%22{{jiraProjectKey}}%22"
+//    // %20AND%20status!%3D%22Done%22
+//    // %20AND%20"IQ%20Application"%20~%20"test"
+//
+//    StringBuffer plainSearchString = new StringBuffer()
+//
+//    plainSearchString <<= "project = \"${projectKey}\""
+//
+//    if (transitionTargetStatus?.trim())
+//    {
+//      plainSearchString <<= " AND status != \"${transitionTargetStatus}\""
+//    }
+//
+//    if (applicationCustomFieldName?.trim())
+//    {
+//      plainSearchString <<= " AND \"${applicationCustomFieldName}\" ~ \"${iqApplicationExternalId}\""
+//    }
+//
+//    String urlSearchString = URLEncoder.encode(plainSearchString.toString(), "UTF-8")
+//
+//    return "${serverUrl}/rest/api/2/search?jql=${urlSearchString}"
+//
+//  }
+
+  private String getLookupTicketsForProjectUrl(String serverUrl)
   {
-    verbosePrintLn("Perform a JQL search to get the tickets for a Project, status, and application from Jira")
+    verbosePrintLn("Perform a JQL search with POST to get the tickets for a Project, status, and application from Jira")
 
-    // "/rest/api/2/search?jql=project%3D%22{{jiraProjectKey}}%22"
-    // %20AND%20status!%3D%22Done%22
-    // %20AND%20"IQ%20Application"%20~%20"test"
+    return "${serverUrl}/rest/api/2/search"
+  }
 
-    StringBuffer plainSearchString = new StringBuffer()
-
-    plainSearchString <<= "project = \"${projectKey}\""
+  private static Map getLookupTicketsForProjectBody(String projectKey,
+                                                    String transitionTargetStatus,
+                                                    String applicationCustomFieldName,
+                                                    String iqApplicationExternalId,
+                                                    String violationIdCustomFieldId,
+                                                    int pStartAtIndex)
+  {
+    def jql = [:]
+    jql['jql'] = "project = " + projectKey
 
     if (transitionTargetStatus?.trim())
     {
-      plainSearchString <<= " AND status != \"${transitionTargetStatus}\""
+      jql['jql'] += " AND status != \"${transitionTargetStatus}\""
     }
 
     if (applicationCustomFieldName?.trim())
     {
-      plainSearchString <<= " AND \"${applicationCustomFieldName}\" ~ \"${iqApplicationExternalId}\""
+      jql['jql'] += " AND \"${applicationCustomFieldName}\" ~ \"${iqApplicationExternalId}\""
     }
 
-    String urlSearchString = URLEncoder.encode(plainSearchString.toString(), "UTF-8")
+    jql['jql'] += " ORDER BY key"
 
-    return "${serverUrl}/rest/api/2/search?jql=${urlSearchString}"
+//TODO: make the field filtering configurable
+    def fields = [
+            fields: [
+                    "id",
+                    "key",
+                    "issuetype",
+                    "summary",
+                    "status"
+            ]
+    ]
 
+    if (violationIdCustomFieldId?.trim())
+    {
+      fields['fields'] += violationIdCustomFieldId
+    }
+
+//TODO: make the maxresults configurable
+    return jql + fields + [
+            startAt   : pStartAtIndex,
+            maxResults: 50
+    ]
   }
 
   /**
@@ -310,7 +376,7 @@ class JiraClient extends AbstractToolClient
                                                String violationUniqueId)
   {
     //TODO: Pull these out and take them in as parameters
-    String nowFormatted = jiraFieldMappingUtil.formatDateForJira(new Date())
+    String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
     String formatted_summary = "${description}"
     String formatted_description = "\n\tDescription: ${description}\n\n\tFirst Found Timestamp: ${nowFormatted}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
@@ -365,17 +431,9 @@ class JiraClient extends AbstractToolClient
 
   private static Map getUpdateIssueScanDateRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil)
   {
-    JiraCustomFieldMappings lastScanDateField = jiraFieldMappingUtil.getLastScanDateCustomField()
-    String formattedFieldId = "${lastScanDateField.customFieldId}"
-    String formattedDate = jiraFieldMappingUtil.formatDateForJira(new Date())
+    def date = [:]
+    date[jiraFieldMappingUtil.getLastScanDateCustomField().customFieldId] = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
-    //TODO: maybe i could figure out how to do this right in groovy
-    Map<String, String> scanDate = new HashMap<String, String>()
-    scanDate.put(formattedFieldId, formattedDate)
-
-    Map<String, Map> fields = new HashMap<String, Map>()
-    fields.put("fields", scanDate)
-
-    return fields
+    return [ fields: date ]
   }
 }

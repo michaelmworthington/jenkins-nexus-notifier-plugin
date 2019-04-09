@@ -106,39 +106,7 @@ class JiraNotifier
             2. Get Tickets from Jira
          ***************************************/
 
-        //http://localhost:8080/rest/api/2/search?jql=project%3D%22JIRAIQ%22
-        def currentFindings = jiraClient.lookupJiraTickets(jiraFieldMappingUtil.projectKey,
-                                                           jiraFieldMappingUtil.transitionStatus,
-                                                           jiraFieldMappingUtil.getApplicationCustomField().customFieldName,
-                                                           iqAppExternalId)
-
-        logger.println("Parsing findings from Jira: ${currentFindings.issues.size}")
-        currentFindings.issues.each {
-          PolicyViolation pv = PolicyViolation.buildFromJira(it, jiraFieldMappingUtil.getViolationIdCustomField().customFieldId)
-
-          if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
-          {
-            if("Sub-task".equals(pv.ticketType))
-            {
-              currentFindingsMap.put(pv.fingerprint, pv)
-            }
-            else
-            {
-              currentComponentsMap.put(pv.fingerprint, pv)
-            }
-          }
-          else
-          {
-            if("Sub-task".equals(pv.ticketType))
-            {
-              logger.println("WARNING: Skipping Jira Ticket ${pv.ticketExternalId} since it is a Sub-task and tickets are not being aggregated")
-            }
-            else
-            {
-              currentFindingsMap.put(pv.fingerprint, pv)
-            }
-          }
-        }
+        lookupJiraTickets(jiraClient, jiraFieldMappingUtil, iqAppExternalId, currentFindingsMap, currentComponentsMap, 0)
 
         /***************************************
             3. Filter out Existing Tickets
@@ -248,6 +216,66 @@ class JiraNotifier
       logger.println(ex.message)
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
+    }
+  }
+
+  /**
+   * http://localhost:8080/rest/api/2/search?jql=project%3D%22JIRAIQ%22
+   *
+   * @param jiraClient
+   * @param jiraFieldMappingUtil
+   * @param iqAppExternalId
+   * @param currentFindingsMap
+   * @param currentComponentsMap
+   * @param pStartAtIndex
+   */
+  private void lookupJiraTickets(JiraClient jiraClient,
+                                 JiraFieldMappingUtil jiraFieldMappingUtil,
+                                 String iqAppExternalId,
+                                 Map<String, PolicyViolation> currentFindingsMap,
+                                 Map<String, PolicyViolation> currentComponentsMap,
+                                 int pStartAtIndex)
+  {
+    def currentFindings = jiraClient.lookupJiraTickets(jiraFieldMappingUtil.projectKey,
+                                                       jiraFieldMappingUtil.transitionStatus,
+                                                       jiraFieldMappingUtil.getApplicationCustomField().customFieldName,
+                                                       iqAppExternalId,
+                                                       jiraFieldMappingUtil.getViolationIdCustomField().customFieldId,
+                                                       pStartAtIndex)
+
+    logger.println("Parsing findings from Jira: ${currentFindings.issues.size} [start: ${pStartAtIndex}, maxResults: ${currentFindings.maxResults}, total: ${currentFindings.total}]")
+    currentFindings.issues.each {
+      PolicyViolation pv = PolicyViolation.buildFromJira(it, jiraFieldMappingUtil.getViolationIdCustomField().customFieldId)
+
+      if (jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
+      {
+        if ("Sub-task".equals(pv.ticketType))
+        {
+          currentFindingsMap.put(pv.fingerprint, pv)
+        } else
+        {
+          currentComponentsMap.put(pv.fingerprint, pv)
+        }
+      } else
+      {
+        if ("Sub-task".equals(pv.ticketType))
+        {
+          logger.println("WARNING: Skipping Jira Ticket ${pv.ticketExternalId} since it is a Sub-task and tickets are not being aggregated")
+        } else
+        {
+          currentFindingsMap.put(pv.fingerprint, pv)
+        }
+      }
+    }
+
+    if (currentFindings.total > (currentFindings.maxResults + currentFindings.startAt))
+    {
+      lookupJiraTickets(jiraClient,
+                        jiraFieldMappingUtil,
+                        iqAppExternalId,
+                        currentFindingsMap,
+                        currentComponentsMap,
+                        currentFindings.startAt + currentFindings.maxResults)
     }
   }
 
