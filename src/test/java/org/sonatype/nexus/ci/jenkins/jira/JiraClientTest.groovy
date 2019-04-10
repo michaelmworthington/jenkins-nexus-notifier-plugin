@@ -78,42 +78,60 @@ class JiraClientTest
   }
 
   def 'lookupJiraTickets has correct url - with all params'() {
-    def url
+    def url, requestBody
 
     when:
-    client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "test")
+      client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "test", "customfield_10300", 0)
 
     then:
-    1 * http.get(_, _) >> { args -> url = args[0]}
+      1 * http.post(_, _, _) >> { args ->
+        url = args[0]
+        requestBody = args[1]
+      }
 
     and:
-    url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22+AND+status+%21%3D+%22Done%22+AND+%22IQ+Application%22+%7E+%22test%22"
+      url != null
+      url == "http://localhost:${port}/rest/api/2/search"
+      requestBody != null
+      requestBody == [jql:"project = JIRAIQ AND status != \"Done\" AND \"IQ Application\" ~ \"test\" ORDER BY key", fields:["id", "key", "issuetype", "summary", "status", "customfield_10300"], startAt:0, maxResults:50]
   }
 
   def 'lookupJiraTickets has correct url - without application field'() {
-    def url
+    def url, requestBody
 
     when:
-    client.lookupJiraTickets("JIRAIQ", "Done", null, null)
+      client.lookupJiraTickets("JIRAIQ", "Done", null, null, "customfield_10300", 0)
 
     then:
-    1 * http.get(_, _) >> { args -> url = args[0]}
+      1 * http.post(_, _, _) >> { args ->
+        url = args[0]
+        requestBody = args[1]
+      }
 
     and:
-    url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22+AND+status+%21%3D+%22Done%22"
+      url != null
+      url == "http://localhost:${port}/rest/api/2/search"
+      requestBody != null
+      requestBody == [jql:"project = JIRAIQ AND status != \"Done\" ORDER BY key", fields:["id", "key", "issuetype", "summary", "status", "customfield_10300"], startAt:0, maxResults:50]
   }
 
   def 'lookupJiraTickets has correct url - without transition status'() {
-    def url
+    def url, requestBody
 
     when:
-    client.lookupJiraTickets("JIRAIQ", null, null, null)
+    client.lookupJiraTickets("JIRAIQ", null, null, null, null, 0)
 
     then:
-    1 * http.get(_, _) >> { args -> url = args[0]}
+      1 * http.post(_, _, _) >> { args ->
+        url = args[0]
+        requestBody = args[1]
+      }
 
     and:
-    url == "http://localhost:${port}/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22"
+      url != null
+      url == "http://localhost:${port}/rest/api/2/search"
+      requestBody != null
+      requestBody == [jql:"project = JIRAIQ ORDER BY key", fields:["id", "key", "issuetype", "summary", "status"], startAt:0, maxResults:50]
   }
 
   /*
@@ -122,11 +140,26 @@ class JiraClientTest
   ****************************************************************************************************************************************************
    */
 
+  /**
+   * https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#searching-for-issues-examples
+   *
+   * curl -s http://localhost:8080/rest/api/2/search?jql=project+%3D+%22JIRAIQ%22+AND+status+%21%3D+%22Done%22+AND+%22IQ+Application%22+%7E+%22aaaaaaa-testidegrandfathering%22 | jq-osx-amd64 .issues[].key
+   *   maxResults: 50
+   *   startAt: 0
+   *   totla: 71
+   *
+   * @return
+   */
   @Ignore
   def 'helper test to verify interaction with Jira Server - Get Not-Done Tickets for Project and App'() {
     setup:
       def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-      def resp = client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "aaaaaaa-testidegrandfathering")
+      def resp = client.lookupJiraTickets("JIRAIQ",
+                                          "Done",
+                                          "IQ Application",
+                                          "aaaaaaa-testidegrandfathering",
+                                          "customfield_10300",
+                                          0)
 
     expect:
       resp != null
@@ -170,7 +203,7 @@ class JiraClientTest
 
     def resp = client.createIssue(jiraFieldMappingUtil,
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                  "CVE-2019-1234",
+                                  "CVE-2019-123${detailCounter}",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
                                   "1",
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
@@ -178,13 +211,17 @@ class JiraClientTest
                                   "test org",
                                   "Build",
                                   "Low",
-                                  "CVE-2019-1234",
+                                  "CVE-2019-123${detailCounter}",
                                   2.3,
                                   "some-sha-value")
 
     expect:
     resp != null
     resp.key != null
+
+    where:
+      detailCounter << "4"
+      //detailCounter << [1, 2, 3, 4, 5, 6, 7, 8, 9]
   }
 
   @Ignore
