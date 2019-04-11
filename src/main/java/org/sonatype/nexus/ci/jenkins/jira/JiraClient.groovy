@@ -26,15 +26,13 @@ class JiraClient extends AbstractToolClient
                   description,
                   detail,
                   source,
-                  severity,
+                  Integer severity,
                   fprint,
-                  String iqAppExternalId,
-                  String iqOrgExternalId,
-                  String scanStage,
                   String severityString,
                   String cveCode,
                   Double cvss,
-                  String violationUniqueId)
+                  String violationUniqueId,
+                  String policyName)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
     Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
@@ -43,13 +41,11 @@ class JiraClient extends AbstractToolClient
                                          source,
                                          severity,
                                          fprint,
-                                         iqAppExternalId,
-                                         iqOrgExternalId,
-                                         scanStage,
                                          severityString,
                                          cveCode,
                                          cvss,
-                                         violationUniqueId)
+                                         violationUniqueId,
+                                         policyName)
     def headers = getRequestHeaders(username, password)
 
     http.post(url, body, headers)
@@ -63,30 +59,26 @@ class JiraClient extends AbstractToolClient
                     String description,
                     String detail,
                     String source,
-                    def severity,
+                    Integer severity,
                     String fprint,
-                    String iqAppExternalId,
-                    String iqOrgExternalId,
-                    String scanStage,
                     String severityString,
                     String cveCode,
                     Double cvss,
-                    String violationUniqueId)
+                    String violationUniqueId,
+                    String policyName)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
     Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
-                                         description, //todo: update the title with the CVE number
+                                         description,
                                          detail,
                                          source,
                                          severity,
                                          fprint,
-                                         iqAppExternalId,
-                                         iqOrgExternalId,
-                                         scanStage,
                                          severityString,
                                          cveCode,
                                          cvss,
-                                         violationUniqueId)
+                                         violationUniqueId,
+                                         policyName)
 
     getCreateSubTaskRequestBody(jiraFieldMappingUtil,
                                 parentIssueKey,
@@ -116,15 +108,10 @@ class JiraClient extends AbstractToolClient
 //    http.get(url, headers)
 //  }
 
-  def lookupJiraTickets(String projectKey,
-                        String transitionTargetStatus,
-                        String applicationCustomFieldName,
-                        String iqApplicationExternalId,
-                        String violationIdCustomFieldId,
-                        int pStartAtIndex)
+  def lookupJiraTickets(JiraFieldMappingUtil jiraFieldMappingUtil, int pStartAtIndex)
   {
     def url = getLookupTicketsForProjectUrl(serverUrl)
-    Map body = getLookupTicketsForProjectBody(projectKey, transitionTargetStatus, applicationCustomFieldName, iqApplicationExternalId, violationIdCustomFieldId, pStartAtIndex)
+    Map body = getLookupTicketsForProjectBody(jiraFieldMappingUtil, pStartAtIndex)
     def headers = getRequestHeaders(username, password)
 
     http.post(url, body, headers)
@@ -232,13 +219,14 @@ class JiraClient extends AbstractToolClient
     return "${serverUrl}/rest/api/2/search"
   }
 
-  private static Map getLookupTicketsForProjectBody(String projectKey,
-                                                    String transitionTargetStatus,
-                                                    String applicationCustomFieldName,
-                                                    String iqApplicationExternalId,
-                                                    String violationIdCustomFieldId,
-                                                    int pStartAtIndex)
+  private static Map getLookupTicketsForProjectBody(JiraFieldMappingUtil jiraFieldMappingUtil, int pStartAtIndex)
   {
+    String projectKey = jiraFieldMappingUtil.projectKey
+    String transitionTargetStatus = jiraFieldMappingUtil.transitionStatus
+    String applicationCustomFieldName = jiraFieldMappingUtil.getApplicationCustomField().customFieldName
+    String iqApplicationExternalId = jiraFieldMappingUtil.getApplicationCustomField().customFieldValue
+    String violationIdCustomFieldId = jiraFieldMappingUtil.getViolationIdCustomField().customFieldId
+
     def jql = [:]
     jql['jql'] = "project = " + projectKey
 
@@ -247,7 +235,7 @@ class JiraClient extends AbstractToolClient
       jql['jql'] += " AND status != \"${transitionTargetStatus}\""
     }
 
-    if (applicationCustomFieldName?.trim())
+    if (applicationCustomFieldName?.trim() && iqApplicationExternalId?.trim())
     {
       jql['jql'] += " AND \"${applicationCustomFieldName}\" ~ \"${iqApplicationExternalId}\""
     }
@@ -365,15 +353,13 @@ class JiraClient extends AbstractToolClient
                                                description,
                                                detail,
                                                source,
-                                               severity,
+                                               Integer severity,
                                                fprint,
-                                               String iqAppExternalId,
-                                               String iqOrgExternalId,
-                                               String scanStage,
                                                String severityString,
                                                String cveCode,
                                                Double cvss,
-                                               String violationUniqueId)
+                                               String violationUniqueId,
+                                               String policyName)
   {
     //TODO: Pull these out and take them in as parameters
     String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
@@ -402,14 +388,13 @@ class JiraClient extends AbstractToolClient
     }
 
     jiraFieldMappingUtil.addCustomFieldsToTicket(returnValue,
-                                                 iqAppExternalId,
-                                                 iqOrgExternalId,
-                                                 scanStage,
                                                  nowFormatted,
                                                  severityString,
                                                  cveCode,
                                                  cvss,
-                                                 violationUniqueId)
+                                                 violationUniqueId,
+                                                 policyName,
+                                                 severity)
 
     return returnValue
   }

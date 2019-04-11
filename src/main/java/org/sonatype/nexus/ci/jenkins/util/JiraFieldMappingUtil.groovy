@@ -22,15 +22,18 @@ class JiraFieldMappingUtil
   Boolean shouldTransitionJiraTickets
   String transitionStatus
 
-  private String applicationCustomFieldName //todo: limit access to custom fields via the getter
+  private String applicationCustomFieldName
   private String organizationCustomFieldName
   private String scanStageCustomFieldName
-  private String violationIdCustomFieldName
-  private String violationDetectDateCustomFieldName
-  private String lastScanDateCustomFieldName
-  private String severityCustomFieldName
-  private String cveCodeCustomFieldName
-  private String cvssCustomFieldName
+  private String violationIdCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String violationDetectDateCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String lastScanDateCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String severityCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String cveCodeCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String cvssCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String iqServerReportLinkCustomFieldName;
+  private String iqServerPolicyViolationNameCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String iqServerPolicyViolationThreatLevelCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
 
   String policyFilterPrefix
   String jiraDateFormatOverride
@@ -53,6 +56,9 @@ class JiraFieldMappingUtil
   JiraCustomFieldMappings getSeverityCustomField() { return validatedCustomFieldMappings.get(severityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Severity", null) }
   JiraCustomFieldMappings getCveCodeCustomField() { return validatedCustomFieldMappings.get(cveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVE", null) }
   JiraCustomFieldMappings getCvssCustomField() { return validatedCustomFieldMappings.get(cvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVSS", null) }
+  JiraCustomFieldMappings getIqServerReportLinkCustomField() { return validatedCustomFieldMappings.get(iqServerReportLinkCustomFieldName) ?: new JiraCustomFieldMappings("Stub Report Link", null) }
+  JiraCustomFieldMappings getIqServerPolicyViolationNameCustomField() { return validatedCustomFieldMappings.get(iqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Name", null) }
+  JiraCustomFieldMappings getIqServerPolicyViolationThreatLevelCustomField() { return validatedCustomFieldMappings.get(iqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Threat Level", null) }
   JiraCustomFieldMappings getPassthroughCustomField(String pFieldName) { return validatedCustomFieldMappings.get(pFieldName) ?: new JiraCustomFieldMappings("Stub Passthrough ${pFieldName}", null) }
 
   JiraFieldMappingUtil(JiraNotification pJiraNotification, JiraClient pJiraClient, EnvVars pEnvVars, PrintStream pLogger)
@@ -72,25 +78,24 @@ class JiraFieldMappingUtil
   }
 
   void addCustomFieldsToTicket(Map returnValue,
-                               String iqAppExternalId,
-                               String iqOrgExternalId,
-                               String scanStage,
                                String nowFormatted,
                                String severityString,
                                String cveCode,
                                Double cvss,
-                               String violationUniqueId)
+                               String violationUniqueId,
+                               String policyName,
+                               Integer threatLevel)
   {
     //TODO: are these available anywhere else (i.e. where they're defined) so i don't have to pass them all over the place
-    getApplicationCustomField().customFieldValue = iqAppExternalId
-    getOrganizationCustomField().customFieldValue = iqOrgExternalId
-    getScanStageCustomField().customFieldValue = scanStage
+    //TODO: on second thought, JFMU is global. I don't think it's a good idea to set ticket level data on it
     getViolationIdCustomField().customFieldValue =  violationUniqueId
     getViolationDetectDateCustomField().customFieldValue = nowFormatted
     getLastScanDateCustomField().customFieldValue =  nowFormatted
     getSeverityCustomField().customFieldValue =  severityString
     getCveCodeCustomField().customFieldValue =  cveCode
     getCvssCustomField().customFieldValue =  cvss
+    getIqServerPolicyViolationNameCustomField().customFieldValue = policyName
+    getIqServerPolicyViolationThreatLevelCustomField().customFieldValue = threatLevel
 
     validatedCustomFieldMappings.each {
       addCustomFieldToTicket(returnValue, it.value)
@@ -108,8 +113,21 @@ class JiraFieldMappingUtil
     subTaskIssueTypeName = iJiraNotification.subTaskIssueTypeName
     priorityName = iJiraNotification.priorityName
     shouldCreateIndividualTickets = iJiraNotification.shouldCreateIndividualTickets
+    shouldAggregateTicketsByComponent = iJiraNotification.shouldAggregateTicketsByComponent
+    shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets
     shouldTransitionJiraTickets = iJiraNotification.shouldTransitionJiraTickets
     transitionStatus = iJiraNotification.jiraTransitionStatus
+    policyFilterPrefix = iJiraNotification.policyFilterPrefix
+
+    //Advanced Options
+//only passed to JiraClient    this.jobJiraCredentialsId = jobJiraCredentialsId;
+//only passed to IQClient    this.jobIQCredentialsId = jobIQCredentialsId;
+//only passed to IQClient & JiraClient    this.verboseLogging = verboseLogging;
+//todo here?    this.dryRun = dryRun;
+    jiraDateFormatOverride = iJiraNotification.jiraDateFormatOverride
+//todo here?    this.disableJqlFieldFilter = disableJqlFieldFilter;
+//todo here?    this.jqlMaxResultsOverride = jqlMaxResultsOverride;
+//todo here?    this.jiraCustomFieldTypeOverrideMapping = jiraCustomFieldTypeOverrideMapping;
 
     //Custom Fields
     applicationCustomFieldName = iJiraNotification.applicationCustomFieldName
@@ -121,10 +139,9 @@ class JiraFieldMappingUtil
     severityCustomFieldName = iJiraNotification.severityCustomFieldName
     cveCodeCustomFieldName = iJiraNotification.cveCodeCustomFieldName
     cvssCustomFieldName = iJiraNotification.cvssCustomFieldName
-    policyFilterPrefix = iJiraNotification.policyFilterPrefix
-    jiraDateFormatOverride = iJiraNotification.jiraDateFormatOverride
-    shouldAggregateTicketsByComponent = iJiraNotification.shouldAggregateTicketsByComponent
-    shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets
+    iqServerReportLinkCustomFieldName = iJiraNotification.iqServerReportLinkCustomFieldName
+    iqServerPolicyViolationNameCustomFieldName = iJiraNotification.iqServerPolicyViolationNameCustomFieldName
+    iqServerPolicyViolationThreatLevelCustomFieldName = iJiraNotification.iqServerPolicyViolationThreatLevelCustomFieldName
 
     jiraCustomFieldMappings = iJiraNotification.jiraCustomFieldMappings ?: []
   }
@@ -132,6 +149,7 @@ class JiraFieldMappingUtil
   private void mapCustomFieldNamesToIds()
   {
     // todo: use the response for some validation and automatic formatting of the custom fields
+    // TODO: can i make the same call here for updating tickets? I need a ticket Key first, though
     jiraClient.lookupMetadataConfigurationForCreateIssue(projectKey, issueTypeName)
     if (shouldCreateSubTasksForAggregatedTickets)
     {
@@ -140,7 +158,6 @@ class JiraFieldMappingUtil
 
     List customFields = (List) jiraClient.lookupCustomFields()
 
-    //todo: can we use a getter here?
     lookupAndValidateCustomField(customFields, applicationCustomFieldName, "App Name")
     lookupAndValidateCustomField(customFields, organizationCustomFieldName, "Org Name")
     lookupAndValidateCustomField(customFields, scanStageCustomFieldName, "Scan Stage")
@@ -150,6 +167,9 @@ class JiraFieldMappingUtil
     lookupAndValidateCustomField(customFields, severityCustomFieldName, "Severity")
     lookupAndValidateCustomField(customFields, cveCodeCustomFieldName, "CVE Code")
     lookupAndValidateCustomField(customFields, cvssCustomFieldName, "CVSS")
+    lookupAndValidateCustomField(customFields, iqServerReportLinkCustomFieldName, "Report Link")
+    lookupAndValidateCustomField(customFields, iqServerPolicyViolationNameCustomFieldName, "Policy Violation Name")
+    lookupAndValidateCustomField(customFields, iqServerPolicyViolationThreatLevelCustomFieldName, "Policy Violation Threat Level")
 
     jiraCustomFieldMappings.each {
       lookupAndValidateCustomField(customFields, it.customFieldName, "Passthrough Custom Field: ${it.customFieldName}")
@@ -249,7 +269,7 @@ class JiraFieldMappingUtil
     }
   }
 
-  //TODO: JSON formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
+  //formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
   //       todo; review fields - https://mail.google.com/mail/u/0/#inbox/QgrcJHsHsJScdtsQNFlKnWrWCwwblmVFScB
   private static addCustomFieldToTicket(Map ticketFieldsArray, JiraCustomFieldMappings pField)
   {

@@ -3,7 +3,6 @@ package org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 
 def f = namespace(lib.FormTagLib)
-def c = namespace(lib.CredentialsTagLib)
 
 def typedDescriptor = (JiraCustomFieldMappings.DescriptorImpl) descriptor
 

@@ -63,10 +63,6 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
-  f.entry(title: _('Jira Date Format Override'), field: 'jiraDateFormatOverride') {
-    f.textbox()
-  }
-
   f.advanced() {
     f.section(title: _('Advanced Options')) {
       f.entry(title: _('Use job specific credentials for Jira'), field: 'jobJiraCredentialsId') {
@@ -81,6 +77,27 @@ f.section(title: typedDescriptor.displayName) {
         f.checkbox()
       }
 
+      f.entry(title: _('Dry Run - Dont Create or Update Jira'), field: 'dryRun') {
+        f.checkbox()
+      }
+
+      f.entry(title: _('Jira Date Format Override'), field: 'jiraDateFormatOverride') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Disable JQL Field Filter'), field: 'disableJqlFieldFilter') {
+        f.textbox()
+      }
+
+      f.entry(title: _('JQL Max Results Override'), field: 'jqlMaxResultsOverride') {
+        f.textbox()
+      }
+
+      f.entry(title: _("Jira Custom Field Type Override Mapping")) {
+        f.repeatableHeteroProperty(
+                field: 'jiraCustomFieldTypeOverrideMapping'
+        )
+      }
     }
     f.section(title: _('Custom Field Options')) {
       f.entry(title: _('Jira Custom Field for IQ Application Id'), field: 'applicationCustomFieldName') {
@@ -116,6 +133,18 @@ f.section(title: typedDescriptor.displayName) {
       }
 
       f.entry(title: _('Jira Custom Field for CVSS'), field: 'cvssCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Report Link'), field: 'iqServerReportLinkCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Policy Violation Name'), field: 'iqServerPolicyViolationNameCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Policy Violation Threat Level'), field: 'iqServerPolicyViolationThreatLevelCustomFieldName') {
         f.textbox()
       }
 

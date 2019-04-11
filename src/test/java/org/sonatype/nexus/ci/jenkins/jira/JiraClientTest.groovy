@@ -12,14 +12,17 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
+import groovy.json.JsonSlurper
 import hudson.model.Run
 import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
-import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Specification
 
+//TODO: Think about removing these or making the JiraNotification sharing better
+@SuppressWarnings("GroovyAccessibility")
 class JiraClientTest
     extends Specification
 {
@@ -28,6 +31,8 @@ class JiraClientTest
 
   def http
   JiraClient client
+
+  def customFields
 
   boolean verboseLogging = true
   //def mockLogger = Mock(PrintStream)
@@ -45,45 +50,61 @@ class JiraClientTest
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
 
+    customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
+
+
     jiraNotificationCreateParentTicketTest = new JiraNotification(true,
-                                                                  verboseLogging,
-                                                                  'JIRAIQ',
-                                                                  "Bug",
-                                                                  "Sub-task",
-                                                                  "Low",
-                                                                  true,
-                                                                  true,
-                                                                  "Done",
-                                                                  "IQ Application",
-                                                                  "IQ Organization",
-                                                                  "Scan Stage",
-                                                                  "Finding ID",
-                                                                  "Detect Date",
-                                                                  "Last Scan Date",
-                                                                  "Severity",
-                                                                  "CVE Code",
-                                                                  "CVSS",
-                                                                  "License",
-                                                                  null,
-                                                                  false,
-                                                                  false,
-                                                                  null,
-                                                                  null,
-                                                                  [
-                                                                          [ customFieldName: 'Random Number', customFieldValue: '17'],
-                                                                          [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
-                                                                          [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
-                                                                          [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
-                                                                  ])
+                                                                'JIRAIQ',
+                                                                "Bug",
+                                                                "Sub-task",
+                                                                "Low",
+                                                                true,
+                                                                false,
+                                                                false,
+                                                                true,
+                                                                "Done",
+                                                                "License",
+                                                                null,
+                                                                null,
+                                                                verboseLogging,
+                                                                false,
+                                                                null,
+                                                                false,
+                                                                5,
+                                                                null,
+                                                                "IQ Application",
+                                                                "IQ Organization",
+                                                                "Scan Stage",
+                                                                "Finding ID",
+                                                                "Detect Date",
+                                                                "Last Scan Date",
+                                                                "Severity",
+                                                                "CVE Code",
+                                                                "CVSS",
+                                                                "Report Link",
+                                                                "Violation Name",
+                                                                "Threat Level",
+                                                                [
+                                                                        [ customFieldName: 'Random Number', customFieldValue: '17'],
+                                                                        [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
+                                                                        [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
+                                                                        [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ'],
+                                                                        [ customFieldName: 'Scan Stage', customFieldValue: 'Build']
+                                                                ])
   }
 
   def 'lookupJiraTickets has correct url - with all params'() {
     def url, requestBody
 
     when:
-      client.lookupJiraTickets("JIRAIQ", "Done", "IQ Application", "test", "customfield_10300", 0)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "test"
+
+      client.lookupJiraTickets(jiraFieldMappingUtil, 0)
 
     then:
+      1 * http.get("${client.serverUrl}/rest/api/2/field", _) >> customFields
+
       1 * http.post(_, _, _) >> { args ->
         url = args[0]
         requestBody = args[1]
@@ -100,9 +121,14 @@ class JiraClientTest
     def url, requestBody
 
     when:
-      client.lookupJiraTickets("JIRAIQ", "Done", null, null, "customfield_10300", 0)
+      jiraNotificationCreateParentTicketTest.applicationCustomFieldName = null
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+
+      client.lookupJiraTickets(jiraFieldMappingUtil, 0)
 
     then:
+      1 * http.get("${client.serverUrl}/rest/api/2/field", _) >> customFields
+
       1 * http.post(_, _, _) >> { args ->
         url = args[0]
         requestBody = args[1]
@@ -119,9 +145,16 @@ class JiraClientTest
     def url, requestBody
 
     when:
-    client.lookupJiraTickets("JIRAIQ", null, null, null, null, 0)
+      jiraNotificationCreateParentTicketTest.applicationCustomFieldName = null
+      jiraNotificationCreateParentTicketTest.jiraTransitionStatus = null
+      jiraNotificationCreateParentTicketTest.violationIdCustomFieldName = null
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+
+      client.lookupJiraTickets(jiraFieldMappingUtil, 0)
 
     then:
+      1 * http.get("${client.serverUrl}/rest/api/2/field", _) >> customFields
+
       1 * http.post(_, _, _) >> { args ->
         url = args[0]
         requestBody = args[1]
@@ -150,16 +183,15 @@ class JiraClientTest
    *
    * @return
    */
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get Not-Done Tickets for Project and App'() {
     setup:
       def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-      def resp = client.lookupJiraTickets("JIRAIQ",
-                                          "Done",
-                                          "IQ Application",
-                                          "aaaaaaa-testidegrandfathering",
-                                          "customfield_10300",
-                                          0)
+
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
+
+      def resp = client.lookupJiraTickets(jiraFieldMappingUtil,0)
 
     expect:
       resp != null
@@ -167,7 +199,7 @@ class JiraClientTest
       resp.issues[0].key != null
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
@@ -179,7 +211,7 @@ class JiraClientTest
     resp[0].name != null
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get Project Ticket Fields Metadata'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
@@ -194,26 +226,27 @@ class JiraClientTest
     resp.projects[0].issuetypes[0].name == "Task"
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
+    jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
+    jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
     def resp = client.createIssue(jiraFieldMappingUtil,
                                   "Sonatype IQ Server SECURITY-HIGH Policy Violation",
                                   "CVE-2019-123${detailCounter}",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
-                                  "1",
+                                  1,
                                   "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "aaaaaaa-testidegrandfathering",
-                                  "test org",
-                                  "Build",
                                   "Low",
                                   "CVE-2019-123${detailCounter}",
                                   2.3,
-                                  "some-sha-value")
+                                  "some-sha-value",
+                                  "Security-Low")
 
     expect:
     resp != null
@@ -224,41 +257,40 @@ class JiraClientTest
       //detailCounter << [1, 2, 3, 4, 5, 6, 7, 8, 9]
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
 
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
+    jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
+    jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
     def resp = client.createIssue(jiraFieldMappingUtil,
                                   "Component ABC has Policy Violations",
                                   "Policy Violations are bad",
                                   "SonatypeIQ:IQServerAppId:scanIQ",
-                                  "1",
+                                  1,
                                   "SONATYPEIQ-APPID-COMPONENTID",
-                                  "aaaaaaa-testidegrandfathering",
-                                  "test org",
-                                  "Build",
                                   "Low",
                                   "CVS-2019-1234",
-                                  null,
-                                  "some-parent-sha-value")
+                                  2.4,
+                                  "some-parent-sha-value",
+                                  "Security-Low")
 
     def resp2 = client.createSubTask(jiraFieldMappingUtil,
                                      resp.key,
-                                    "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                    "CVE-2019-1234",
-                                    "SonatypeIQ:IQServerAppId:scanIQ",
-                                    "1",
-                                    "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                    "aaaaaaa-testidegrandfathering",
-                                    "test org",
-                                    "Build",
-                                    "Low",
-                                    "CVE-2019-1234",
-                                    2.4,
-                                    "some-child-sha-value")
+                                     "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                                     "CVE-2019-1234",
+                                     "SonatypeIQ:IQServerAppId:scanIQ",
+                                     1,
+                                     "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                     "Low",
+                                     "CVE-2019-1234",
+                                     2.4,
+                                     "some-child-sha-value",
+                                     "Security-Low")
 
     expect:
     resp != null
@@ -267,7 +299,7 @@ class JiraClientTest
     resp2.key != null
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Edit Task - Update Last Scan Time'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
@@ -282,7 +314,7 @@ class JiraClientTest
     resp == null
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
     def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)

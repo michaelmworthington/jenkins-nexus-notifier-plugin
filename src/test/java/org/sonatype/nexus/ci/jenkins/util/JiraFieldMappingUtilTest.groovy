@@ -19,9 +19,11 @@ import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.jira.JiraClient
 import org.sonatype.nexus.ci.jenkins.jira.JiraClientFactory
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
-import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Specification
 
+//TODO: Think about removing these or making the JiraNotification sharing better
+@SuppressWarnings("GroovyAccessibility")
 class JiraFieldMappingUtilTest
     extends Specification
 {
@@ -44,40 +46,57 @@ class JiraFieldMappingUtilTest
     mockRun.getEnvironment(_) >> [:]
 
     jiraNotificationMinimalTest = new JiraNotification(true,
-                                                       false,
                                                        'JIRAIQ',
                                                        "Task",
                                                        null,
                                                        "Low",
                                                        false,
                                                        false,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
+                                                       false,
+                                                       false,
                                                        null,
                                                        null,
                                                        null,
                                                        null,
                                                        false,
                                                        false,
+                                                       null,
+                                                       false,
+                                                       -1,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
                                                        null,
                                                        null,
                                                        null)
 
     jiraNotificationCustomFieldMapTest = new JiraNotification(true,
-                                                              verboseLogging,
                                                               'JIRAIQ',
                                                               "Bug",
                                                               "Sub-task",
                                                               "Low",
                                                               true,
                                                               true,
+                                                              true,
+                                                              true,
                                                               "Done",
+                                                              "License",
+                                                              null,
+                                                              null,
+                                                              verboseLogging,
+                                                              false,
+                                                              null,
+                                                              false,
+                                                              5,
+                                                              null,
                                                               "IQ Application",
                                                               "IQ Organization",
                                                               "Scan Stage",
@@ -87,17 +106,15 @@ class JiraFieldMappingUtilTest
                                                               "Severity",
                                                               "CVE Code",
                                                               "CVSS",
-                                                              "License",
-                                                              null,
-                                                              false,
-                                                              false,
-                                                              null,
-                                                              null,
+                                                              "Report Link",
+                                                              "Violation Name",
+                                                              "Threat Level",
                                                               [
                                                                       [ customFieldName: 'Random Number', customFieldValue: '17'],
                                                                       [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
                                                                       [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
-                                                                      [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
+                                                                      [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ'],
+                                                                      [ customFieldName: 'Scan Stage', customFieldValue: 'Build']
                                                               ])
   }
 
@@ -271,7 +288,7 @@ class JiraFieldMappingUtilTest
   ****************************************************************************************************************************************************
    */
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Map Custom Fields'() {
     setup:
       def client = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', System.out, true)

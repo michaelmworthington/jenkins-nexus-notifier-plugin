@@ -20,7 +20,7 @@ import org.sonatype.nexus.ci.jenkins.iq.IQClientFactory
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
-import spock.lang.Ignore
+import spock.lang.Requires
 import spock.lang.Specification
 
 //TODO: Think about removing these or making the JiraNotification sharing better
@@ -39,8 +39,7 @@ class JiraNotifierTest
   def mockListener = Mock(TaskListener)
   def mockRun = Mock(Run)
 
-  def customFields
-  def iqReport
+  def customFields, iqReport, iqApplication, iqOrganization
 
   PolicyEvaluationHealthAction policyEvaluationHealthAction
   JiraNotification jiraNotificationCreateParentTicketTest
@@ -54,6 +53,8 @@ class JiraNotifierTest
 
     customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
     iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
+    iqApplication = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-applicationInfo.json'))
+    iqOrganization = new JsonSlurper().parse(new File('src/test/resources/iq-organizations.json'))
 
     policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
             reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453',
@@ -64,14 +65,24 @@ class JiraNotifierTest
     )
 
     jiraNotificationCreateParentTicketTest = new JiraNotification(true,
-                                                                  verboseLogging,
                                                                   'JIRAIQ',
                                                                   "Bug",
                                                                   "Sub-task",
                                                                   "Low",
                                                                   true,
+                                                                  false,
+                                                                  false,
                                                                   true,
                                                                   "Done",
+                                                                  "License",
+                                                                  null,
+                                                                  null,
+                                                                  verboseLogging,
+                                                                  false,
+                                                                  null,
+                                                                  false,
+                                                                  5,
+                                                                  null,
                                                                   "IQ Application",
                                                                   "IQ Organization",
                                                                   "Scan Stage",
@@ -81,17 +92,15 @@ class JiraNotifierTest
                                                                   "Severity",
                                                                   "CVE Code",
                                                                   "CVSS",
-                                                                  "License",
-                                                                  null,
-                                                                  false,
-                                                                  false,
-                                                                  null,
-                                                                  null,
+                                                                  "Report Link",
+                                                                  "Violation Name",
+                                                                  "Threat Level",
                                                                   [
                                                                           [ customFieldName: 'Random Number', customFieldValue: '17'],
                                                                           [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
                                                                           [ customFieldName: 'Finding Template', customFieldValue: 'NA'],
-                                                                          [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ']
+                                                                          [ customFieldName: 'Tool Name', customFieldValue: 'Nexus IQ'],
+                                                                          [ customFieldName: 'Scan Stage', customFieldValue: 'Build']
                                                                   ])
   }
 
@@ -204,20 +213,13 @@ class JiraNotifierTest
       //Load JSON Data
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       2 * jiraClient.createIssue(*_)
   }
 
   def 'Create Detail Tickets - No Aggregation - Update Existing License Tickets'() {
-    def lastScanDateFieldName, updateCount
-
     setup:
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-license-tickets-no-aggregation.json'))
 
@@ -238,12 +240,7 @@ class JiraNotifierTest
       //Load JSON Data
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       updateCount * jiraClient.updateIssueScanDate(*_)
@@ -273,12 +270,7 @@ class JiraNotifierTest
       //Load JSON Data
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       2 * jiraClient.createIssue(*_)
@@ -305,12 +297,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       1 * jiraClient.createIssue(*_)
@@ -336,12 +323,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       1 * jiraClient.updateIssueScanDate(*_)
@@ -367,12 +349,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       1 * jiraClient.createIssue(*_)
@@ -402,12 +379,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       1 * jiraClient.createIssue(*_) >> createParentTicket
@@ -435,12 +407,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       3 * jiraClient.updateIssueScanDate(*_)
@@ -468,12 +435,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       9 * jiraClient.createSubTask(*_)
@@ -503,12 +465,7 @@ class JiraNotifierTest
     then:
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering") >> iqReport
-      1 * jiraClient.lookupJiraTickets("JIRAIQ",
-                                       "Done",
-                                       "IQ Application",
-                                       "aaaaaaa-testidegrandfathering",
-                                       "customfield_10300",
-                                       0) >> openTickets
+      1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
       1 * jiraClient.createIssue(*_) >> createParentTicket
@@ -522,7 +479,7 @@ class JiraNotifierTest
   ****************************************************************************************************************************************************
    */
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Summary Ticket'() {
     setup:
       def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
@@ -542,7 +499,7 @@ class JiraNotifierTest
       true //TODO: assert something??
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - No Aggregation'() {
     setup:
       def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
@@ -564,7 +521,7 @@ class JiraNotifierTest
       true //TODO: assert something??
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component No SubTasks'() {
     setup:
       def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
@@ -586,26 +543,49 @@ class JiraNotifierTest
       true //TODO: assert something??
   }
 
-  @Ignore
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component and SubTasks'() {
     setup:
-      def jiraClient = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging)
-      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
+      def jiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging])
+      def iqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging])
 
-      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security'
-      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'License-Non'
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'License-Non'
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = null
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+      //skip updating the last scan date to speed up things
+      jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = null
 
+      // The report from Juice Shop and Goof with lots of results
+      //policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
+
+      //need these so we're not calling back to the jenkins runtime
       GroovyMock(JiraClientFactory.class, global: true)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
 
       GroovyMock(IQClientFactory.class, global: true)
       IQClientFactory.getIQClient(*_) >> iqClient
 
+    when:
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
-    expect:
-      true //TODO: assert something??
+    then:
+      true
+//      1 * jiraClient.lookupCustomFields()
+//      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+//      1 * jiraClient.lookupJiraTickets(_, _)
+//
+//      //Expectations when doing License Policy Filter
+//      1 * jiraClient.createIssue(*_)
+//      1 * jiraClient.createSubTask(*_)
+
+    when:
+      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'A Fake License So All The Tickets Get Closed'
+      //jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      true
+    //3 * jiraClient.closeTicket(*_)
   }
 }

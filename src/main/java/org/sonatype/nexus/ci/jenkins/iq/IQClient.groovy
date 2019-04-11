@@ -28,10 +28,46 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
+  def lookupApplication(String iqAppExternalId)
+  {
+    def url = getApplicationUrl(serverUrl, iqAppExternalId)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
+  def lookupOrganizations()
+  {
+    def url = getOrganizationsUrl(serverUrl)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
+  def lookupOrganizationName(String iqAppExternalId)
+  {
+    def applicationResp = lookupApplication(iqAppExternalId)
+    def organizationsResp = lookupOrganizations()
+    return organizationsResp.organizations.find { it.id == applicationResp.applications[0].organizationId }.name
+  }
+
   private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
     verbosePrintLn("Get the Application Policy Threats Report from IQ Server")
 
     // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
     return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalid}/browseReport/policythreats.json"
+  }
+
+  private String getApplicationUrl(String serverUrl, String iqAppExternalId) {
+    verbosePrintLn("Get the Application Details from IQ Server")
+
+    //{{iqURL}}/api/v2/applications?publicId={{iqAppExternalId}}
+    return "${serverUrl}/api/v2/applications/?publicId=${iqAppExternalId}"
+  }
+
+  private String getOrganizationsUrl(String serverUrl) {
+    verbosePrintLn("Get the Organization Details from IQ Server")
+
+    return "${serverUrl}/api/v2/organizations"
   }
 }

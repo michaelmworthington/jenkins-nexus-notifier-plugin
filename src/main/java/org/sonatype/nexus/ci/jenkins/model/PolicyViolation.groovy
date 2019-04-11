@@ -108,6 +108,7 @@ class PolicyViolation
           conditionReasonText = licenseCondition.conditionReason
           fingerprintPrettyPrint = "${componentName} - ${it.policyName} - ${conditionReasonText}"
           fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}-${conditionReasonText}"
+          //TODO: do i get the license name here?
         }
 
         String findingFingerprintHash = getFingerprintHash(fingerprintKey)
@@ -139,7 +140,9 @@ class PolicyViolation
 
   static PolicyViolation buildFromJira(Object ticket, String violationIdCustomFieldId)
   {
-    //TODO: I am filtering these when querying, add a jenkins option to remove that filter, need to update the filter if i add to these
+    //I am filtering these when querying to limit the data sent between jenkins and jira
+    //you need to update the filter any fields are added to this list
+    //as a catch all, there is an option on the step to remove that filter
     String ticketInternalId = ticket.id
     String ticketExternalId = ticket.key
     String ticketType = ticket.fields.issuetype.name
@@ -175,6 +178,8 @@ class PolicyViolation
     if (policyThreatLevel < policyViolation.policyThreatLevel)
     {
       policyThreatLevel = policyViolation.policyThreatLevel
+      policyName = policyViolation.policyName
+      policyId = policyViolation.policyId
     }
 
     if (cvssScore < policyViolation.cvssScore)
@@ -182,6 +187,7 @@ class PolicyViolation
       cvssScore = policyViolation.cvssScore
       severity = policyViolation.severity
       cveCode = policyViolation.cveCode
+      cvssReason = policyViolation.cvssReason
     }
 
     findingFingerprints.add(policyViolation.fingerprint)

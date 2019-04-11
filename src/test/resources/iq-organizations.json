@@ -1,0 +1,149 @@
+{
+  "organizations": [
+    {
+      "id": "c0858c7a80904cc9a8303fe7d21377cf",
+      "name": "04-explicit-staging",
+      "tags": [
+
+      ]
+    },
+    {
+      "id": "dd03986fc3e44b5bab1a8ac2e9bd9fc1",
+      "name": "14testorg",
+      "tags": [
+        {
+          "color": "dark-red",
+          "description": "Proper description for fooTag required",
+          "id": "bfb633fd8ec54722889a2e327e5ba41c",
+          "name": "fooTag"
+        },
+        {
+          "color": "dark-red",
+          "description": "Proper description for newTag required",
+          "id": "e6c5ea39d1eb4755b164a47b0326945f",
+          "name": "newTag"
+        }
+      ]
+    },
+    {
+      "id": "2d0dfb87b67b43a3b4271e462bae9eca",
+      "name": "Automatically Created Apps",
+      "tags": [
+
+      ]
+    },
+    {
+      "id": "0caff8b5cff64e9ba86696736e1894c3",
+      "name": "Bulk",
+      "tags": [
+        {
+          "color": "dark-red",
+          "description": "Proper description for NewTag required",
+          "id": "dd619f7952d44074bac64d7863d4171b",
+          "name": "NewTag"
+        }
+      ]
+    },
+    {
+      "id": "b887a5373ebb4d8aae223282d040a8e4",
+      "name": "Investment Bank Org",
+      "tags": [
+
+      ]
+    },
+    {
+      "id": "b9a90ba0dfff4b6080221bb759911669",
+      "name": "Jug",
+      "tags": [
+        {
+          "color": "dark-red",
+          "description": "Proper description for fooTag required",
+          "id": "fed16445ac5942529270cb968bd32c75",
+          "name": "fooTag"
+        },
+        {
+          "color": "dark-red",
+          "description": "Proper description for newTag required",
+          "id": "276f7ee69239460dbc2da1acc096b677",
+          "name": "newTag"
+        }
+      ]
+    },
+    {
+      "id": "ROOT_ORGANIZATION_ID",
+      "name": "Mike Demo Root Organization",
+      "tags": [
+        {
+          "color": "yellow",
+          "description": "Applications that are provided for consumption outside the company",
+          "id": "20f25a11a0ad4302a45f7d933c29ffe3",
+          "name": "Distributed"
+        },
+        {
+          "color": "light-blue",
+          "description": "Helix",
+          "id": "9b9106c2117a48ad8d4a20cd758297a4",
+          "name": "Helix"
+        },
+        {
+          "color": "light-purple",
+          "description": "Applications that are hosted such as services or software as a service.",
+          "id": "32f2f7a03b3242bbbabce04cdadbebdf",
+          "name": "Hosted"
+        },
+        {
+          "color": "dark-green",
+          "description": "Applications that are used only by your employees",
+          "id": "d58c84b2baff4d828030b58ff768d95f",
+          "name": "Internal"
+        },
+        {
+          "color": "light-purple",
+          "description": "MikeDemoCategory",
+          "id": "8616fa2ac3874cda8e4b89ea7a417291",
+          "name": "MikeDemoCategoryFoo"
+        },
+        {
+          "color": "dark-blue",
+          "description": "NotHelix",
+          "id": "bcfadb2d474144ee87c1139ef7b6e550",
+          "name": "NotHelix"
+        },
+        {
+          "color": "dark-red",
+          "description": "PCIDSS",
+          "id": "0f58ec1debba49eeb359c233f52e6b7f",
+          "name": "PCI"
+        }
+      ]
+    },
+    {
+      "id": "a8b89d34395347fdab181cd2657ddbb5",
+      "name": "OSS Contributions",
+      "tags": [
+
+      ]
+    },
+    {
+      "id": "fe794166ca59420784dfa013bdca6db3",
+      "name": "Retail Bank Org",
+      "tags": [
+
+      ]
+    },
+    {
+      "id": "d510a66fef784f28a5fad81946584f74",
+      "name": "Sample Org",
+      "tags": [
+
+      ]
+    },
+    {
+      "id": "9ede900e5a2941a6bd27b0204f847258",
+      "name": "Sonatype",
+      "tags": [
+
+      ]
+    }
+  ]
+}

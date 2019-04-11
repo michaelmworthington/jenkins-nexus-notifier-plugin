@@ -34,14 +34,28 @@ public class JiraNotification
     extends AbstractDescribableImpl<JiraNotification>
 {
   private boolean sendJiraNotification;
-  private boolean verboseLogging;
   private String projectKey;
   private String issueTypeName;
   private String subTaskIssueTypeName;
   private String priorityName;
   private boolean shouldCreateIndividualTickets;
+  private boolean shouldAggregateTicketsByComponent;
+  private boolean shouldCreateSubTasksForAggregatedTickets;
   private boolean shouldTransitionJiraTickets;
   private String jiraTransitionStatus;
+  private String policyFilterPrefix;
+
+  //Advanced Options
+  private String jobJiraCredentialsId;
+  private String jobIQCredentialsId;
+  private boolean verboseLogging;
+  private boolean dryRun;
+  private String jiraDateFormatOverride;
+  private boolean disableJqlFieldFilter;
+  private int jqlMaxResultsOverride;
+  private List<JiraCustomFieldTypeOverride> jiraCustomFieldTypeOverrideMapping;
+
+  //Custom Field Options
   private String applicationCustomFieldName;
   private String organizationCustomFieldName;
   private String scanStageCustomFieldName;
@@ -51,37 +65,35 @@ public class JiraNotification
   private String severityCustomFieldName;
   private String cveCodeCustomFieldName;
   private String cvssCustomFieldName;
-  private String policyFilterPrefix;
-  private String jiraDateFormatOverride;
-  private boolean shouldAggregateTicketsByComponent;
-  private boolean shouldCreateSubTasksForAggregatedTickets;
-
-  private String jobJiraCredentialsId;
-  private String jobIQCredentialsId;
-
+  private String iqServerReportLinkCustomFieldName;
+  private String iqServerPolicyViolationNameCustomFieldName;
+  private String iqServerPolicyViolationThreatLevelCustomFieldName;
   private List<JiraCustomFieldMappings> jiraCustomFieldMappings;
 
-  public boolean getSendJiraNotification() {
-    return sendJiraNotification;
-  }
-  public boolean getVerboseLogging() {
-    return verboseLogging;
-  }
-  public String getProjectKey() {
-    return projectKey;
-  }
-  public String getIssueTypeName() {
-    return issueTypeName;
-  }
-  public String getSubTaskIssueTypeName() {
-    return subTaskIssueTypeName;
-  }
-  public String getPriorityName() {
-    return priorityName;
-  }
+  public boolean getSendJiraNotification() { return sendJiraNotification; }
+  public String getProjectKey() { return projectKey; }
+  public String getIssueTypeName() { return issueTypeName; }
+  public String getSubTaskIssueTypeName() { return subTaskIssueTypeName; }
+  public String getPriorityName() { return priorityName; }
   public boolean getShouldCreateIndividualTickets() { return shouldCreateIndividualTickets; }
+  public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
+  public boolean getShouldCreateSubTasksForAggregatedTickets() { return shouldCreateSubTasksForAggregatedTickets; }
   public boolean getShouldTransitionJiraTickets() { return shouldTransitionJiraTickets; }
   public String getJiraTransitionStatus() { return jiraTransitionStatus; }
+  public String getPolicyFilterPrefix() { return policyFilterPrefix; }
+
+  //Advanced Options
+  public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
+  public String getJobIQCredentialsId() { return jobIQCredentialsId; }
+  public boolean getVerboseLogging() { return verboseLogging; }
+  public boolean getDryRun() { return dryRun; } //todo
+  public String getJiraDateFormatOverride() { return jiraDateFormatOverride; }
+  public boolean getDisableJqlFieldFilter() { return disableJqlFieldFilter; } //todo
+  public int getJqlMaxResultsOverride() { return jqlMaxResultsOverride; } //todo
+  public List<JiraCustomFieldTypeOverride> getJiraCustomFieldTypeOverrideMapping() { return jiraCustomFieldTypeOverrideMapping; } //todo
+
+  //Custom Field Options
+  public List<JiraCustomFieldMappings> getJiraCustomFieldMappings() { return jiraCustomFieldMappings; }
   public String getApplicationCustomFieldName() { return applicationCustomFieldName; }
   public String getOrganizationCustomFieldName() { return organizationCustomFieldName; }
   public String getScanStageCustomFieldName() { return scanStageCustomFieldName; }
@@ -91,26 +103,30 @@ public class JiraNotification
   public String getSeverityCustomFieldName() { return severityCustomFieldName; }
   public String getCveCodeCustomFieldName() { return cveCodeCustomFieldName; }
   public String getCvssCustomFieldName() { return cvssCustomFieldName; }
-  public String getPolicyFilterPrefix() { return policyFilterPrefix; }
-  public String getJiraDateFormatOverride() { return jiraDateFormatOverride; }
-  public boolean getShouldAggregateTicketsByComponent() { return shouldAggregateTicketsByComponent; }
-  public boolean getShouldCreateSubTasksForAggregatedTickets() { return shouldCreateSubTasksForAggregatedTickets; }
-
-  public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
-  public String getJobIQCredentialsId() { return jobIQCredentialsId; }
-
-  public List<JiraCustomFieldMappings> getJiraCustomFieldMappings() { return jiraCustomFieldMappings; }
+  public String getIqServerReportLinkCustomFieldName() { return iqServerReportLinkCustomFieldName; }
+  public String getIqServerPolicyViolationNameCustomFieldName() { return iqServerPolicyViolationNameCustomFieldName; }
+  public String getIqServerPolicyViolationThreatLevelCustomFieldName() { return iqServerPolicyViolationThreatLevelCustomFieldName; }
 
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
-                          final boolean verboseLogging,
                           final String projectKey,
                           final String issueTypeName,
                           final String subTaskIssueTypeName,
                           final String priorityName,
                           final boolean shouldCreateIndividualTickets,
+                          final boolean shouldAggregateTicketsByComponent,
+                          final boolean shouldCreateSubTasksForAggregatedTickets,
                           final boolean shouldTransitionJiraTickets,
                           final String jiraTransitionStatus,
+                          final String policyFilterPrefix,
+                          final String jobJiraCredentialsId,
+                          final String jobIQCredentialsId,
+                          final boolean verboseLogging,
+                          final boolean dryRun,
+                          final String jiraDateFormatOverride,
+                          final boolean disableJqlFieldFilter,
+                          final int jqlMaxResultsOverride,
+                          final List<JiraCustomFieldTypeOverride> jiraCustomFieldTypeOverrideMapping,
                           final String applicationCustomFieldName,
                           final String organizationCustomFieldName,
                           final String scanStageCustomFieldName,
@@ -120,23 +136,34 @@ public class JiraNotification
                           final String severityCustomFieldName,
                           final String cveCodeCustomFieldName,
                           final String cvssCustomFieldName,
-                          final String policyFilterPrefix,
-                          final String jiraDateFormatOverride,
-                          final boolean shouldAggregateTicketsByComponent,
-                          final boolean shouldCreateSubTasksForAggregatedTickets,
-                          final String jobJiraCredentialsId,
-                          final String jobIQCredentialsId,
+                          final String iqServerReportLinkCustomFieldName,
+                          final String iqServerPolicyViolationNameCustomFieldName,
+                          final String iqServerPolicyViolationThreatLevelCustomFieldName,
                           final List<JiraCustomFieldMappings> jiraCustomFieldMappings)
   {
     this.sendJiraNotification = sendJiraNotification;
-    this.verboseLogging = verboseLogging;
     this.projectKey = projectKey;
     this.issueTypeName = issueTypeName;
     this.subTaskIssueTypeName = subTaskIssueTypeName;
     this.priorityName = priorityName;
     this.shouldCreateIndividualTickets = shouldCreateIndividualTickets;
+    this.shouldAggregateTicketsByComponent = shouldAggregateTicketsByComponent;
+    this.shouldCreateSubTasksForAggregatedTickets = shouldCreateSubTasksForAggregatedTickets;
     this.shouldTransitionJiraTickets = shouldTransitionJiraTickets;
     this.jiraTransitionStatus = jiraTransitionStatus;
+    this.policyFilterPrefix = policyFilterPrefix;
+
+    //Advanced Options
+    this.jobJiraCredentialsId = jobJiraCredentialsId;
+    this.jobIQCredentialsId = jobIQCredentialsId;
+    this.verboseLogging = verboseLogging;
+    this.dryRun = dryRun;
+    this.jiraDateFormatOverride = jiraDateFormatOverride;
+    this.disableJqlFieldFilter = disableJqlFieldFilter;
+    this.jqlMaxResultsOverride = jqlMaxResultsOverride;
+    this.jiraCustomFieldTypeOverrideMapping = jiraCustomFieldTypeOverrideMapping;
+
+    //Custom Field Mappings
     this.applicationCustomFieldName = applicationCustomFieldName;
     this.organizationCustomFieldName = organizationCustomFieldName;
     this.scanStageCustomFieldName = scanStageCustomFieldName;
@@ -146,12 +173,9 @@ public class JiraNotification
     this.severityCustomFieldName = severityCustomFieldName;
     this.cveCodeCustomFieldName = cveCodeCustomFieldName;
     this.cvssCustomFieldName = cvssCustomFieldName;
-    this.policyFilterPrefix = policyFilterPrefix;
-    this.jiraDateFormatOverride = jiraDateFormatOverride;
-    this.shouldAggregateTicketsByComponent = shouldAggregateTicketsByComponent;
-    this.shouldCreateSubTasksForAggregatedTickets = shouldCreateSubTasksForAggregatedTickets;
-    this.jobJiraCredentialsId = jobJiraCredentialsId;
-    this.jobIQCredentialsId = jobIQCredentialsId;
+    this.iqServerReportLinkCustomFieldName = iqServerReportLinkCustomFieldName;
+    this.iqServerPolicyViolationNameCustomFieldName = iqServerPolicyViolationNameCustomFieldName;
+    this.iqServerPolicyViolationThreatLevelCustomFieldName = iqServerPolicyViolationThreatLevelCustomFieldName;
     this.jiraCustomFieldMappings = jiraCustomFieldMappings;
   }
 

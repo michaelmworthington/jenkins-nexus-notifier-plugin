@@ -58,13 +58,14 @@ class JiraNotifier
 
       // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
       logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
+      jiraFieldMappingUtil.getIqServerReportLinkCustomField().customFieldValue = policyEvaluationHealthAction.reportLink
 
       String[] linkPieces = policyEvaluationHealthAction.reportLink.split("/")
       String iqReportInternalid = linkPieces[linkPieces.length-1]
       String iqAppExternalId = linkPieces[linkPieces.length-3]
-
-      //TODO: look up the org from iq server
-      String iqOrgExternalId = "org"
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
+      jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
+      //jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "TODO: Scan Stage" //TODO: i cannot support this lookup right now. Perhaps it could be mapped through the passthrough fields
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
       {
@@ -90,7 +91,7 @@ class JiraNotifier
          ***************************************/
 
         //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
-        def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, iqAppExternalId)
+        def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
 
         logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
         potentialFindings.aaData.each {
@@ -98,7 +99,7 @@ class JiraNotifier
                                       potentialFindingsMap,
                                       it,
                                       policyEvaluationHealthAction.reportLink,
-                                      iqAppExternalId,
+                                      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
                                       jiraFieldMappingUtil.policyFilterPrefix)
         }
 
@@ -106,7 +107,7 @@ class JiraNotifier
             2. Get Tickets from Jira
          ***************************************/
 
-        lookupJiraTickets(jiraClient, jiraFieldMappingUtil, iqAppExternalId, currentFindingsMap, currentComponentsMap, 0)
+        lookupJiraTickets(jiraClient, jiraFieldMappingUtil, currentFindingsMap, currentComponentsMap, 0)
 
         /***************************************
             3. Filter out Existing Tickets
@@ -161,9 +162,7 @@ class JiraNotifier
                           repeatJiraComponentsWithNewFindings,
                           newIQFindings,
                           jiraClient,
-                          jiraFieldMappingUtil,
-                          iqAppExternalId,
-                          iqOrgExternalId)
+                          jiraFieldMappingUtil)
 
         /***************************************
          5. Update Scan Time on repeat findings
@@ -205,7 +204,7 @@ class JiraNotifier
       }
       else {
         logger.println("Creating just one ticket with a violation summary in the description")
-        createSummaryTicket(jiraClient, jiraFieldMappingUtil, policyEvaluationHealthAction, iqAppExternalId, iqReportInternalid)
+        createSummaryTicket(jiraClient, jiraFieldMappingUtil, policyEvaluationHealthAction, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue, iqReportInternalid)
 
         if (jiraFieldMappingUtil.shouldTransitionJiraTickets)
         {
@@ -224,24 +223,17 @@ class JiraNotifier
    *
    * @param jiraClient
    * @param jiraFieldMappingUtil
-   * @param iqAppExternalId
    * @param currentFindingsMap
    * @param currentComponentsMap
    * @param pStartAtIndex
    */
   private void lookupJiraTickets(JiraClient jiraClient,
                                  JiraFieldMappingUtil jiraFieldMappingUtil,
-                                 String iqAppExternalId,
                                  Map<String, PolicyViolation> currentFindingsMap,
                                  Map<String, PolicyViolation> currentComponentsMap,
                                  int pStartAtIndex)
   {
-    def currentFindings = jiraClient.lookupJiraTickets(jiraFieldMappingUtil.projectKey,
-                                                       jiraFieldMappingUtil.transitionStatus,
-                                                       jiraFieldMappingUtil.getApplicationCustomField().customFieldName,
-                                                       iqAppExternalId,
-                                                       jiraFieldMappingUtil.getViolationIdCustomField().customFieldId,
-                                                       pStartAtIndex)
+    def currentFindings = jiraClient.lookupJiraTickets(jiraFieldMappingUtil, pStartAtIndex)
 
     logger.println("Parsing findings from Jira: ${currentFindings.issues.size} [start: ${pStartAtIndex}, maxResults: ${currentFindings.maxResults}, total: ${currentFindings.total}]")
     currentFindings.issues.each {
@@ -249,7 +241,7 @@ class JiraNotifier
 
       if (jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
       {
-        if ("Sub-task".equals(pv.ticketType))
+        if ("Sub-task" == pv.ticketType)
         {
           currentFindingsMap.put(pv.fingerprint, pv)
         } else
@@ -258,7 +250,7 @@ class JiraNotifier
         }
       } else
       {
-        if ("Sub-task".equals(pv.ticketType))
+        if ("Sub-task" == pv.ticketType)
         {
           logger.println("WARNING: Skipping Jira Ticket ${pv.ticketExternalId} since it is a Sub-task and tickets are not being aggregated")
         } else
@@ -272,7 +264,6 @@ class JiraNotifier
     {
       lookupJiraTickets(jiraClient,
                         jiraFieldMappingUtil,
-                        iqAppExternalId,
                         currentFindingsMap,
                         currentComponentsMap,
                         currentFindings.startAt + currentFindings.maxResults)
@@ -283,13 +274,11 @@ class JiraNotifier
                                  Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings,
                                  Map<String, PolicyViolation> newIQFindings,
                                  JiraClient jiraClient,
-                                 JiraFieldMappingUtil jiraFieldMappingUtil,
-                                 String iqAppExternalId,
-                                 String iqOrgExternalId)
+                                 JiraFieldMappingUtil jiraFieldMappingUtil)
   {
     if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
     {
-      Set<String> createdSubTasks = new HashSet<String>();
+      Set<String> createdSubTasks = new HashSet<String>()
       def resp
 
       logger.println("Creating ${newIQComponents.size()} component tickets")
@@ -303,10 +292,7 @@ class JiraNotifier
         {
           resp = createIndividualTicket(jiraClient,
                                         jiraFieldMappingUtil,
-                                        it.value,
-                                        iqAppExternalId,
-                                        iqOrgExternalId,
-                                        "TODO: Scan Stage") //TODO
+                                        it.value)
 
           if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
           {
@@ -315,10 +301,7 @@ class JiraNotifier
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
                             resp.key,
-                            newIQFindings.get(it),
-                            iqAppExternalId,
-                            iqOrgExternalId,
-                            "TODO: Scan Stage") //TODO
+                            newIQFindings.get(it))
 
               createdSubTasks.add(it)
             }
@@ -332,37 +315,29 @@ class JiraNotifier
         logger.println("Creating ${moreFindings} finding tickets for repeat components")
 
         newIQFindings.each {
-          if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint)) //TODO: this is failing in my jenkins job - i think it's trying to create the tickets twice
+          if (createdSubTasks.contains(it.key) == false)
           {
-            if (createdSubTasks.contains(it.key) == false)
+            if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint))
             {
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
                             repeatJiraComponentsWithNewFindings.get(it.value.componentFingerprint).ticketExternalId,
-                            it.value,
-                            iqAppExternalId,
-                            iqOrgExternalId,
-                            "TODO: Scan Stage") //TODO
+                            it.value)
             }
-          }
-          else
-          {
-            //TODO: i think this is actually ok, because it's just a note that the finding's parent component was new and not a repeat
-            logger.println("WARNING: skipping creating Jira Sub-task for finding: ${it.value.fingerprintPrettyPrint} because I could not find the parent task for fingerprint: ${it.value.componentFingerprintPrettyPrint}")
+            else
+            {
+              logger.println("WARNING: skipping creating Jira Sub-task for finding: ${it.value.fingerprintPrettyPrint} because I could not find the parent task for fingerprint: ${it.value.componentFingerprintPrettyPrint}")
+            }
           }
         }
       }
-    }
-    else
+    } else
     {
       logger.println("Creating ${newIQFindings.size()} finding tickets")
       newIQFindings.each {
         createIndividualTicket(jiraClient,
                                jiraFieldMappingUtil,
-                               it.value,
-                               iqAppExternalId,
-                               iqOrgExternalId,
-                               "TODO: Scan Stage") //TODO
+                               it.value)
         }
     }
   }
@@ -409,8 +384,6 @@ class JiraNotifier
       // This is to find new violations for existing components (i.e. a newly discovered security vuln for a component that already had vulns)
       calculateRepeatComponentsWithNewFindings(newIQFindings, repeatJiraComponents, repeatJiraComponentsWithNewFindings)
       //this is for an edge case where the parent ticket is closed, but the sub-task is still open, and we are creating a new component
-      // TODO: what if there is an existing component, probably, the sub-task still doesn't get created
-      // TODO: they'll have the same fingerprint - What happens then when we go to close the children and there are two of them??? I"ll guess we close one of them. WHAAAAAA
       calculateRepeatFindingsWithNewComponents(newIQComponents, repeatJiraFindings, potentialFindingsMap, repeatJiraFindingsWithNewComponents)
     }
   }
@@ -499,22 +472,11 @@ class JiraNotifier
 
   private def createIndividualTicket(JiraClient jiraClient,
                                      JiraFieldMappingUtil jiraFieldMappingUtil,
-                                     PolicyViolation pPolicyViolation,
-                                     String iqAppExternalId,
-                                     String iqOrgExternalId,
-                                     String scanStage)
+                                     PolicyViolation pPolicyViolation)
   {
     logger.println("Creating Jira Ticket in Project: ${jiraFieldMappingUtil.projectKey} for Component: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    def description
-    if (pPolicyViolation.policyName)
-    {
-      description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
-    }
-    else
-    {
-      description = "Sonatype IQ Server Policy Violation - ${pPolicyViolation.componentName}"
-    }
+    String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, true)
 
     jiraClient.createIssue(jiraFieldMappingUtil,
                            description,
@@ -522,26 +484,21 @@ class JiraNotifier
                            pPolicyViolation.reportLink,
                            pPolicyViolation.policyThreatLevel,
                            pPolicyViolation.fingerprintKey,
-                           iqAppExternalId,
-                           iqOrgExternalId,
-                           scanStage,
                            pPolicyViolation.severity,
                            pPolicyViolation.cveCode,
                            pPolicyViolation.cvssScore,
-                           pPolicyViolation.fingerprint)
+                           pPolicyViolation.fingerprint,
+                           pPolicyViolation.policyName)
   }
 
   private def createSubTask(JiraClient jiraClient,
-                                     JiraFieldMappingUtil jiraFieldMappingUtil,
-                                     String pParentIssueKey,
-                                     PolicyViolation pPolicyViolation,
-                                     String iqAppExternalId,
-                                     String iqOrgExternalId,
-                                     String scanStage)
+                            JiraFieldMappingUtil jiraFieldMappingUtil,
+                            String pParentIssueKey,
+                            PolicyViolation pPolicyViolation)
   {
     logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    String description = "Sonatype IQ Server ${pPolicyViolation.policyName} Policy Violation - ${pPolicyViolation.componentName}"
+    String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, false)
 
     jiraClient.createSubTask(jiraFieldMappingUtil,
                              pParentIssueKey,
@@ -550,13 +507,11 @@ class JiraNotifier
                              pPolicyViolation.reportLink,
                              pPolicyViolation.policyThreatLevel,
                              pPolicyViolation.fingerprintKey,
-                             iqAppExternalId,
-                             iqOrgExternalId,
-                             scanStage,
                              pPolicyViolation.severity,
                              pPolicyViolation.cveCode,
                              pPolicyViolation.cvssScore,
-                             pPolicyViolation.fingerprint)
+                             pPolicyViolation.fingerprint,
+                             pPolicyViolation.policyName)
   }
 
   private void createSummaryTicket(JiraClient jiraClient,
@@ -584,9 +539,37 @@ class JiraNotifier
                            null,
                            null,
                            null,
-                           null,
-                           null,
                            null)
 
+  }
+
+  private static String buildTicketSummaryTitleText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
+  {
+    def returnValue = "Sonatype IQ Server -"
+
+    if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent && pIsParentTicket)
+    {
+      returnValue <<= " Component ${pPolicyViolation.componentName} has Policy Violations"
+    }
+    else
+    {
+      if (pPolicyViolation.policyName)
+      {
+        returnValue <<= " ${pPolicyViolation.policyName}"
+      }
+
+      returnValue <<= " Policy Violation"
+
+
+      //If a security issue, add in the CVE Code to the ticket title so we can tell the subtasks apart
+      if (pPolicyViolation.cveCode)
+      {
+        returnValue <<= " - $pPolicyViolation.cveCode"
+      }
+
+      returnValue <<= " - ${pPolicyViolation.componentName}"
+    }
+
+    return returnValue
   }
 }

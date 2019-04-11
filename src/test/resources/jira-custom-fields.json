@@ -611,6 +611,23 @@
   },
   {
     "clauseNames": [
+      "cf[10800]",
+      "Report Link"
+    ],
+    "custom": true,
+    "id": "customfield_10800",
+    "name": "Report Link",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:url",
+      "customId": 10800,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
       "cf[10602]",
       "Scan Stage"
     ],
@@ -655,6 +672,40 @@
       "type": "number"
     },
     "searchable": false
+  },
+  {
+    "clauseNames": [
+      "cf[10801]",
+      "Violation Name"
+    ],
+    "custom": true,
+    "id": "customfield_10801",
+    "name": "Violation Name",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10801,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10802]",
+      "Threat Level"
+    ],
+    "custom": true,
+    "id": "customfield_10802",
+    "name": "Threat Level",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:float",
+      "customId": 10802,
+      "type": "number"
+    },
+    "searchable": true
   },
   {
     "clauseNames": [
