@@ -27,15 +27,9 @@ class JiraClientTest
     extends Specification
 {
   //private static final String port = "59454" //for Charles Proxy
-  private static final String port = "8080" //todo: rename and remove
+  private static final String port = "8080"
 
-  //private static final String jiraPort = "59454" //for Charles Proxy
-  private static final String jiraPort = "8080"
-  //private static final String iqPort = "60359" //for Charles Proxy
-  private static final String iqPort = "8060"
-
-
-  def http
+  SonatypeHTTPBuilder http
   JiraClient client, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
@@ -54,7 +48,7 @@ class JiraClientTest
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
     client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-    integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
+    integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
 
     client.http = http
 

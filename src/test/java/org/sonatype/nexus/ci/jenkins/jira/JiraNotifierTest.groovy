@@ -33,7 +33,8 @@ class JiraNotifierTest
   //private static final String iqPort = "60359" //for Charles Proxy
   private static final String iqPort = "8060"
 
-  JiraClient integrationTestJiraClient
+  IQClient iqClient, integrationTestIqClient
+  JiraClient jiraClient, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
   def dryRun = false
@@ -52,7 +53,14 @@ class JiraNotifierTest
   JiraNotifier jiraNotifier
 
   def setup() {
+    GroovyMock(JiraClientFactory.class, global: true)
+    jiraClient = Mock(JiraClient.class)
+
+    GroovyMock(IQClientFactory.class, global: true)
+    iqClient = Mock(IQClient.class)
+
     integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
+    integrationTestIqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging])
 
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
@@ -128,12 +136,7 @@ class JiraNotifierTest
 
   def 'creates Jira client with job credentials override'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
       jiraNotificationCreateParentTicketTest.projectKey = 'projectKey'
@@ -153,12 +156,7 @@ class JiraNotifierTest
 
   def 'send expands notification arguments'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
       jiraNotificationCreateParentTicketTest.projectKey = '${projectKey}'
@@ -178,12 +176,7 @@ class JiraNotifierTest
 
   def 'Create Summary Ticket'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
       jiraNotificationCreateParentTicketTest.shouldCreateIndividualTickets = false
@@ -203,12 +196,7 @@ class JiraNotifierTest
     setup:
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set.json'))
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security-High"
@@ -232,12 +220,7 @@ class JiraNotifierTest
 
       jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = lastScanDateFieldName
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -262,12 +245,7 @@ class JiraNotifierTest
     setup:
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-no-aggregation.json'))
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -290,12 +268,7 @@ class JiraNotifierTest
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -316,12 +289,7 @@ class JiraNotifierTest
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -342,12 +310,7 @@ class JiraNotifierTest
 
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -372,12 +335,7 @@ class JiraNotifierTest
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -400,12 +358,7 @@ class JiraNotifierTest
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -428,12 +381,7 @@ class JiraNotifierTest
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -458,12 +406,7 @@ class JiraNotifierTest
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
-      GroovyMock(JiraClientFactory.class, global: true)
-      def jiraClient = Mock(JiraClient.class)
       JiraClientFactory.getJiraClient(*_) >> jiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      def iqClient = Mock(IQClient.class)
       IQClientFactory.getIQClient(*_) >> iqClient
 
     when:
@@ -489,15 +432,10 @@ class JiraNotifierTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Summary Ticket'() {
     setup:
-      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
-
       jiraNotificationCreateParentTicketTest.shouldCreateIndividualTickets = false
 
-      GroovyMock(JiraClientFactory.class, global: true)
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      IQClientFactory.getIQClient(*_) >> iqClient
+      IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
@@ -508,17 +446,12 @@ class JiraNotifierTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - No Aggregation'() {
     setup:
-      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
-
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = false
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = false
 
-      GroovyMock(JiraClientFactory.class, global: true)
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      IQClientFactory.getIQClient(*_) >> iqClient
+      IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
@@ -529,17 +462,12 @@ class JiraNotifierTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component No SubTasks'() {
     setup:
-      def iqClient = new IQClient("http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging)
-
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = false
 
-      GroovyMock(JiraClientFactory.class, global: true)
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
-
-      GroovyMock(IQClientFactory.class, global: true)
-      IQClientFactory.getIQClient(*_) >> iqClient
+      IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
@@ -550,8 +478,6 @@ class JiraNotifierTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component and SubTasks'() {
     setup:
-      def iqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging])
-
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'License-Non'
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = null
@@ -564,11 +490,8 @@ class JiraNotifierTest
       //policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
 
       //need these so we're not calling back to the jenkins runtime
-      GroovyMock(JiraClientFactory.class, global: true)
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
-
-      GroovyMock(IQClientFactory.class, global: true) //TODO: make these class level declarations
-      IQClientFactory.getIQClient(*_) >> iqClient
+      IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
     when:
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)

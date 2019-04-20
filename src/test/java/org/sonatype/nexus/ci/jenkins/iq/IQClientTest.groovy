@@ -22,15 +22,15 @@ class IQClientTest
   //private static final String port = "60359" //for Charles Proxy
   private static final String port = "8060"
 
-  def http
-  def clientHttpMock, clientLive
+  SonatypeHTTPBuilder http
+  IQClient clientHttpMock, clientLive
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
     clientHttpMock = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
     clientHttpMock.http = http
 
-    clientLive = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
+    clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true])
   }
 
   def 'lookup scan report policy threats has correct url'() {

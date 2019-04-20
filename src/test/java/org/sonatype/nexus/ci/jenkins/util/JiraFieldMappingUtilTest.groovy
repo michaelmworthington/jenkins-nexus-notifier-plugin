@@ -17,7 +17,6 @@ import hudson.EnvVars
 import hudson.model.Run
 import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.jira.JiraClient
-import org.sonatype.nexus.ci.jenkins.jira.JiraClientFactory
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import spock.lang.Requires
 import spock.lang.Specification
@@ -32,7 +31,7 @@ class JiraFieldMappingUtilTest
   //private static final String iqPort = "60359" //for Charles Proxy
   private static final String iqPort = "8060"
 
-  JiraClient integrationTestJiraClient
+  JiraClient client, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
   def dryRun = false
@@ -47,6 +46,7 @@ class JiraFieldMappingUtilTest
   JiraNotification jiraNotificationMinimalTest
 
   def setup() {
+    client = Mock(JiraClient.class)
     integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
 
     mockListener.getLogger() >> mockLogger
@@ -127,10 +127,6 @@ class JiraFieldMappingUtilTest
 
   def 'expands arguments'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def client = Mock(JiraClient.class)
-      JiraClientFactory.getJiraClient(*_) >> client
-
       EnvVars ev = ['projectKey': 'project']
       jiraNotificationMinimalTest.projectKey = '${projectKey}'
 
@@ -143,10 +139,6 @@ class JiraFieldMappingUtilTest
 
   def 'validate custom fields names are mapped to ids - app name'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def client = Mock(JiraClient.class)
-      JiraClientFactory.getJiraClient(*_) >> client
-
       jiraNotificationMinimalTest.applicationCustomFieldName = "IQ Application"
 
       List<Map<String, Object>> customFields = [
@@ -167,10 +159,6 @@ class JiraFieldMappingUtilTest
 
   def 'validate custom fields names are mapped to ids - all fields from jsonslurper'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def client = Mock(JiraClient.class)
-      JiraClientFactory.getJiraClient(*_) >> client
-
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
 
     when:
@@ -201,10 +189,6 @@ class JiraFieldMappingUtilTest
 
   def 'validate minimal custom fields names are mapped to stubs and not null pointers - all fields from jsonslurper'() {
     setup:
-      GroovyMock(JiraClientFactory.class, global: true)
-      def client = Mock(JiraClient.class)
-      JiraClientFactory.getJiraClient(*_) >> client
-
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
 
     when:
@@ -225,10 +209,6 @@ class JiraFieldMappingUtilTest
 
   def 'format date to string'() {
     setup:
-    GroovyMock(JiraClientFactory.class, global: true)
-    def client = Mock(JiraClient.class)
-    JiraClientFactory.getJiraClient(*_) >> client
-
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     def url
@@ -249,10 +229,6 @@ class JiraFieldMappingUtilTest
 
   def 'format date to string with format override'() {
     setup:
-    GroovyMock(JiraClientFactory.class, global: true)
-    def client = Mock(JiraClient.class)
-    JiraClientFactory.getJiraClient(*_) >> client
-
     jiraNotificationMinimalTest.jiraDateFormatOverride = "yyyy-MM-dd"
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
@@ -268,10 +244,6 @@ class JiraFieldMappingUtilTest
 
   def 'parse string to date'() {
     setup:
-    GroovyMock(JiraClientFactory.class, global: true)
-    def client = Mock(JiraClient.class)
-    JiraClientFactory.getJiraClient(*_) >> client
-
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     //def url = "1969-12-31T19:00:00.000-0500"
