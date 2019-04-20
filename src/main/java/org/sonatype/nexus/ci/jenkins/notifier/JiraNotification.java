@@ -86,10 +86,10 @@ public class JiraNotification
   public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
   public String getJobIQCredentialsId() { return jobIQCredentialsId; }
   public boolean getVerboseLogging() { return verboseLogging; }
-  public boolean getDryRun() { return dryRun; } //todo
+  public boolean getDryRun() { return dryRun; }
   public String getJiraDateFormatOverride() { return jiraDateFormatOverride; }
-  public boolean getDisableJqlFieldFilter() { return disableJqlFieldFilter; } //todo
-  public int getJqlMaxResultsOverride() { return jqlMaxResultsOverride; } //todo
+  public boolean getDisableJqlFieldFilter() { return disableJqlFieldFilter; }
+  public int getJqlMaxResultsOverride() { return jqlMaxResultsOverride; }
   public List<JiraCustomFieldTypeOverride> getJiraCustomFieldTypeOverrideMapping() { return jiraCustomFieldTypeOverrideMapping; } //todo
 
   //Custom Field Options

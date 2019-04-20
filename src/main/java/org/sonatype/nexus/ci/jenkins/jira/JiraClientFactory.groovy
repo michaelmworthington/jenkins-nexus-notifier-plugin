@@ -25,7 +25,12 @@ import static com.google.common.base.Preconditions.checkNotNull
 
 class JiraClientFactory
 {
-  static JiraClient getJiraClient(String jobCredentialsId = null, PrintStream logger = null, final boolean verboseLogging = false) {
+  static JiraClient getJiraClient(String jobCredentialsId = null,
+                                  PrintStream logger = null,
+                                  final boolean verboseLogging = false,
+                                  final boolean dryRun = false,
+                                  final boolean disableJqlFieldFilter = false,
+                                  final int jqlMaxResultsOverride = 50) {
     def configuration = NotifierConfiguration.getNotifierConfiguration()
     checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration())
     checkArgument(configuration.jiraConfigs != null, Messages.JiraClientFactory_NoConfiguration())
@@ -37,7 +42,7 @@ class JiraClientFactory
 
     def credentials = findCredentials(jiraConfig.jiraServerUrl, credentialsId)
 
-    return new JiraClient(jiraConfig.jiraServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging)
+    return new JiraClient(jiraConfig.jiraServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride)
   }
 
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {

@@ -120,13 +120,13 @@ class JiraFieldMappingUtil
     policyFilterPrefix = iJiraNotification.policyFilterPrefix
 
     //Advanced Options
-//only passed to JiraClient    this.jobJiraCredentialsId = jobJiraCredentialsId;
-//only passed to IQClient    this.jobIQCredentialsId = jobIQCredentialsId;
+//only passed to JiraClient               this.jobJiraCredentialsId = jobJiraCredentialsId;
+//only passed to IQClient                 this.jobIQCredentialsId = jobIQCredentialsId;
 //only passed to IQClient & JiraClient    this.verboseLogging = verboseLogging;
-//todo here?    this.dryRun = dryRun;
+//only passed to JiraClient               this.dryRun = dryRun;
     jiraDateFormatOverride = iJiraNotification.jiraDateFormatOverride
-//todo here?    this.disableJqlFieldFilter = disableJqlFieldFilter;
-//todo here?    this.jqlMaxResultsOverride = jqlMaxResultsOverride;
+////only passed to JiraClient               this.disableJqlFieldFilter = disableJqlFieldFilter;
+////only passed to JiraClient               this.jqlMaxResultsOverride = jqlMaxResultsOverride;
 //todo here?    this.jiraCustomFieldTypeOverrideMapping = jiraCustomFieldTypeOverrideMapping;
 
     //Custom Fields

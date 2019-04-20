@@ -47,7 +47,7 @@ class JiraNotifier
     checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey()) //todo: the proper way to validate input strings - for custom fields in lookupAndValidateCustomField()
 
     IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
-    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger, jiraNotification.verboseLogging)
+    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger, jiraNotification.verboseLogging, jiraNotification.dryRun, jiraNotification.disableJqlFieldFilter, jiraNotification.jqlMaxResultsOverride)
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotification, jiraClient, run.getEnvironment(listener), logger)
     PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
 
@@ -488,7 +488,7 @@ class JiraNotifier
                            pPolicyViolation.cveCode,
                            pPolicyViolation.cvssScore,
                            pPolicyViolation.fingerprint,
-                           pPolicyViolation.policyName)
+                           pPolicyViolation.policyName) //TODO: collapse the pPolicyViolation
   }
 
   private def createSubTask(JiraClient jiraClient,
@@ -511,7 +511,7 @@ class JiraNotifier
                              pPolicyViolation.cveCode,
                              pPolicyViolation.cvssScore,
                              pPolicyViolation.fingerprint,
-                             pPolicyViolation.policyName)
+                             pPolicyViolation.policyName)//TODO: collapse the pPolicyViolation
   }
 
   private void createSummaryTicket(JiraClient jiraClient,

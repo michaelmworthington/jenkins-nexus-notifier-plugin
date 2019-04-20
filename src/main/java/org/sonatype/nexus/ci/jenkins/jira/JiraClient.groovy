@@ -18,8 +18,23 @@ import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 
 class JiraClient extends AbstractToolClient
 {
-  JiraClient(String serverUrl, String username, String password, PrintStream logger, final boolean verboseLogging = false) {
+  private Boolean dryRun
+  private Boolean disableJqlFieldFilter
+  private int jqlMaxResultsOverride
+
+  JiraClient(String serverUrl,
+             String username,
+             String password,
+             PrintStream logger,
+             final boolean verboseLogging = false,
+             final boolean dryRun = false,
+             final boolean disableJqlFieldFilter = false,
+             final int jqlMaxResultsOverride = 50) {
     super(serverUrl, username, password, logger, verboseLogging)
+
+    this.dryRun = dryRun
+    this.disableJqlFieldFilter = disableJqlFieldFilter
+    this.jqlMaxResultsOverride = jqlMaxResultsOverride
   }
 
   def createIssue(JiraFieldMappingUtil jiraFieldMappingUtil,
@@ -48,7 +63,10 @@ class JiraClient extends AbstractToolClient
                                          policyName)
     def headers = getRequestHeaders(username, password)
 
-    http.post(url, body, headers)
+    if (!dryRun)
+    {
+      http.post(url, body, headers)
+    }
   }
 
   /**
@@ -85,7 +103,10 @@ class JiraClient extends AbstractToolClient
                                 body)
     def headers = getRequestHeaders(username, password)
 
-    http.post(url, body, headers)
+    if (!dryRun)
+    {
+      http.post(url, body, headers)
+    }
   }
 
   def updateIssueScanDate(JiraFieldMappingUtil jiraFieldMappingUtil, String issueKey)
@@ -94,7 +115,10 @@ class JiraClient extends AbstractToolClient
     Map body = getUpdateIssueScanDateRequestBody(jiraFieldMappingUtil)
     def headers = getRequestHeaders(username, password)
 
-    http.put(url, body, headers)
+    if (!dryRun)
+    {
+      http.put(url, body, headers)
+    }
   }
 
 //  def lookupJiraTicketsWithGet(String projectKey,
@@ -153,7 +177,11 @@ class JiraClient extends AbstractToolClient
     //3. Issue the transition
     url = getExecuteTransitionUrl(serverUrl, ticketInternalId)
     def body = getExecuteTransitionRequestBody(transition_id)
-    http.post(url, body, headers)
+
+    if (!dryRun)
+    {
+      http.post(url, body, headers)
+    }
   }
 
   private static Map getExecuteTransitionRequestBody(String transitionId) {
@@ -219,7 +247,7 @@ class JiraClient extends AbstractToolClient
     return "${serverUrl}/rest/api/2/search"
   }
 
-  private static Map getLookupTicketsForProjectBody(JiraFieldMappingUtil jiraFieldMappingUtil, int pStartAtIndex)
+  private Map getLookupTicketsForProjectBody(JiraFieldMappingUtil jiraFieldMappingUtil, int pStartAtIndex)
   {
     String projectKey = jiraFieldMappingUtil.projectKey
     String transitionTargetStatus = jiraFieldMappingUtil.transitionStatus
@@ -242,26 +270,28 @@ class JiraClient extends AbstractToolClient
 
     jql['jql'] += " ORDER BY key"
 
-//TODO: make the field filtering configurable
-    def fields = [
-            fields: [
-                    "id",
-                    "key",
-                    "issuetype",
-                    "summary",
-                    "status"
-            ]
-    ]
 
-    if (violationIdCustomFieldId?.trim())
+    def fields = [:]
+
+    if (!this.disableJqlFieldFilter)
     {
-      fields['fields'] += violationIdCustomFieldId
+      fields['fields'] = ["id",
+                           "key",
+                           "issuetype",
+                           "summary",
+                           "status"
+      ]
+
+
+      if (violationIdCustomFieldId?.trim())
+      {
+        fields['fields'] += violationIdCustomFieldId
+      }
     }
 
-//TODO: make the maxresults configurable
     return jql + fields + [
             startAt   : pStartAtIndex,
-            maxResults: 50
+            maxResults: this.jqlMaxResultsOverride
     ]
   }
 
