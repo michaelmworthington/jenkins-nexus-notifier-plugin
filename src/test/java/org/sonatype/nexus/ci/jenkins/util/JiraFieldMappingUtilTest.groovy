@@ -32,6 +32,11 @@ class JiraFieldMappingUtilTest
   //private static final String iqPort = "60359" //for Charles Proxy
   private static final String iqPort = "8060"
 
+  JiraClient integrationTestJiraClient
+  def jqlMaxResultsOverride = 50
+  def disableJqlFieldFilter = false
+  def dryRun = false
+
   boolean verboseLogging = true
   //def mockLogger = Mock(PrintStream)
   def mockLogger = System.out
@@ -42,6 +47,8 @@ class JiraFieldMappingUtilTest
   JiraNotification jiraNotificationMinimalTest
 
   def setup() {
+    integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
+
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
 
@@ -290,12 +297,14 @@ class JiraFieldMappingUtilTest
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Map Custom Fields'() {
-    setup:
-      def client = new JiraClient("http://localhost:${jiraPort}", 'admin', 'admin123', System.out, true)
+    when:
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
 
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    then:
+      1 * integrationTestJiraClient.lookupMetadataConfigurationForCreateIssue("JIRAIQ","Bug")
+      1 * integrationTestJiraClient.lookupMetadataConfigurationForCreateIssue("JIRAIQ","Sub-task")
+      1 * integrationTestJiraClient.lookupCustomFields()
 
-    expect:
       jiraFieldMappingUtil.getApplicationCustomField().customFieldName == "IQ Application"
       jiraFieldMappingUtil.getApplicationCustomField().customFieldId == "customfield_10200"
       jiraFieldMappingUtil.getApplicationCustomField().customFieldType == "string"

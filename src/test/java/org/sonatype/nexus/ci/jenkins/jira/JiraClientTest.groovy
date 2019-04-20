@@ -27,10 +27,19 @@ class JiraClientTest
     extends Specification
 {
   //private static final String port = "59454" //for Charles Proxy
-  private static final String port = "8080"
+  private static final String port = "8080" //todo: rename and remove
+
+  //private static final String jiraPort = "59454" //for Charles Proxy
+  private static final String jiraPort = "8080"
+  //private static final String iqPort = "60359" //for Charles Proxy
+  private static final String iqPort = "8060"
+
 
   def http
-  JiraClient client
+  JiraClient client, integrationTestJiraClient
+  def jqlMaxResultsOverride = 50
+  def disableJqlFieldFilter = false
+  def dryRun = false
 
   def customFields
 
@@ -45,6 +54,8 @@ class JiraClientTest
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
     client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
+    integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
+
     client.http = http
 
     mockListener.getLogger() >> mockLogger
@@ -186,12 +197,10 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get Not-Done Tickets for Project and App'() {
     setup:
-      def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
 
-      def resp = client.lookupJiraTickets(jiraFieldMappingUtil,0)
+      def resp = integrationTestJiraClient.lookupJiraTickets(jiraFieldMappingUtil, 0)
 
     expect:
       resp != null
@@ -202,8 +211,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get All Custom Fields'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-    def resp = client.lookupCustomFields()
+    def resp = integrationTestJiraClient.lookupCustomFields()
 
     expect:
     resp != null
@@ -214,8 +222,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get Project Ticket Fields Metadata'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-    def resp = client.lookupMetadataConfigurationForCreateIssue("JIRAIQ", "Task")
+    def resp = integrationTestJiraClient.lookupMetadataConfigurationForCreateIssue("JIRAIQ", "Task")
 
     expect:
     resp != null
@@ -229,24 +236,22 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
-    def resp = client.createIssue(jiraFieldMappingUtil,
-                                  "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                  "CVE-2019-123${detailCounter}",
-                                  "SonatypeIQ:IQServerAppId:scanIQ",
-                                  1,
-                                  "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                  "Low",
-                                  "CVE-2019-123${detailCounter}",
-                                  2.3,
-                                  "some-sha-value",
-                                  "Security-Low")
+    def resp = integrationTestJiraClient.createIssue(jiraFieldMappingUtil,
+                                                     "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                                                     "CVE-2019-123${detailCounter}",
+                                                     "SonatypeIQ:IQServerAppId:scanIQ",
+                                                     1,
+                                                     "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                                     "Low",
+                                                     "CVE-2019-123${detailCounter}",
+                                                     2.3,
+                                                     "some-sha-value",
+                                                     "Security-Low")
 
     expect:
     resp != null
@@ -260,37 +265,35 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
-    def resp = client.createIssue(jiraFieldMappingUtil,
-                                  "Component ABC has Policy Violations",
-                                  "Policy Violations are bad",
-                                  "SonatypeIQ:IQServerAppId:scanIQ",
-                                  1,
-                                  "SONATYPEIQ-APPID-COMPONENTID",
-                                  "Low",
-                                  "CVS-2019-1234",
-                                  2.4,
-                                  "some-parent-sha-value",
-                                  "Security-Low")
+    def resp = integrationTestJiraClient.createIssue(jiraFieldMappingUtil,
+                                                     "Component ABC has Policy Violations",
+                                                     "Policy Violations are bad",
+                                                     "SonatypeIQ:IQServerAppId:scanIQ",
+                                                     1,
+                                                     "SONATYPEIQ-APPID-COMPONENTID",
+                                                     "Low",
+                                                     "CVS-2019-1234",
+                                                     2.4,
+                                                     "some-parent-sha-value",
+                                                     "Security-Low")
 
-    def resp2 = client.createSubTask(jiraFieldMappingUtil,
-                                     resp.key,
-                                     "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                     "CVE-2019-1234",
-                                     "SonatypeIQ:IQServerAppId:scanIQ",
-                                     1,
-                                     "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                     "Low",
-                                     "CVE-2019-1234",
-                                     2.4,
-                                     "some-child-sha-value",
-                                     "Security-Low")
+    def resp2 = integrationTestJiraClient.createSubTask(jiraFieldMappingUtil,
+                                                        resp.key,
+                                                        "Sonatype IQ Server SECURITY-HIGH Policy Violation",
+                                                        "CVE-2019-1234",
+                                                        "SonatypeIQ:IQServerAppId:scanIQ",
+                                                        1,
+                                                        "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
+                                                        "Low",
+                                                        "CVE-2019-1234",
+                                                        2.4,
+                                                        "some-child-sha-value",
+                                                        "Security-Low")
 
     expect:
     resp != null
@@ -302,13 +305,11 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Edit Task - Update Last Scan Time'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
 
     String ticketNumber = "JIRAIQ-156"
 
-    def resp = client.updateIssueScanDate(jiraFieldMappingUtil, ticketNumber)
+    def resp = integrationTestJiraClient.updateIssueScanDate(jiraFieldMappingUtil, ticketNumber)
 
     expect:
     resp == null
@@ -317,8 +318,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
     setup:
-    def client = new JiraClient("http://localhost:${port}", 'admin', 'admin123', mockLogger, verboseLogging)
-    def resp = client.closeTicket("10772", "Done")
+    def resp = integrationTestJiraClient.closeTicket("10772", "Done")
 
     expect:
     resp == null
