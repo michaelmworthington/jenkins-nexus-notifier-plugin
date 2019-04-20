@@ -12,7 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
-
+import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
 import org.sonatype.nexus.ci.jenkins.util.AbstractToolClient
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 
@@ -29,7 +29,8 @@ class JiraClient extends AbstractToolClient
              final boolean verboseLogging = false,
              final boolean dryRun = false,
              final boolean disableJqlFieldFilter = false,
-             final int jqlMaxResultsOverride = 50) {
+             final int jqlMaxResultsOverride = 50)
+  {
     super(serverUrl, username, password, logger, verboseLogging)
 
     this.dryRun = dryRun
@@ -37,30 +38,10 @@ class JiraClient extends AbstractToolClient
     this.jqlMaxResultsOverride = jqlMaxResultsOverride
   }
 
-  def createIssue(JiraFieldMappingUtil jiraFieldMappingUtil,
-                  description,
-                  detail,
-                  source,
-                  Integer severity,
-                  fprint,
-                  String severityString,
-                  String cveCode,
-                  Double cvss,
-                  String violationUniqueId,
-                  String policyName)
+  def createIssue(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
-    Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
-                                         description,
-                                         detail,
-                                         source,
-                                         severity,
-                                         fprint,
-                                         severityString,
-                                         cveCode,
-                                         cvss,
-                                         violationUniqueId,
-                                         policyName)
+    Map body = getCreateIssueRequestBody(jiraFieldMappingUtil, true, pPolicyViolation)
     def headers = getRequestHeaders(username, password)
 
     if (!dryRun)
@@ -72,35 +53,11 @@ class JiraClient extends AbstractToolClient
   /**
    * https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-a-sub-task
    */
-  def createSubTask(JiraFieldMappingUtil jiraFieldMappingUtil,
-                    String parentIssueKey,
-                    String description,
-                    String detail,
-                    String source,
-                    Integer severity,
-                    String fprint,
-                    String severityString,
-                    String cveCode,
-                    Double cvss,
-                    String violationUniqueId,
-                    String policyName)
+  def createSubTask(JiraFieldMappingUtil jiraFieldMappingUtil, String parentIssueKey, PolicyViolation pPolicyViolation)
   {
     def url = getCreateIssueRequestUrl(serverUrl)
-    Map body = getCreateIssueRequestBody(jiraFieldMappingUtil,
-                                         description,
-                                         detail,
-                                         source,
-                                         severity,
-                                         fprint,
-                                         severityString,
-                                         cveCode,
-                                         cvss,
-                                         violationUniqueId,
-                                         policyName)
-
-    getCreateSubTaskRequestBody(jiraFieldMappingUtil,
-                                parentIssueKey,
-                                body)
+    Map body = getCreateIssueRequestBody(jiraFieldMappingUtil, false, pPolicyViolation)
+    getCreateSubTaskRequestBody(jiraFieldMappingUtil, parentIssueKey, body)
     def headers = getRequestHeaders(username, password)
 
     if (!dryRun)
@@ -379,19 +336,22 @@ class JiraClient extends AbstractToolClient
     return "${serverUrl}/rest/api/2/issue/${issueKey}"
   }
 
-  private static Map getCreateIssueRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil,
-                                               description,
-                                               detail,
-                                               source,
-                                               Integer severity,
-                                               fprint,
-                                               String severityString,
-                                               String cveCode,
-                                               Double cvss,
-                                               String violationUniqueId,
-                                               String policyName)
+  private static Map getCreateIssueRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil, boolean pIsParentTicket, PolicyViolation pPolicyViolation)
   {
-    //TODO: Pull these out and take them in as parameters
+    def detail = pPolicyViolation.cvssReason
+    def source = pPolicyViolation.reportLink
+    def severity = pPolicyViolation.policyThreatLevel
+    def fprint = pPolicyViolation.fingerprintKey
+    def severityString = pPolicyViolation.severity
+    def cveCode = pPolicyViolation.cveCode
+    def cvss = pPolicyViolation.cvssScore
+    def violationUniqueId = pPolicyViolation.fingerprint
+    def policyName = pPolicyViolation.policyName
+
+    String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, pIsParentTicket)
+
+    //TODO: Pull these out and take them in as parameters (maybe, i seem to be moving the data objects here for formatting
+    //TODO: also format a summary ticket
     String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
     String formatted_summary = "${description}"
@@ -450,5 +410,42 @@ class JiraClient extends AbstractToolClient
     date[jiraFieldMappingUtil.getLastScanDateCustomField().customFieldId] = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
     return [ fields: date ]
+  }
+
+  private static String buildTicketSummaryTitleText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
+  {
+    def returnValue = "Sonatype IQ Server -"
+
+    if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
+    {
+      returnValue <<= " Summary of Violations"
+    }
+    else
+    {
+      if (jiraFieldMappingUtil.shouldAggregateTicketsByComponent && pIsParentTicket)
+      {
+        returnValue <<= " Component ${pPolicyViolation.componentName} has Policy Violations"
+      }
+      else
+      {
+        if (pPolicyViolation.policyName)
+        {
+          returnValue <<= " ${pPolicyViolation.policyName}"
+        }
+
+        returnValue <<= " Policy Violation"
+
+
+        //If a security issue, add in the CVE Code to the ticket title so we can tell the subtasks apart
+        if (pPolicyViolation.cveCode)
+        {
+          returnValue <<= " - $pPolicyViolation.cveCode"
+        }
+
+        returnValue <<= " - ${pPolicyViolation.componentName}"
+      }
+    }
+
+    return returnValue
   }
 }

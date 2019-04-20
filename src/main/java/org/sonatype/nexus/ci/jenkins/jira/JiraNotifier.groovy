@@ -315,7 +315,7 @@ class JiraNotifier
         logger.println("Creating ${moreFindings} finding tickets for repeat components")
 
         newIQFindings.each {
-          if (createdSubTasks.contains(it.key) == false)
+          if (!createdSubTasks.contains(it.key))
           {
             if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint))
             {
@@ -376,7 +376,7 @@ class JiraNotifier
       calculateOldFindings("Component", potentialComponentsMap, currentComponentsMap, oldJiraComponents)
     }
 
-    if(jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets || jiraFieldMappingUtil.shouldAggregateTicketsByComponent == false)
+    if(jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets || !jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
     {
       calculateNewAndRepeatFindings("Finding", potentialFindingsMap, currentFindingsMap, newIQFindings, repeatJiraFindings)
       calculateOldFindings("Finding", potentialFindingsMap, currentFindingsMap, oldJiraFindings)
@@ -476,19 +476,7 @@ class JiraNotifier
   {
     logger.println("Creating Jira Ticket in Project: ${jiraFieldMappingUtil.projectKey} for Component: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, true)
-
-    jiraClient.createIssue(jiraFieldMappingUtil,
-                           description,
-                           pPolicyViolation.cvssReason,
-                           pPolicyViolation.reportLink,
-                           pPolicyViolation.policyThreatLevel,
-                           pPolicyViolation.fingerprintKey,
-                           pPolicyViolation.severity,
-                           pPolicyViolation.cveCode,
-                           pPolicyViolation.cvssScore,
-                           pPolicyViolation.fingerprint,
-                           pPolicyViolation.policyName) //TODO: collapse the pPolicyViolation
+    jiraClient.createIssue(jiraFieldMappingUtil, pPolicyViolation)
   }
 
   private def createSubTask(JiraClient jiraClient,
@@ -498,20 +486,7 @@ class JiraNotifier
   {
     logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
 
-    String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, false)
-
-    jiraClient.createSubTask(jiraFieldMappingUtil,
-                             pParentIssueKey,
-                             description,
-                             pPolicyViolation.cvssReason,
-                             pPolicyViolation.reportLink,
-                             pPolicyViolation.policyThreatLevel,
-                             pPolicyViolation.fingerprintKey,
-                             pPolicyViolation.severity,
-                             pPolicyViolation.cveCode,
-                             pPolicyViolation.cvssScore,
-                             pPolicyViolation.fingerprint,
-                             pPolicyViolation.policyName)//TODO: collapse the pPolicyViolation
+    jiraClient.createSubTask(jiraFieldMappingUtil, pParentIssueKey, pPolicyViolation)
   }
 
   private void createSummaryTicket(JiraClient jiraClient,
@@ -523,53 +498,14 @@ class JiraNotifier
     //TODO: Create a summary ticket from the policyEvaluationHealthAction - what else should be in a summary ticket?
     logger.println("Creating Summary Jira Ticket for Project: ${jiraFieldMappingUtil.projectKey}")
 
-    def description = "Sonatype IQ Server Summary of Violations"
     def detail = "${policyEvaluationHealthAction.affectedComponentCount} components"
-    def source = policyEvaluationHealthAction.reportLink
-    def severity = 1
     def fprint = "SONATYPEIQ-${iqAppExternalId}-${iqReportId}"
 
-    jiraClient.createIssue(jiraFieldMappingUtil,
-                           description,
-                           detail,
-                           source,
-                           severity,
-                           fprint,
-                           null,
-                           null,
-                           null,
-                           null,
-                           null)
+    PolicyViolation policyViolationSummary = new PolicyViolation(reportLink: policyEvaluationHealthAction.reportLink,
+                                                                 fingerprintKey: fprint,
+                                                                 cvssReason: detail,
+                                                                 policyThreatLevel: 1)
 
-  }
-
-  private static String buildTicketSummaryTitleText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
-  {
-    def returnValue = "Sonatype IQ Server -"
-
-    if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent && pIsParentTicket)
-    {
-      returnValue <<= " Component ${pPolicyViolation.componentName} has Policy Violations"
-    }
-    else
-    {
-      if (pPolicyViolation.policyName)
-      {
-        returnValue <<= " ${pPolicyViolation.policyName}"
-      }
-
-      returnValue <<= " Policy Violation"
-
-
-      //If a security issue, add in the CVE Code to the ticket title so we can tell the subtasks apart
-      if (pPolicyViolation.cveCode)
-      {
-        returnValue <<= " - $pPolicyViolation.cveCode"
-      }
-
-      returnValue <<= " - ${pPolicyViolation.componentName}"
-    }
-
-    return returnValue
+    jiraClient.createIssue(jiraFieldMappingUtil, policyViolationSummary)
   }
 }

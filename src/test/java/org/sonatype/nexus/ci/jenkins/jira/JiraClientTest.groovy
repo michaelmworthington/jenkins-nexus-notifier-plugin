@@ -16,6 +16,7 @@ import groovy.json.JsonSlurper
 import hudson.model.Run
 import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
+import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
 import spock.lang.Requires
@@ -235,17 +236,34 @@ class JiraClientTest
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
-    def resp = integrationTestJiraClient.createIssue(jiraFieldMappingUtil,
-                                                     "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                                     "CVE-2019-123${detailCounter}",
-                                                     "SonatypeIQ:IQServerAppId:scanIQ",
-                                                     1,
-                                                     "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                                     "Low",
-                                                     "CVE-2019-123${detailCounter}",
-                                                     2.3,
-                                                     "some-sha-value",
-                                                     "Security-Low")
+    def pReportLink = "SonatypeIQ:IQServerAppId:scanIQ"
+    def componentName = "org.apache.struts:struts2-core:1.2.3"
+    def policyName = "Security-Low"
+    def severity = "Low"
+    def policyThreatLevel = 1
+    def policyId = "abc123"
+    def cveCode = "CVS-2019-123${detailCounter}"
+    def cvssScore = 2.4
+    def conditionReasonText = "Sonatype IQ Server SECURITY-HIGH Policy Violation"
+    def findingFingerprintHash = "some-sha-value"
+    def findingFingerprintKey = "SONATYPEIQ-APPID--POLICYID-COMPONENTNAME-SVREASON"
+    def fingerprintPrettyPrint = "${componentName} - ${policyName} - ${conditionReasonText}"
+
+
+    PolicyViolation policyViolationSubTask = new PolicyViolation(reportLink: pReportLink,
+                                                                 componentName: componentName,
+                                                                 policyId: policyId,
+                                                                 policyName: policyName,
+                                                                 policyThreatLevel: policyThreatLevel,
+                                                                 cvssReason: conditionReasonText,
+                                                                 cvssScore: cvssScore,
+                                                                 cveCode: cveCode,
+                                                                 severity: severity,
+                                                                 fingerprintPrettyPrint: fingerprintPrettyPrint,
+                                                                 fingerprintKey: findingFingerprintKey,
+                                                                 fingerprint: findingFingerprintHash)
+
+    def resp = integrationTestJiraClient.createIssue(jiraFieldMappingUtil, policyViolationSubTask)
 
     expect:
     resp != null
@@ -264,30 +282,51 @@ class JiraClientTest
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
-    def resp = integrationTestJiraClient.createIssue(jiraFieldMappingUtil,
-                                                     "Component ABC has Policy Violations",
-                                                     "Policy Violations are bad",
-                                                     "SonatypeIQ:IQServerAppId:scanIQ",
-                                                     1,
-                                                     "SONATYPEIQ-APPID-COMPONENTID",
-                                                     "Low",
-                                                     "CVS-2019-1234",
-                                                     2.4,
-                                                     "some-parent-sha-value",
-                                                     "Security-Low")
+    //The Story Aggregated Component
+    def pReportLink = "SonatypeIQ:IQServerAppId:scanIQ"
+    def componentName = "org.apache.struts:struts2-core:1.2.3"
+    def componentFingerprintPretty = componentName
+    def componentFingerprintKey = "SONATYPEIQ-APPID-COMPONENTID"
+    def componentFingerprintHash = "some-parent-sha-value"
 
-    def resp2 = integrationTestJiraClient.createSubTask(jiraFieldMappingUtil,
-                                                        resp.key,
-                                                        "Sonatype IQ Server SECURITY-HIGH Policy Violation",
-                                                        "CVE-2019-1234",
-                                                        "SonatypeIQ:IQServerAppId:scanIQ",
-                                                        1,
-                                                        "SONATYPEIQ-APPID-COMPONENTID-SVCODE",
-                                                        "Low",
-                                                        "CVE-2019-1234",
-                                                        2.4,
-                                                        "some-child-sha-value",
-                                                        "Security-Low")
+    PolicyViolation potentialComponentViolation = new PolicyViolation(reportLink: pReportLink,
+                                                                      componentName: componentName,
+                                                                      fingerprintPrettyPrint: componentFingerprintPretty,
+                                                                      fingerprintKey: componentFingerprintKey,
+                                                                      fingerprint: componentFingerprintHash)
+
+    //The Sub-Task Finding
+    def policyName = "Security-Low"
+    def severity = "Low"
+    def policyThreatLevel = 1
+    def policyId = "abc123"
+    def cveCode = "CVS-2019-1234"
+    def cvssScore = 2.4
+    def conditionReasonText = "Sonatype IQ Server SECURITY-HIGH Policy Violation"
+    def findingFingerprintHash = "some-child-sha-value"
+    def findingFingerprintKey = "SONATYPEIQ-APPID--POLICYID-COMPONENTNAME-SVREASON"
+    def fingerprintPrettyPrint = "${componentName} - ${policyName} - ${conditionReasonText}"
+
+    PolicyViolation policyViolationSubTask = new PolicyViolation(reportLink: pReportLink,
+                                                                 componentName: componentName,
+                                                                 componentFingerprintPrettyPrint: componentFingerprintPretty,
+                                                                 componentFingerprintKey: componentFingerprintKey,
+                                                                 componentFingerprint: componentFingerprintHash,
+                                                                 policyId: policyId,
+                                                                 policyName: policyName,
+                                                                 policyThreatLevel: policyThreatLevel,
+                                                                 cvssReason: conditionReasonText,
+                                                                 cvssScore: cvssScore,
+                                                                 cveCode: cveCode,
+                                                                 severity: severity,
+                                                                 fingerprintPrettyPrint: fingerprintPrettyPrint,
+                                                                 fingerprintKey: findingFingerprintKey,
+                                                                 fingerprint: findingFingerprintHash)
+
+    potentialComponentViolation.addViolationToComponent(policyViolationSubTask)
+
+    def resp = integrationTestJiraClient.createIssue(jiraFieldMappingUtil, potentialComponentViolation)
+    def resp2 = integrationTestJiraClient.createSubTask(jiraFieldMappingUtil, resp.key, policyViolationSubTask)
 
     expect:
     resp != null
