@@ -402,6 +402,67 @@ class JiraNotifierTest
       12 * jiraClient.updateIssueScanDate(*_)
   }
 
+  def 'Create Detail Tickets - Aggregate by Component and SubTask - Update Existing Security High Tickets - Jira Ticket Query Paging Test - 113 results'()
+  {
+    setup:
+      def openTickets0 = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks-from-jenkinsfile-test-0-49.json'))
+      def openTickets50 = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks-from-jenkinsfile-test-50-99.json'))
+      def openTickets100 = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks-from-jenkinsfile-test-100-113.json'))
+
+      def iqReportBig = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-67b95f188e3f4a9896a370d7bc830cc8-policythreats.json'))
+      policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/67b95f188e3f4a9896a370d7bc830cc8'
+
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security-High"
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("67b95f188e3f4a9896a370d7bc830cc8", "aaaaaaa-testidegrandfathering") >> iqReportBig
+      1 * jiraClient.lookupJiraTickets(_, 0) >> openTickets0
+      1 * jiraClient.lookupJiraTickets(_, 50) >> openTickets50
+      1 * jiraClient.lookupJiraTickets(_, 100) >> openTickets100
+
+      //Expectations when doing License Policy Filter
+      0 * jiraClient.createIssue(*_)
+      0 * jiraClient.createSubTask(*_)
+      113 * jiraClient.updateIssueScanDate(*_)
+  }
+
+  def 'Create Detail Tickets - JQL Override of Zero throws an Exception'()
+  {
+    setup:
+      def openTicketsBad = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set-bad-maxResults.json'))
+
+      def iqReportBig = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-67b95f188e3f4a9896a370d7bc830cc8-policythreats.json'))
+      policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/67b95f188e3f4a9896a370d7bc830cc8'
+
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security-High"
+      jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+      jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+      JiraClientFactory.getJiraClient(*_) >> jiraClient
+      IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * jiraClient.lookupCustomFields() >> customFields
+      1 * iqClient.lookupPolcyDetailsFromIQ("67b95f188e3f4a9896a370d7bc830cc8", "aaaaaaa-testidegrandfathering") >> iqReportBig
+      jiraClient.lookupJiraTickets(_, _) >> openTicketsBad
+
+      def e = thrown(hudson.AbortException)
+      e.message == "Invalid Configuration: Search start and finish are the same."
+
+  }
+
   def 'Create Detail Tickets - Aggregate by Component and SubTask - Close Old Security Tickets'() {
     setup:
       def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks.json'))

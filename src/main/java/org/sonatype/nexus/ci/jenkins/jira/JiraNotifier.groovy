@@ -262,6 +262,14 @@ class JiraNotifier
       }
     }
 
+//todo: double check this - found the scenario when maxresultsoverride was zero
+    int endOfSearchPage = currentFindings.maxResults + currentFindings.startAt
+
+    if (endOfSearchPage == pStartAtIndex && currentFindings.total > 0)
+    {
+      throw new RuntimeException("Invalid Configuration: Search start and finish are the same.")
+    }
+
     if (currentFindings.total > (currentFindings.maxResults + currentFindings.startAt))
     {
       lookupJiraTickets(jiraClient,

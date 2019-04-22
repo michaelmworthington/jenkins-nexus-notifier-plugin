@@ -36,6 +36,11 @@ class JiraClient extends AbstractToolClient
     this.dryRun = dryRun
     this.disableJqlFieldFilter = disableJqlFieldFilter
     this.jqlMaxResultsOverride = jqlMaxResultsOverride
+
+    if(jqlMaxResultsOverride < 1)
+    {
+      throw new RuntimeException("Invalid Configuration: Max Results was ${jqlMaxResultsOverride} and must be greater than zero.")
+    }
   }
 
   def createIssue(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation)

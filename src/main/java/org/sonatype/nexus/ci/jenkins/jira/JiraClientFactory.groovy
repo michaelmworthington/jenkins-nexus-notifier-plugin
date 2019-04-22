@@ -42,7 +42,13 @@ class JiraClientFactory
 
     def credentials = findCredentials(jiraConfig.jiraServerUrl, credentialsId)
 
-    return new JiraClient(jiraConfig.jiraServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride)
+    int jqlMaxResultsOverrideValidated = jqlMaxResultsOverride
+    if(jqlMaxResultsOverride < 1)
+    {
+      jqlMaxResultsOverrideValidated = 50
+    }
+
+    return new JiraClient(jiraConfig.jiraServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverrideValidated)
   }
 
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {

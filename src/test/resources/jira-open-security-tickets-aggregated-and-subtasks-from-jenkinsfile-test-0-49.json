@@ -1,0 +1,1624 @@
+{
+  "expand": "schema,names",
+  "issues": [
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "55e8fc4e51ee9248fddebf693d6b4ed30dc0d572671234019a804f4be85e7719",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component a-name:jsonwebtoken:0.1.0 has Policy Violations"
+      },
+      "id": "13964",
+      "key": "JIRAIQ-1832",
+      "self": "http://localhost:8080/rest/api/2/issue/13964"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "d1a92f8c3d90fd9fd1782c70c3e707dff2f7624a3f2c1ad76c20b70ab2043fcb",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2015-0022 - a-name:jsonwebtoken:0.1.0"
+      },
+      "id": "13965",
+      "key": "JIRAIQ-1833",
+      "self": "http://localhost:8080/rest/api/2/issue/13965"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "6469da0e0022ca6901627d7ab55013388730ff03549275b4eb08c0b2a13e6782",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.jvnet.hudson:xstream:1.4.7-jenkins-1:jar has Policy Violations"
+      },
+      "id": "13966",
+      "key": "JIRAIQ-1834",
+      "self": "http://localhost:8080/rest/api/2/issue/13966"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "e8a7509b9d15b8916a0c59a0bb2f1a3eb7f6c44fe695a959829fc55ffdfca72b",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2017-7957 - maven:org.jvnet.hudson:xstream:1.4.7-jenkins-1:jar"
+      },
+      "id": "13967",
+      "key": "JIRAIQ-1835",
+      "self": "http://localhost:8080/rest/api/2/issue/13967"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "945d6455f5b53a3146579931f68af64bc3f7a6dbe3fe8e80417acd89a1a5126e",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-3674 - maven:org.jvnet.hudson:xstream:1.4.7-jenkins-1:jar"
+      },
+      "id": "13968",
+      "key": "JIRAIQ-1836",
+      "self": "http://localhost:8080/rest/api/2/issue/13968"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "3a1152387c2e12ee38fd694789d9dc64d09a108ede68bd68bc5f57d3178760df",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component nuget:IronPython.StdLib:2.7.8-beta1 has Policy Violations"
+      },
+      "id": "13969",
+      "key": "JIRAIQ-1837",
+      "self": "http://localhost:8080/rest/api/2/issue/13969"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "735d8db49f31f6c6e98573e3d5fe699ad29988b51b68d9833ef0728958a0bd56",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2014-0148 - nuget:IronPython.StdLib:2.7.8-beta1"
+      },
+      "id": "13970",
+      "key": "JIRAIQ-1838",
+      "self": "http://localhost:8080/rest/api/2/issue/13970"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "0e045a42a31ef567a6c8c03f46d9a02d0fd027674b0d89cb5c36114205a4ab81",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2018-18074 - nuget:IronPython.StdLib:2.7.8-beta1"
+      },
+      "id": "13971",
+      "key": "JIRAIQ-1839",
+      "self": "http://localhost:8080/rest/api/2/issue/13971"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "3de7c6ec06590f64c591c35ace9903e82af06ad69661760664e169623b11e0b0",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2012-0071 - nuget:IronPython.StdLib:2.7.8-beta1"
+      },
+      "id": "13972",
+      "key": "JIRAIQ-1840",
+      "self": "http://localhost:8080/rest/api/2/issue/13972"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "7bfe6da1bdd45c9482c1ca3201f53a20f371ff7bc3cf63669916c6bd7e3434c4",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2018-20060 - nuget:IronPython.StdLib:2.7.8-beta1"
+      },
+      "id": "13973",
+      "key": "JIRAIQ-1841",
+      "self": "http://localhost:8080/rest/api/2/issue/13973"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "5d3005a4068b760f11cbc93a8315cdfa7174afae578e40e24c232c0a43bdace2",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:commons-httpclient:commons-httpclient:3.1-jenkins-1:jar has Policy Violations"
+      },
+      "id": "13974",
+      "key": "JIRAIQ-1842",
+      "self": "http://localhost:8080/rest/api/2/issue/13974"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "a2ec95e5957c5fc26ecfad556fa0f917cbf6291afb9f5b2416a8f010ee5cb497",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2007-0004 - maven:commons-httpclient:commons-httpclient:3.1-jenkins-1:jar"
+      },
+      "id": "13975",
+      "key": "JIRAIQ-1843",
+      "self": "http://localhost:8080/rest/api/2/issue/13975"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "e66e9f2d934258b7d8f22e6e6f1f7fc4b12dc83588e01d7b151612713aa34d0b",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component a-name:growl:1.5.1 has Policy Violations"
+      },
+      "id": "13976",
+      "key": "JIRAIQ-1844",
+      "self": "http://localhost:8080/rest/api/2/issue/13976"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "b627f3fd5e68e2c68ee0e64a084c4a2fc7924159176cbe71179ead46601626a8",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2017-0223 - a-name:growl:1.5.1"
+      },
+      "id": "13977",
+      "key": "JIRAIQ-1845",
+      "self": "http://localhost:8080/rest/api/2/issue/13977"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "6f539218eb43a3364b0a3213e764a53a4af2ee2121d842c7cf351c8646417045",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component a-name:moment:2.0.0 has Policy Violations"
+      },
+      "id": "13978",
+      "key": "JIRAIQ-1846",
+      "self": "http://localhost:8080/rest/api/2/issue/13978"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "a67be675c50af5808edcd6f1d76cdd99d21fabcc60594c2c1d01a344503796db",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2017-0422 - a-name:moment:2.0.0"
+      },
+      "id": "13979",
+      "key": "JIRAIQ-1847",
+      "self": "http://localhost:8080/rest/api/2/issue/13979"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "7ca261fc62114aa94bfda8d03375467d18441163f388c1186b0564bc7f8695e8",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.acegisecurity:acegi-security:1.0.7:jar has Policy Violations"
+      },
+      "id": "13980",
+      "key": "JIRAIQ-1848",
+      "self": "http://localhost:8080/rest/api/2/issue/13980"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "1b4aef0e25085b0ee3706837e3a668bd6358fb9fad8c1991294d30be0798c6e2",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2017-0641 - maven:org.acegisecurity:acegi-security:1.0.7:jar"
+      },
+      "id": "13981",
+      "key": "JIRAIQ-1849",
+      "self": "http://localhost:8080/rest/api/2/issue/13981"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "a517d55087701117f144276ae659488883c4b6bdc99283ca9c874f1f45cd073c",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component a-name:constantinople:3.0.2 has Policy Violations"
+      },
+      "id": "13982",
+      "key": "JIRAIQ-1850",
+      "self": "http://localhost:8080/rest/api/2/issue/13982"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "1b85f660a0a20a779b4d6c2cdc46adde46476203013bb360acf57073e962fd39",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2018-0312 - a-name:constantinople:3.0.2"
+      },
+      "id": "13983",
+      "key": "JIRAIQ-1851",
+      "self": "http://localhost:8080/rest/api/2/issue/13983"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "dc61fc478181028fbe91752e5fddae5f1203eabc942834c43f8705adad9cf905",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component a-name:Moment.js:2.0.0 has Policy Violations"
+      },
+      "id": "13984",
+      "key": "JIRAIQ-1852",
+      "self": "http://localhost:8080/rest/api/2/issue/13984"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "2bf25cf5779797db072b2b6c51ea4808dcda37fa66e49298f1d6d7be1d962e87",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2017-0422 - a-name:Moment.js:2.0.0"
+      },
+      "id": "13985",
+      "key": "JIRAIQ-1853",
+      "self": "http://localhost:8080/rest/api/2/issue/13985"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "bcc9a99345c3dee95a8fe4c34c4dd7f52f49c3d0a3f7f5e33445a524a253ded4",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:commons-beanutils:commons-beanutils:1.8.3:jar has Policy Violations"
+      },
+      "id": "13986",
+      "key": "JIRAIQ-1854",
+      "self": "http://localhost:8080/rest/api/2/issue/13986"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "65c5cf9e13827847b114a067ae5eeaa030ef4261ba67ec80e17e9110f336dcff",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2014-0114 - maven:commons-beanutils:commons-beanutils:1.8.3:jar"
+      },
+      "id": "13987",
+      "key": "JIRAIQ-1855",
+      "self": "http://localhost:8080/rest/api/2/issue/13987"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "577cb8981e9e47b218c64636187394e5118eb8c7557180c269acb0a2c14a9d08",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.bouncycastle:bcprov-jdk15on:1.54:jar has Policy Violations"
+      },
+      "id": "13988",
+      "key": "JIRAIQ-1856",
+      "self": "http://localhost:8080/rest/api/2/issue/13988"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "cd8dbe669b82280a0870df2ce1740719e6950aa79fc0f396f253b221ef057631",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000342 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13989",
+      "key": "JIRAIQ-1857",
+      "self": "http://localhost:8080/rest/api/2/issue/13989"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "e83347d9a760d8179a2b7e19161ce82a1642b75ac91fbdebb66a1cfa174c1127",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000340 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13990",
+      "key": "JIRAIQ-1858",
+      "self": "http://localhost:8080/rest/api/2/issue/13990"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "a87b71c03bae58092880c65726440cca0b1c972b867152cf1f471757f7a87c1c",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000338 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13991",
+      "key": "JIRAIQ-1859",
+      "self": "http://localhost:8080/rest/api/2/issue/13991"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "21c210e085c4ff37722e901a4e018497c5d86d4a49fffda8414db438a1a6ee66",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000344 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13992",
+      "key": "JIRAIQ-1860",
+      "self": "http://localhost:8080/rest/api/2/issue/13992"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "8e281f0c4933c22375db8754e3fc9dd8369a955f1065ef989817589ac5c9625c",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000352 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13993",
+      "key": "JIRAIQ-1861",
+      "self": "http://localhost:8080/rest/api/2/issue/13993"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "d0f345086b76ebc9a623f43a20b17d7907b47f7c2090287889aceb93eab69d2f",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2018-1000180 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13994",
+      "key": "JIRAIQ-1862",
+      "self": "http://localhost:8080/rest/api/2/issue/13994"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "7fbb7612320d4a30ad3d1aa94bf760007c52eb2c8762e3f4c7cdbf417aa818b4",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000343 - maven:org.bouncycastle:bcprov-jdk15on:1.54:jar"
+      },
+      "id": "13995",
+      "key": "JIRAIQ-1863",
+      "self": "http://localhost:8080/rest/api/2/issue/13995"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "e4ca974816262e09beb80c8751cda8193b2924741599a0b6ffb53c41594c67cd",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.jenkins-ci.plugins:matrix-project:1.4.1:jar has Policy Violations"
+      },
+      "id": "13996",
+      "key": "JIRAIQ-1864",
+      "self": "http://localhost:8080/rest/api/2/issue/13996"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "5efddc73c74016831ba26fa87ca2c95655594c71a0f164fc2277a1a28c220038",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2019-0071 - maven:org.jenkins-ci.plugins:matrix-project:1.4.1:jar"
+      },
+      "id": "13997",
+      "key": "JIRAIQ-1865",
+      "self": "http://localhost:8080/rest/api/2/issue/13997"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "fe8b7214b8eb9e43d99210c056f8246d333ba8310115c52978749c1de45e6f83",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi has Policy Violations"
+      },
+      "id": "13998",
+      "key": "JIRAIQ-1866",
+      "self": "http://localhost:8080/rest/api/2/issue/13998"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "ef1e0ce7106760cc78758857acceb5038b7b19c98dce75bddc453bc45ae5ec4c",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000352 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "13999",
+      "key": "JIRAIQ-1867",
+      "self": "http://localhost:8080/rest/api/2/issue/13999"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "e897c43ba0ab1479320c3ee0ecfc439fcfe0c67ebc0141dc532d65bd66ac383a",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000342 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "14000",
+      "key": "JIRAIQ-1868",
+      "self": "http://localhost:8080/rest/api/2/issue/14000"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "2491f5285d46ff6934df7a9365ca75c64086c029b053c0ee8f2311b5f75540d2",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2018-1000180 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "14001",
+      "key": "JIRAIQ-1869",
+      "self": "http://localhost:8080/rest/api/2/issue/14001"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "ac25ac9b47b93d253e7c99e258e4213cf97cf692a2d9188599f6828b5bf1f6f1",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000338 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "14002",
+      "key": "JIRAIQ-1870",
+      "self": "http://localhost:8080/rest/api/2/issue/14002"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "a9e79d73e564f51cff11f9489a0557609e65fd7528b3b80510f953afda2546ee",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000343 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "14003",
+      "key": "JIRAIQ-1871",
+      "self": "http://localhost:8080/rest/api/2/issue/14003"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "ecc8d110e25b329a04b6ef26fc2c51edc4c18299b0e9efbccb3d140546a53c59",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000344 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "14004",
+      "key": "JIRAIQ-1872",
+      "self": "http://localhost:8080/rest/api/2/issue/14004"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "27f0b9c99741d01abc0061943e9bf2ccf877c68bf7b99536f3f1604e01a3c577",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000340 - maven:org.jenkins-ci.plugins:bouncycastle-api:2.16.0:hpi"
+      },
+      "id": "14005",
+      "key": "JIRAIQ-1873",
+      "self": "http://localhost:8080/rest/api/2/issue/14005"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "62c32dbe6a1406c2c7e53db30773b50aff5d8d545445944b9bd7eae3045e2a70",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:commons-fileupload:commons-fileupload:1.3.1-jenkins-2:jar has Policy Violations"
+      },
+      "id": "14006",
+      "key": "JIRAIQ-1874",
+      "self": "http://localhost:8080/rest/api/2/issue/14006"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "3f3b725b43b92225465f0b6315fd116794d02eaacaf99d8733dd5c201ac1daac",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-3092 - maven:commons-fileupload:commons-fileupload:1.3.1-jenkins-2:jar"
+      },
+      "id": "14007",
+      "key": "JIRAIQ-1875",
+      "self": "http://localhost:8080/rest/api/2/issue/14007"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "375712fba812d01d2f4f45d3671c76123ee3fe3d562fc657cdb60e1de0abe4cc",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - CVE-2016-1000031 - maven:commons-fileupload:commons-fileupload:1.3.1-jenkins-2:jar"
+      },
+      "id": "14008",
+      "key": "JIRAIQ-1876",
+      "self": "http://localhost:8080/rest/api/2/issue/14008"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "16e2091c854de5f318cc5ad9e16706c10d9004e06fea794c6f25524a571e20eb",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.jenkins-ci.plugins:matrix-auth:1.1:hpi has Policy Violations"
+      },
+      "id": "14009",
+      "key": "JIRAIQ-1877",
+      "self": "http://localhost:8080/rest/api/2/issue/14009"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "18d8ffcb15194e01456b88e5562d600f54f638152a2cf3948fba8f87b030ed1a",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2017-0202 - maven:org.jenkins-ci.plugins:matrix-auth:1.1:hpi"
+      },
+      "id": "14010",
+      "key": "JIRAIQ-1878",
+      "self": "http://localhost:8080/rest/api/2/issue/14010"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "3a77abbad70af0f8f30c2ee3e7d3554c6603793dab6a834942d90324f21b143a",
+        "issuetype": {
+          "avatarId": 10303,
+          "description": "A problem which impairs or prevents the functions of the product.",
+          "iconUrl": "http://localhost:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+          "id": "10004",
+          "name": "Bug",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10004",
+          "subtask": false
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Component maven:org.jenkins-ci.main:maven-plugin:2.14:hpi has Policy Violations"
+      },
+      "id": "14011",
+      "key": "JIRAIQ-1879",
+      "self": "http://localhost:8080/rest/api/2/issue/14011"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "451e494d0f788dce4258bc6aba0a2906e8f719ab9651c184ae2941b09fe665b1",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2016-0398 - maven:org.jenkins-ci.main:maven-plugin:2.14:hpi"
+      },
+      "id": "14012",
+      "key": "JIRAIQ-1880",
+      "self": "http://localhost:8080/rest/api/2/issue/14012"
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "fields": {
+        "customfield_10300": "5626fefdac90b92e35ccd1207b4770046a5002bd3bd22505fe298cf77c0e1a78",
+        "issuetype": {
+          "description": "The sub-task of the issue",
+          "iconUrl": "http://localhost:8080/images/icons/issuetypes/subtask_alternate.png",
+          "id": "10000",
+          "name": "Sub-task",
+          "self": "http://localhost:8080/rest/api/2/issuetype/10000",
+          "subtask": true
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "http://localhost:8080/",
+          "id": "10000",
+          "name": "To Do",
+          "self": "http://localhost:8080/rest/api/2/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "http://localhost:8080/rest/api/2/statuscategory/2"
+          }
+        },
+        "summary": "Sonatype IQ Server - Security-High Policy Violation - sonatype-2007-0004 - maven:org.jenkins-ci.main:maven-plugin:2.14:hpi"
+      },
+      "id": "14013",
+      "key": "JIRAIQ-1881",
+      "self": "http://localhost:8080/rest/api/2/issue/14013"
+    }
+  ],
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 113
+}
