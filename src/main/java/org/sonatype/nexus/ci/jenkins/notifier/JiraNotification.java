@@ -43,6 +43,7 @@ public class JiraNotification
   private boolean shouldCreateSubTasksForAggregatedTickets;
   private boolean shouldTransitionJiraTickets;
   private String jiraTransitionStatus;
+  private String jiraTransitionName;
   private String policyFilterPrefix;
 
   //Advanced Options
@@ -85,6 +86,7 @@ public class JiraNotification
   public boolean getShouldCreateSubTasksForAggregatedTickets() { return shouldCreateSubTasksForAggregatedTickets; }
   public boolean getShouldTransitionJiraTickets() { return shouldTransitionJiraTickets; }
   public String getJiraTransitionStatus() { return jiraTransitionStatus; }
+  public String getJiraTransitionName() { return jiraTransitionName; }
   public String getPolicyFilterPrefix() { return policyFilterPrefix; }
 
   //Advanced Options
@@ -128,6 +130,7 @@ public class JiraNotification
                           final boolean shouldCreateSubTasksForAggregatedTickets,
                           final boolean shouldTransitionJiraTickets,
                           final String jiraTransitionStatus,
+                          final String jiraTransitionName,
                           final String policyFilterPrefix,
                           final String jobJiraCredentialsId,
                           final String jobIQCredentialsId,
@@ -166,6 +169,7 @@ public class JiraNotification
     this.shouldCreateSubTasksForAggregatedTickets = shouldCreateSubTasksForAggregatedTickets;
     this.shouldTransitionJiraTickets = shouldTransitionJiraTickets;
     this.jiraTransitionStatus = jiraTransitionStatus;
+    this.jiraTransitionName = jiraTransitionName;
     this.policyFilterPrefix = policyFilterPrefix;
 
     //Advanced Options
@@ -235,6 +239,19 @@ public class JiraNotification
         return FormUtil.validateNotEmpty(jiraTransitionStatus, Messages.JiraNotification_TransitionStatusRequired());
       }
     }
+
+    public FormValidation doCheckJiraTransitionName(@QueryParameter Boolean shouldTransitionJiraTickets, @QueryParameter String jiraTransitionName) {
+      if(Boolean.FALSE.equals(shouldTransitionJiraTickets))
+      {
+        return FormValidation.ok();
+      }
+      else
+      {
+        return FormUtil.validateNotEmpty(jiraTransitionName, Messages.JiraNotification_TransitionNameRequired());
+      }
+    }
+
+    //TODO: create more validations up front
 
     public ListBoxModel doFillJobJiraCredentialsIdItems(@AncestorInPath final Job job) {
       NotifierConfiguration configuration = NotifierConfiguration.getNotifierConfiguration();

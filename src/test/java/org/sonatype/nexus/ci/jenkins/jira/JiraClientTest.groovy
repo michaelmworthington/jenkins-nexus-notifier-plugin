@@ -70,6 +70,7 @@ class JiraClientTest
                                                                 false,
                                                                 true,
                                                                 "Done",
+                                                                "Resolve",
                                                                 "License",
                                                                 null,
                                                                 null,
@@ -362,11 +363,21 @@ class JiraClientTest
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Close Ticket'() {
-    setup:
-    def resp = integrationTestJiraClient.closeTicket("10772", "Done")
+    when:
+      def resp = integrationTestJiraClient.closeTicket("14300", "Resolve")
 
-    expect:
-    resp == null
+    then:
+      resp == null
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with Jira Server - Close Ticket throws exception for invalid status'() {
+    when:
+      integrationTestJiraClient.closeTicket("14300", "blarg")
+
+    then:
+      def e = thrown(RuntimeException)
+      e.message == "Transition not found for name: blarg"
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
@@ -385,7 +396,7 @@ class JiraClientTest
 
     when: 'Close all the tickets'
       resp.issues.each {
-        integrationTestJiraClient.closeTicket(it.id, "Done")
+        integrationTestJiraClient.closeTicket(it.id, "Resolve")
       }
 
     then:

@@ -55,7 +55,11 @@ f.section(title: typedDescriptor.displayName) {
     f.checkbox()
   }
 
-  f.entry(title: _('Jira Transition Status'), field: 'jiraTransitionStatus') {
+  f.entry(title: _('Jira Transition tickets to target status'), field: 'jiraTransitionStatus') {
+    f.textbox()
+  }
+
+  f.entry(title: _('Jira Transition the tickets using this named transition'), field: 'jiraTransitionName') {
     f.textbox()
   }
 

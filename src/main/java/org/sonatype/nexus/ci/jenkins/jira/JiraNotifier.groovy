@@ -183,15 +183,15 @@ class JiraNotifier
           6. Close Tickets that have no finding (i.e. they have been fixed)
          ***************************************/
         if (jiraFieldMappingUtil.shouldTransitionJiraTickets) {
-          logger.println("Transitioning ${oldJiraFindings.size()} old finding tickets to: ${jiraFieldMappingUtil.transitionStatus}")
+          logger.println("Transitioning ${oldJiraFindings.size()} old finding tickets to: ${jiraFieldMappingUtil.transitionStatus} using transition: ${jiraFieldMappingUtil.transitionName}")
           oldJiraFindings.each{
-            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it.value)
+            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionName, it.value)
           }
 
           //todo: log only if configured to manage component (?aggregated?) tickets
-          logger.println("Transitioning ${oldJiraComponents.size()} old component tickets to: ${jiraFieldMappingUtil.transitionStatus}")
+          logger.println("Transitioning ${oldJiraComponents.size()} old component tickets to: ${jiraFieldMappingUtil.transitionStatus} using transition: ${jiraFieldMappingUtil.transitionName}")
           oldJiraComponents.each{
-            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it.value)
+            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionName, it.value)
           }
         }
 
@@ -473,11 +473,11 @@ class JiraNotifier
     }
   }
 
-  private void transitionTicket(JiraClient jiraClient, String transitionStatus, PolicyViolation pPolicyViolation)
+  private void transitionTicket(JiraClient jiraClient, String transitionName, PolicyViolation pPolicyViolation)
   {
-    logger.println("Transitioning Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} to Status: ${transitionStatus}")
+    logger.println("Transitioning Jira Ticket: ${pPolicyViolation.ticketExternalId} - ${pPolicyViolation.ticketSummary} using transition: ${transitionName}")
 
-    jiraClient.closeTicket(pPolicyViolation.ticketInternalId, transitionStatus)
+    jiraClient.closeTicket(pPolicyViolation.ticketInternalId, transitionName)
   }
 
   private def createIndividualTicket(JiraClient jiraClient,

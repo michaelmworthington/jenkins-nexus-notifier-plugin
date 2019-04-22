@@ -89,6 +89,7 @@ class JiraNotifierTest
                                                                   false,
                                                                   true,
                                                                   "Done",
+                                                                  "Resolve",
                                                                   "License",
                                                                   null,
                                                                   null,

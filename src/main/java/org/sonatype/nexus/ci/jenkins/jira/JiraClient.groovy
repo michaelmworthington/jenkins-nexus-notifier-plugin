@@ -127,13 +127,17 @@ class JiraClient extends AbstractToolClient
     def resp = http.get(url, headers)
 
     //2. Pick the right transition
-    //todo : what should the default be? Or, what to do if no transition matches?
-    def transition_id = "21"
+    def transition_id = null
 
     resp.transitions.each {
       if (pTransitionName == it.name){
         transition_id = it.id
       }
+    }
+
+    if(!transition_id)
+    {
+      throw new RuntimeException("Transition not found for name: ${pTransitionName}")
     }
 
     //3. Issue the transition

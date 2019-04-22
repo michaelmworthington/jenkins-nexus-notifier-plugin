@@ -22,6 +22,7 @@ class JiraFieldMappingUtil
   Boolean shouldCreateIndividualTickets
   Boolean shouldTransitionJiraTickets
   String transitionStatus
+  String transitionName
 
   private String applicationCustomFieldName
   private String organizationCustomFieldName
@@ -126,6 +127,7 @@ class JiraFieldMappingUtil
     shouldCreateSubTasksForAggregatedTickets = iJiraNotification.shouldCreateSubTasksForAggregatedTickets
     shouldTransitionJiraTickets = iJiraNotification.shouldTransitionJiraTickets
     transitionStatus = iJiraNotification.jiraTransitionStatus
+    transitionName = iJiraNotification.jiraTransitionName
     policyFilterPrefix = iJiraNotification.policyFilterPrefix
 
     //Advanced Options
