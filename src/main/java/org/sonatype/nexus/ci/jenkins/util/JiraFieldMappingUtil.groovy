@@ -3,6 +3,7 @@ package org.sonatype.nexus.ci.jenkins.util
 import hudson.AbortException
 import hudson.EnvVars
 import org.sonatype.nexus.ci.jenkins.jira.JiraClient
+import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
 import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 
@@ -34,6 +35,11 @@ class JiraFieldMappingUtil
   private String iqServerReportLinkCustomFieldName;
   private String iqServerPolicyViolationNameCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String iqServerPolicyViolationThreatLevelCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String componentGroupCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String componentNameCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String componentVersionCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String componentClassifierCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String componentExtensionCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
 
   String policyFilterPrefix
   String jiraDateFormatOverride
@@ -59,6 +65,11 @@ class JiraFieldMappingUtil
   JiraCustomFieldMappings getIqServerReportLinkCustomField() { return validatedCustomFieldMappings.get(iqServerReportLinkCustomFieldName) ?: new JiraCustomFieldMappings("Stub Report Link", null) }
   JiraCustomFieldMappings getIqServerPolicyViolationNameCustomField() { return validatedCustomFieldMappings.get(iqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Name", null) }
   JiraCustomFieldMappings getIqServerPolicyViolationThreatLevelCustomField() { return validatedCustomFieldMappings.get(iqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Threat Level", null) }
+  JiraCustomFieldMappings getComponentGroup() { return validatedCustomFieldMappings.get(componentGroupCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Group", null) }
+  JiraCustomFieldMappings getComponentName() { return validatedCustomFieldMappings.get(componentNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Name", null) }
+  JiraCustomFieldMappings getComponentVersion() { return validatedCustomFieldMappings.get(componentVersionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Version", null) }
+  JiraCustomFieldMappings getComponentClassifier() { return validatedCustomFieldMappings.get(componentClassifierCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Classifier", null) }
+  JiraCustomFieldMappings getComponentExtension() { return validatedCustomFieldMappings.get(componentExtensionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Extension", null) }
   JiraCustomFieldMappings getPassthroughCustomField(String pFieldName) { return validatedCustomFieldMappings.get(pFieldName) ?: new JiraCustomFieldMappings("Stub Passthrough ${pFieldName}", null) }
 
   JiraFieldMappingUtil(JiraNotification pJiraNotification, JiraClient pJiraClient, EnvVars pEnvVars, PrintStream pLogger)
@@ -77,25 +88,23 @@ class JiraFieldMappingUtil
     mapCustomFieldNamesToIds()
   }
 
-  void addCustomFieldsToTicket(Map returnValue,
-                               String nowFormatted,
-                               String severityString,
-                               String cveCode,
-                               Double cvss,
-                               String violationUniqueId,
-                               String policyName,
-                               Integer threatLevel)
+  void addCustomFieldsToTicket(Map returnValue, String nowFormatted, PolicyViolation pPolicyViolation)
   {
     //TODO: are these available anywhere else (i.e. where they're defined) so i don't have to pass them all over the place
     //TODO: on second thought, JFMU is global. I don't think it's a good idea to set ticket level data on it
-    getViolationIdCustomField().customFieldValue =  violationUniqueId
+    getViolationIdCustomField().customFieldValue =  pPolicyViolation.fingerprint
     getViolationDetectDateCustomField().customFieldValue = nowFormatted
     getLastScanDateCustomField().customFieldValue =  nowFormatted
-    getSeverityCustomField().customFieldValue =  severityString
-    getCveCodeCustomField().customFieldValue =  cveCode
-    getCvssCustomField().customFieldValue =  cvss
-    getIqServerPolicyViolationNameCustomField().customFieldValue = policyName
-    getIqServerPolicyViolationThreatLevelCustomField().customFieldValue = threatLevel
+    getSeverityCustomField().customFieldValue =  pPolicyViolation.severity
+    getCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
+    getCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
+    getIqServerPolicyViolationNameCustomField().customFieldValue = pPolicyViolation.policyName
+    getIqServerPolicyViolationThreatLevelCustomField().customFieldValue = pPolicyViolation.policyThreatLevel
+    getComponentGroup().customFieldValue = pPolicyViolation.componentIdentifier?.group
+    getComponentName().customFieldValue = pPolicyViolation.componentIdentifier?.artifact
+    getComponentVersion().customFieldValue = pPolicyViolation.componentIdentifier?.version
+    getComponentClassifier().customFieldValue = pPolicyViolation.componentIdentifier?.classifier
+    getComponentExtension().customFieldValue = pPolicyViolation.componentIdentifier?.extension
 
     validatedCustomFieldMappings.each {
       addCustomFieldToTicket(returnValue, it.value)
@@ -142,6 +151,11 @@ class JiraFieldMappingUtil
     iqServerReportLinkCustomFieldName = iJiraNotification.iqServerReportLinkCustomFieldName
     iqServerPolicyViolationNameCustomFieldName = iJiraNotification.iqServerPolicyViolationNameCustomFieldName
     iqServerPolicyViolationThreatLevelCustomFieldName = iJiraNotification.iqServerPolicyViolationThreatLevelCustomFieldName
+    componentGroupCustomFieldName = iJiraNotification.componentGroupCustomFieldName
+    componentNameCustomFieldName = iJiraNotification.componentNameCustomFieldName
+    componentVersionCustomFieldName = iJiraNotification.componentVersionCustomFieldName
+    componentClassifierCustomFieldName = iJiraNotification.componentClassifierCustomFieldName
+    componentExtensionCustomFieldName = iJiraNotification.componentExtensionCustomFieldName
 
     jiraCustomFieldMappings = iJiraNotification.jiraCustomFieldMappings ?: []
   }
@@ -170,6 +184,11 @@ class JiraFieldMappingUtil
     lookupAndValidateCustomField(customFields, iqServerReportLinkCustomFieldName, "Report Link")
     lookupAndValidateCustomField(customFields, iqServerPolicyViolationNameCustomFieldName, "Policy Violation Name")
     lookupAndValidateCustomField(customFields, iqServerPolicyViolationThreatLevelCustomFieldName, "Policy Violation Threat Level")
+    lookupAndValidateCustomField(customFields, componentGroupCustomFieldName, "Component Group")
+    lookupAndValidateCustomField(customFields, componentNameCustomFieldName, "Component Name")
+    lookupAndValidateCustomField(customFields, componentVersionCustomFieldName, "Component Version")
+    lookupAndValidateCustomField(customFields, componentClassifierCustomFieldName, "Component Classifier")
+    lookupAndValidateCustomField(customFields, componentExtensionCustomFieldName, "Component Extension")
 
     jiraCustomFieldMappings.each {
       lookupAndValidateCustomField(customFields, it.customFieldName, "Passthrough Custom Field: ${it.customFieldName}")
@@ -270,7 +289,6 @@ class JiraFieldMappingUtil
   }
 
   //formatting for custom fields: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/#creating-an-issue-using-custom-fields
-  //       todo; review fields - https://mail.google.com/mail/u/0/#inbox/QgrcJHsHsJScdtsQNFlKnWrWCwwblmVFScB
   private static addCustomFieldToTicket(Map ticketFieldsArray, JiraCustomFieldMappings pField)
   {
     if (pField.customFieldId && pField.customFieldValue)
@@ -278,7 +296,7 @@ class JiraFieldMappingUtil
       def returnValue
       switch (pField.customFieldType)
       {
-        case "date": //todo: short date
+        case "date": //todo: short date - right now, it's up to the user to format the date correctly (i.e. when calling new Date().format())
         case "datetime":
         case "string":
           returnValue = pField.customFieldValue

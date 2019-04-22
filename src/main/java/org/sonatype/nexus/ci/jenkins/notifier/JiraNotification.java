@@ -68,6 +68,11 @@ public class JiraNotification
   private String iqServerReportLinkCustomFieldName;
   private String iqServerPolicyViolationNameCustomFieldName;
   private String iqServerPolicyViolationThreatLevelCustomFieldName;
+  private String componentGroupCustomFieldName;
+  private String componentNameCustomFieldName;
+  private String componentVersionCustomFieldName;
+  private String componentClassifierCustomFieldName;
+  private String componentExtensionCustomFieldName;
   private List<JiraCustomFieldMappings> jiraCustomFieldMappings;
 
   public boolean getSendJiraNotification() { return sendJiraNotification; }
@@ -106,6 +111,11 @@ public class JiraNotification
   public String getIqServerReportLinkCustomFieldName() { return iqServerReportLinkCustomFieldName; }
   public String getIqServerPolicyViolationNameCustomFieldName() { return iqServerPolicyViolationNameCustomFieldName; }
   public String getIqServerPolicyViolationThreatLevelCustomFieldName() { return iqServerPolicyViolationThreatLevelCustomFieldName; }
+  public String getComponentGroupCustomFieldName() { return componentGroupCustomFieldName; }
+  public String getComponentNameCustomFieldName() { return componentNameCustomFieldName; }
+  public String getComponentVersionCustomFieldName() { return componentVersionCustomFieldName; }
+  public String getComponentClassifierCustomFieldName() { return componentClassifierCustomFieldName; }
+  public String getComponentExtensionCustomFieldName() { return componentExtensionCustomFieldName; }
 
   @DataBoundConstructor
   public JiraNotification(final boolean sendJiraNotification,
@@ -139,6 +149,11 @@ public class JiraNotification
                           final String iqServerReportLinkCustomFieldName,
                           final String iqServerPolicyViolationNameCustomFieldName,
                           final String iqServerPolicyViolationThreatLevelCustomFieldName,
+                          final String componentGroupCustomFieldName,
+                          final String componentNameCustomFieldName,
+                          final String componentVersionCustomFieldName,
+                          final String componentClassifierCustomFieldName,
+                          final String componentExtensionCustomFieldName,
                           final List<JiraCustomFieldMappings> jiraCustomFieldMappings)
   {
     this.sendJiraNotification = sendJiraNotification;
@@ -176,6 +191,11 @@ public class JiraNotification
     this.iqServerReportLinkCustomFieldName = iqServerReportLinkCustomFieldName;
     this.iqServerPolicyViolationNameCustomFieldName = iqServerPolicyViolationNameCustomFieldName;
     this.iqServerPolicyViolationThreatLevelCustomFieldName = iqServerPolicyViolationThreatLevelCustomFieldName;
+    this.componentGroupCustomFieldName = componentGroupCustomFieldName;
+    this.componentNameCustomFieldName = componentNameCustomFieldName;
+    this.componentVersionCustomFieldName = componentVersionCustomFieldName;
+    this.componentClassifierCustomFieldName = componentClassifierCustomFieldName;
+    this.componentExtensionCustomFieldName = componentExtensionCustomFieldName;
     this.jiraCustomFieldMappings = jiraCustomFieldMappings;
   }
 

@@ -20,7 +20,7 @@ class PolicyViolation
 
   //IQ Fields
   String reportLink
-  String componentName
+  ComponentIdentifier componentIdentifier
   String policyId
   String policyName
   Integer policyThreatLevel
@@ -58,20 +58,15 @@ class PolicyViolation
                           String iqAppExternalId,
                           String policyFilterPrefix)
   {
-    //TODO: this may need to be done specifically for each supported format
-    //      but for now, according to https://www.midgetontoes.com/2016/03/11/properties-ordering-of-groovy-jsonslurper-parsing/
-    //      the attributes of the json will be sorted - TODO: I may want to parse it anyway so it's easy to read. maybe i can dump the whole thing...
-    String componentName = component.componentIdentifier?.format
-    component.componentIdentifier?.coordinates?.each {
-      componentName += ":${it.value}"
-    } //TODO: if null, probably a component unknown, is there any other info we can provide (i.e. the filename)?
+    ComponentIdentifier componentIdentifier = new ComponentIdentifier(component.componentIdentifier)
+    String componentName = componentIdentifier.prettyName
 
     String componentFingerprintPrettyPrint = "${componentName}"
     String componentFingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${componentName}"
     String componentFingerprintHash = getFingerprintHash(componentFingerprintKey)
 
     PolicyViolation potentialComponentViolation = new PolicyViolation(reportLink: pReportLink,
-                                                                      componentName: componentName,
+                                                                      componentIdentifier: componentIdentifier,
                                                                       fingerprintPrettyPrint: componentFingerprintPrettyPrint,
                                                                       fingerprintKey: componentFingerprintKey,
                                                                       fingerprint: componentFingerprintHash)
@@ -114,7 +109,7 @@ class PolicyViolation
         String findingFingerprintHash = getFingerprintHash(fingerprintKey)
 
         PolicyViolation policyViolation = new PolicyViolation(reportLink: pReportLink,
-                                                              componentName: componentName,
+                                                              componentIdentifier: componentIdentifier,
                                                               componentFingerprintPrettyPrint: componentFingerprintPrettyPrint,
                                                               componentFingerprintKey: componentFingerprintKey,
                                                               componentFingerprint: componentFingerprintHash,
@@ -140,17 +135,16 @@ class PolicyViolation
 
   static PolicyViolation buildFromJira(Object ticket, String violationIdCustomFieldId)
   {
-    //I am filtering these when querying to limit the data sent between jenkins and jira
+    // WARNING WARNING WARNING
+    // I am filtering these when querying to limit the data sent between jenkins and jira
     //you need to update the filter any fields are added to this list
     //as a catch all, there is an option on the step to remove that filter
+    // WARNING WARNING WARNING
     String ticketInternalId = ticket.id
     String ticketExternalId = ticket.key
     String ticketType = ticket.fields.issuetype.name
-    //String description = ticket.fields.description
     String summary = ticket.fields.summary
     String status = ticket.fields.status.name
-    //String application = ticket.fields.get(applicationCustomFieldId)
-    //String organization = ticket.fields.get(organizationCustomFieldId)
     String fingerprint = safeCustomFieldLookup(ticket, violationIdCustomFieldId)
 
     return new PolicyViolation(ticketStatus: status,
@@ -184,7 +178,7 @@ class PolicyViolation
 
     if (cvssScore < policyViolation.cvssScore)
     {
-      cvssScore = policyViolation.cvssScore
+      cvssScore = policyViolation.cvssScore //TODO: Max CVSS Score Seperate field
       severity = policyViolation.severity
       cveCode = policyViolation.cveCode
       cvssReason = policyViolation.cvssReason

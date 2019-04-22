@@ -16,6 +16,7 @@ import groovy.json.JsonSlurper
 import hudson.model.Run
 import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
+import org.sonatype.nexus.ci.jenkins.model.ComponentIdentifier
 import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
@@ -90,6 +91,11 @@ class JiraClientTest
                                                                 "Report Link",
                                                                 "Violation Name",
                                                                 "Threat Level",
+                                                                "Finding Vendor",
+                                                                "Finding Library",
+                                                                "Finding Version",
+                                                                "Finding Classifier",
+                                                                "Finding Extension",
                                                                 [
                                                                         [ customFieldName: 'Random Number', customFieldValue: '17'],
                                                                         [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
@@ -199,8 +205,8 @@ class JiraClientTest
 
     expect:
       resp != null
-      resp.issues.size > 0
-      resp.issues[0].key != null
+//      resp.issues.size > 0
+//      resp.issues[0].key != null
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
@@ -237,7 +243,10 @@ class JiraClientTest
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
 
     def pReportLink = "SonatypeIQ:IQServerAppId:scanIQ"
-    def componentName = "org.apache.struts:struts2-core:1.2.3"
+    ComponentIdentifier componentIdentifier = new ComponentIdentifier([format     : "maven",
+                                                                       coordinates: [groupId   : "org.apache.struts",
+                                                                                     artifactId: "struts2-core",
+                                                                                     version   : "1.2.3"]])
     def policyName = "Security-Low"
     def severity = "Low"
     def policyThreatLevel = 1
@@ -247,11 +256,11 @@ class JiraClientTest
     def conditionReasonText = "Sonatype IQ Server SECURITY-HIGH Policy Violation"
     def findingFingerprintHash = "some-sha-value"
     def findingFingerprintKey = "SONATYPEIQ-APPID--POLICYID-COMPONENTNAME-SVREASON"
-    def fingerprintPrettyPrint = "${componentName} - ${policyName} - ${conditionReasonText}"
+    def fingerprintPrettyPrint = "${componentIdentifier.prettyName} - ${policyName} - ${conditionReasonText}"
 
 
     PolicyViolation policyViolationSubTask = new PolicyViolation(reportLink: pReportLink,
-                                                                 componentName: componentName,
+                                                                 componentIdentifier: componentIdentifier,
                                                                  policyId: policyId,
                                                                  policyName: policyName,
                                                                  policyThreatLevel: policyThreatLevel,
@@ -284,13 +293,16 @@ class JiraClientTest
 
     //The Story Aggregated Component
     def pReportLink = "SonatypeIQ:IQServerAppId:scanIQ"
-    def componentName = "org.apache.struts:struts2-core:1.2.3"
-    def componentFingerprintPretty = componentName
+    ComponentIdentifier componentIdentifier = new ComponentIdentifier([format     : "maven",
+                                                                       coordinates: [groupId   : "org.apache.struts",
+                                                                                     artifactId: "struts2-core",
+                                                                                     version   : "1.2.3"]])
+    def componentFingerprintPretty = componentIdentifier.prettyName
     def componentFingerprintKey = "SONATYPEIQ-APPID-COMPONENTID"
     def componentFingerprintHash = "some-parent-sha-value"
 
     PolicyViolation potentialComponentViolation = new PolicyViolation(reportLink: pReportLink,
-                                                                      componentName: componentName,
+                                                                      componentIdentifier: componentIdentifier,
                                                                       fingerprintPrettyPrint: componentFingerprintPretty,
                                                                       fingerprintKey: componentFingerprintKey,
                                                                       fingerprint: componentFingerprintHash)
@@ -305,10 +317,10 @@ class JiraClientTest
     def conditionReasonText = "Sonatype IQ Server SECURITY-HIGH Policy Violation"
     def findingFingerprintHash = "some-child-sha-value"
     def findingFingerprintKey = "SONATYPEIQ-APPID--POLICYID-COMPONENTNAME-SVREASON"
-    def fingerprintPrettyPrint = "${componentName} - ${policyName} - ${conditionReasonText}"
+    def fingerprintPrettyPrint = "${componentIdentifier.prettyName} - ${policyName} - ${conditionReasonText}"
 
     PolicyViolation policyViolationSubTask = new PolicyViolation(reportLink: pReportLink,
-                                                                 componentName: componentName,
+                                                                 componentIdentifier: componentIdentifier,
                                                                  componentFingerprintPrettyPrint: componentFingerprintPretty,
                                                                  componentFingerprintKey: componentFingerprintKey,
                                                                  componentFingerprint: componentFingerprintHash,
@@ -355,5 +367,30 @@ class JiraClientTest
 
     expect:
     resp == null
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with Jira Server - All Tickets'() {
+    setup:
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
+
+    when: 'Get all the tickets'
+      def resp = integrationTestJiraClient.lookupJiraTickets(jiraFieldMappingUtil, 0)
+
+    then:
+      resp != null
+      resp.issues.size > 0
+      resp.issues[0].key != null
+
+    when: 'Close all the tickets'
+      resp.issues.each {
+        integrationTestJiraClient.closeTicket(it.id, "Done")
+      }
+
+    then:
+      true //todo: validate
+
+
   }
 }

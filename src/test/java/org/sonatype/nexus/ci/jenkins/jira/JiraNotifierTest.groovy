@@ -110,6 +110,11 @@ class JiraNotifierTest
                                                                   "Report Link",
                                                                   "Violation Name",
                                                                   "Threat Level",
+                                                                  "Finding Vendor",
+                                                                  "Finding Library",
+                                                                  "Finding Version",
+                                                                  "Finding Classifier",
+                                                                  "Finding Extension",
                                                                   [
                                                                           [ customFieldName: 'Random Number', customFieldValue: '17'],
                                                                           [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],
@@ -437,10 +442,18 @@ class JiraNotifierTest
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
       IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
+    when:
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
-    expect:
-      true //TODO: assert something??
+    then:
+      true
+      1 * integrationTestJiraClient.lookupCustomFields()
+
+      1 * integrationTestJiraClient.createIssue(*_)
+
+    cleanup:
+      System.out.println("close the 2 tickets") //todo
+
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
@@ -453,10 +466,26 @@ class JiraNotifierTest
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
       IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
+    when:
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
-    expect:
-      true //TODO: assert something??
+    then:
+      1 * integrationTestJiraClient.lookupCustomFields()
+      1 * integrationTestIqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+      1 * integrationTestJiraClient.lookupJiraTickets(_, _)
+
+      //Expectations when doing License Policy Filter AND no existing Jira Tickets
+      2 * integrationTestJiraClient.createIssue(*_)
+      0 * integrationTestJiraClient.updateIssueScanDate(*_)
+      //TODO: when run in sequence, it'll close the summary ticket from above
+      1 * integrationTestJiraClient.closeTicket(*_)
+
+    when: 'Close all the tickets'
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'A Fake License So All The Tickets Get Closed'
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      2 * integrationTestJiraClient.closeTicket(*_)
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
@@ -469,22 +498,37 @@ class JiraNotifierTest
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
       IQClientFactory.getIQClient(*_) >> integrationTestIqClient
 
+    when:
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
-    expect:
-      true //TODO: assert something??
+    then:
+      true
+      1 * integrationTestJiraClient.lookupCustomFields()
+      1 * integrationTestIqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+      1 * integrationTestJiraClient.lookupJiraTickets(_, _)
+
+      //Expectations when doing License Policy Filter AND no existing Jira Tickets
+      1 * integrationTestJiraClient.createIssue(*_)
+      0 * integrationTestJiraClient.updateIssueScanDate(*_)
+
+    when: 'Close all the tickets'
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'A Fake License So All The Tickets Get Closed'
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+
+    then:
+      1 * integrationTestJiraClient.closeTicket(*_)
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component and SubTasks'() {
     setup:
-      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'Security-High'
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'License-Non'
       //jiraNotificationCreateParentTicketTest.policyFilterPrefix = null
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
       jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
       //skip updating the last scan date to speed up things
-      jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = null
+      //jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = null
 
       // The report from Juice Shop and Goof with lots of results
       //policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
@@ -497,21 +541,19 @@ class JiraNotifierTest
       jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     then:
-      true
-//      1 * jiraClient.lookupCustomFields()
-//      1 * iqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
-//      1 * jiraClient.lookupJiraTickets(_, _)
-//
-//      //Expectations when doing License Policy Filter
-//      1 * jiraClient.createIssue(*_)
-//      1 * jiraClient.createSubTask(*_)
+      1 * integrationTestJiraClient.lookupCustomFields()
+      1 * integrationTestIqClient.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+      1 * integrationTestJiraClient.lookupJiraTickets(_, _)
+
+      //Expectations when doing License Policy Filter
+      2 * integrationTestJiraClient.createIssue(*_)
+      10 * integrationTestJiraClient.createSubTask(*_)
 
     when:
-      //jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'A Fake License So All The Tickets Get Closed'
-      //jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
+      jiraNotificationCreateParentTicketTest.policyFilterPrefix = 'A Fake License So All The Tickets Get Closed'
+      jiraNotifier.send(true, jiraNotificationCreateParentTicketTest, policyEvaluationHealthAction)
 
     then:
-      true
-    //3 * jiraClient.closeTicket(*_)
+      12 * integrationTestJiraClient.closeTicket(*_)
   }
 }

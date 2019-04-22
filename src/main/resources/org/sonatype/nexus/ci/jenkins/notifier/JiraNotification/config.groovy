@@ -148,6 +148,26 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
 
+      f.entry(title: _('Jira Custom Field for IQ Server Component Group'), field: 'componentGroupCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Component Name'), field: 'componentNameCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Component Version'), field: 'componentVersionCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Component Classifier'), field: 'componentClassifierCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for IQ Server Component Extension'), field: 'componentExtensionCustomFieldName') {
+        f.textbox()
+      }
+
       f.entry(title: _("Jira Passthrough Custom Field Mappings")) {
         f.repeatableHeteroProperty(
                 field: 'jiraCustomFieldMappings'

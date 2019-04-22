@@ -139,6 +139,7 @@ class JiraNotifier
                                oldJiraComponents,
                                oldJiraFindings)
 
+        //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
         logger.println("######################################")
         logger.println("        Compare Output")
         logger.println("######################################")
@@ -187,6 +188,7 @@ class JiraNotifier
             transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it.value)
           }
 
+          //todo: log only if configured to manage component (?aggregated?) tickets
           logger.println("Transitioning ${oldJiraComponents.size()} old component tickets to: ${jiraFieldMappingUtil.transitionStatus}")
           oldJiraComponents.each{
             transitionTicket(jiraClient, jiraFieldMappingUtil.transitionStatus, it.value)

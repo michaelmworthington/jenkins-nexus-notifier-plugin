@@ -342,11 +342,6 @@ class JiraClient extends AbstractToolClient
     def source = pPolicyViolation.reportLink
     def severity = pPolicyViolation.policyThreatLevel
     def fprint = pPolicyViolation.fingerprintKey
-    def severityString = pPolicyViolation.severity
-    def cveCode = pPolicyViolation.cveCode
-    def cvss = pPolicyViolation.cvssScore
-    def violationUniqueId = pPolicyViolation.fingerprint
-    def policyName = pPolicyViolation.policyName
 
     String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, pIsParentTicket)
 
@@ -354,7 +349,9 @@ class JiraClient extends AbstractToolClient
     //TODO: also format a summary ticket
     String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
+    //TODO: Nice Summary
     String formatted_summary = "${description}"
+    //TODO: Nice Description (Add all policy violations if we are aggregating and not creating subtasks
     String formatted_description = "\n\tDescription: ${description}\n\n\tFirst Found Timestamp: ${nowFormatted}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
 
     def returnValue = [
@@ -377,14 +374,7 @@ class JiraClient extends AbstractToolClient
       returnValue.fields.put("issuetype", [ name: jiraFieldMappingUtil.issueTypeName ])
     }
 
-    jiraFieldMappingUtil.addCustomFieldsToTicket(returnValue,
-                                                 nowFormatted,
-                                                 severityString,
-                                                 cveCode,
-                                                 cvss,
-                                                 violationUniqueId,
-                                                 policyName,
-                                                 severity)
+    jiraFieldMappingUtil.addCustomFieldsToTicket(returnValue, nowFormatted, pPolicyViolation)
 
     return returnValue
   }
@@ -418,13 +408,9 @@ class JiraClient extends AbstractToolClient
 
     if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
     {
-      returnValue <<= " Summary of Violations"
-    }
-    else
-    {
       if (jiraFieldMappingUtil.shouldAggregateTicketsByComponent && pIsParentTicket)
       {
-        returnValue <<= " Component ${pPolicyViolation.componentName} has Policy Violations"
+        returnValue <<= " Component ${pPolicyViolation.componentIdentifier.prettyName} has Policy Violations"
       }
       else
       {
@@ -442,8 +428,12 @@ class JiraClient extends AbstractToolClient
           returnValue <<= " - $pPolicyViolation.cveCode"
         }
 
-        returnValue <<= " - ${pPolicyViolation.componentName}"
+        returnValue <<= " - ${pPolicyViolation.componentIdentifier.prettyName}"
       }
+    }
+    else
+    {
+      returnValue <<= " Summary of Violations"
     }
 
     return returnValue

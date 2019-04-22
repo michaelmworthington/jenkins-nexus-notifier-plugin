@@ -83,6 +83,11 @@ class JiraFieldMappingUtilTest
                                                        null,
                                                        null,
                                                        null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
                                                        null)
 
     jiraNotificationCustomFieldMapTest = new JiraNotification(true,
@@ -116,6 +121,11 @@ class JiraFieldMappingUtilTest
                                                               "Report Link",
                                                               "Violation Name",
                                                               "Threat Level",
+                                                              "Finding Vendor",
+                                                              "Finding Library",
+                                                              "Finding Version",
+                                                              "Finding Classifier",
+                                                              "Finding Extension",
                                                               [
                                                                       [ customFieldName: 'Random Number', customFieldValue: '17'],
                                                                       [ customFieldName: 'Scan Type', customFieldValue: 'SCA'],

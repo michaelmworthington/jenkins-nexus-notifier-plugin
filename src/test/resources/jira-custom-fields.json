@@ -194,6 +194,40 @@
   },
   {
     "clauseNames": [
+      "cf[10900]",
+      "Finding Library"
+    ],
+    "custom": true,
+    "id": "customfield_10900",
+    "name": "Finding Library",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10900,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10901]",
+      "Finding Vendor"
+    ],
+    "custom": true,
+    "id": "customfield_10901",
+    "name": "Finding Vendor",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10901,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
       "resolutiondate",
       "resolved"
     ],
@@ -205,6 +239,57 @@
     "schema": {
       "system": "resolutiondate",
       "type": "datetime"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10902]",
+      "Finding Version"
+    ],
+    "custom": true,
+    "id": "customfield_10902",
+    "name": "Finding Version",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10902,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10903]",
+      "Finding Classifier"
+    ],
+    "custom": true,
+    "id": "customfield_10903",
+    "name": "Finding Classifier",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10903,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10904]",
+      "Finding Extension"
+    ],
+    "custom": true,
+    "id": "customfield_10904",
+    "name": "Finding Extension",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10904,
+      "type": "string"
     },
     "searchable": true
   },

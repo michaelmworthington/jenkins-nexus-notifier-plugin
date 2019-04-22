@@ -15,7 +15,7 @@
         "components": [
 
         ],
-        "created": "2019-04-02T23:09:18.000+0000",
+        "created": "2019-04-22T02:02:30.000+0000",
         "creator": {
           "active": true,
           "avatarUrls": {
@@ -33,11 +33,11 @@
         },
         "customfield_10000": null,
         "customfield_10001": null,
-        "customfield_10005": "0|i002yn:",
-        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@6487ffc3[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@5c459dff[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@311c133[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@73cb1ecb[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4efa2400[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@cabe202[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@1beb2fd[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@2a28d947[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@35ed2226[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@66856d6b[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@12d8021c[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@7e5613e1[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10005": "0|i00c6n:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@283c2abe[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7c328e08[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3c80d650[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@542a4d06[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3c262f03[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@4aac3f7c[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7024522f[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@76607350[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@7bb304a8[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@50cf837d[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2a81661[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@77a70f97[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
         "customfield_10200": "aaaaaaa-testidegrandfathering",
-        "customfield_10201": "org",
-        "customfield_10300": "20964c6c0a9dfb8059a0b40efd510884eaab0ed02655d665019c26ead184dad3",
+        "customfield_10201": "Automatically Created Apps",
+        "customfield_10300": "f88fa1267911d0502d6ce726ed2daca97bc263e768bedb8ab499c2801aad23a7",
         "customfield_10400": {
           "id": "10300",
           "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
@@ -53,13 +53,22 @@
           "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
           "value": "Nexus IQ"
         },
-        "customfield_10502": "2019-04-02",
-        "customfield_10503": "2019-04-02T23:09:00.000+0000",
+        "customfield_10502": "2019-04-21",
+        "customfield_10503": "2019-04-22T02:02:00.000+0000",
         "customfield_10600": null,
         "customfield_10601": null,
-        "customfield_10602": null,
-        "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server License-Non Standard Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 19:09:18 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 5\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-eec9d05f2395437db702c414d017a276-maven:json::jar:org.json:20080701-Found a license in the 'Non Standard' license threat group.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found a license in the 'Non Standard' license threat group.",
+        "customfield_10602": "Build",
+        "customfield_10700": null,
+        "customfield_10701": 17.0,
+        "customfield_10800": "http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453",
+        "customfield_10801": "License Policy",
+        "customfield_10802": 9.0,
+        "customfield_10900": "json",
+        "customfield_10901": "org.json",
+        "customfield_10902": "20080701",
+        "customfield_10903": null,
+        "customfield_10904": "jar",
+        "description": "\n\tDescription: Sonatype IQ Server - Summary of Violations\n\n\tFirst Found Timestamp: 2019-04-21T22:02:29.186-0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-352bef903f2f401da0bcc6c45367b278-maven:org.json:json:20080701:jar-Found 'Nonsensical-Clause' and 'JSON' Licenses\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found 'Nonsensical-Clause' and 'JSON' Licenses",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -80,7 +89,7 @@
         "labels": [
 
         ],
-        "lastViewed": "2019-04-02T23:13:09.285+0000",
+        "lastViewed": null,
         "priority": {
           "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
           "id": "4",
@@ -137,29 +146,29 @@
         "subtasks": [
 
         ],
-        "summary": "Sonatype IQ Server License-Non Standard Policy Violation - maven:json::jar:org.json:20080701",
+        "summary": "Sonatype IQ Server - Summary of Violations",
         "timeestimate": null,
         "timeoriginalestimate": null,
         "timespent": null,
-        "updated": "2019-04-02T23:09:18.000+0000",
+        "updated": "2019-04-22T02:02:30.000+0000",
         "versions": [
 
         ],
         "votes": {
           "hasVoted": false,
-          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-227/votes",
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-1721/votes",
           "votes": 0
         },
         "watches": {
           "isWatching": true,
-          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-227/watchers",
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-1721/watchers",
           "watchCount": 1
         },
         "workratio": -1
       },
-      "id": "12000",
-      "key": "JIRAIQ-227",
-      "self": "http://localhost:8080/rest/api/2/issue/12000"
+      "id": "13853",
+      "key": "JIRAIQ-1721",
+      "self": "http://localhost:8080/rest/api/2/issue/13853"
     },
     {
       "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
@@ -175,7 +184,7 @@
         "components": [
 
         ],
-        "created": "2019-04-02T23:09:19.000+0000",
+        "created": "2019-04-22T02:02:30.000+0000",
         "creator": {
           "active": true,
           "avatarUrls": {
@@ -193,11 +202,11 @@
         },
         "customfield_10000": null,
         "customfield_10001": null,
-        "customfield_10005": "0|i002yv:",
-        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@7fa0b136[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@1b4aec5[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2b34e913[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@fd2a836[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@4af181f9[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@2521bca4[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@29d1b562[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@33d82b76[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@75609abd[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@5d8ccc29[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@79d2185f[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@ba30f88[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
+        "customfield_10005": "0|i00c6v:",
+        "customfield_10100": "{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@230c737f[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@25870b45[overall=PullRequestOverallBean{stateCount=0, state='OPEN', details=PullRequestOverallDetails{openCount=0, mergedCount=0, declinedCount=0}},byInstanceType={}], build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@c502210[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@1110cdfc[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@3dbf2f54[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@48768390[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@453b682c[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@52d3325a[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@16d262db[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@6a440992[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}], branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@74a066fe[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@3faacbd2[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]], devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}",
         "customfield_10200": "aaaaaaa-testidegrandfathering",
-        "customfield_10201": "org",
-        "customfield_10300": "cadbfe9aa9e209461c555884ca31ecbc09ef862ded145ca5ce6f44f7363a33e8",
+        "customfield_10201": "Automatically Created Apps",
+        "customfield_10300": "25ed9149ebfa76499e73e749de8acfc1d5a9a77d4ab24ff7b7d3eaad8a22777e",
         "customfield_10400": {
           "id": "10300",
           "self": "http://localhost:8080/rest/api/2/customFieldOption/10300",
@@ -213,13 +222,22 @@
           "self": "http://localhost:8080/rest/api/2/customFieldOption/10203",
           "value": "Nexus IQ"
         },
-        "customfield_10502": "2019-04-02",
-        "customfield_10503": "2019-04-02T23:09:00.000+0000",
+        "customfield_10502": "2019-04-21",
+        "customfield_10503": "2019-04-22T02:02:00.000+0000",
         "customfield_10600": null,
         "customfield_10601": null,
-        "customfield_10602": null,
-        "customfield_10603": null,
-        "description": "\n\tDescription: Sonatype IQ Server License Policy Policy Violation - maven:json::jar:org.json:20080701\n\n\tFirst Found Timestamp: 2019-04-02 19:09:19 -0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 9\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-352bef903f2f401da0bcc6c45367b278-maven:json::jar:org.json:20080701-Found 'Nonsensical-Clause' and 'JSON' Licenses\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found 'Nonsensical-Clause' and 'JSON' Licenses",
+        "customfield_10602": "Build",
+        "customfield_10700": null,
+        "customfield_10701": 17.0,
+        "customfield_10800": "http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453",
+        "customfield_10801": "License-Non Standard",
+        "customfield_10802": 5.0,
+        "customfield_10900": "json",
+        "customfield_10901": "org.json",
+        "customfield_10902": "20080701",
+        "customfield_10903": null,
+        "customfield_10904": "jar",
+        "description": "\n\tDescription: Sonatype IQ Server - Summary of Violations\n\n\tFirst Found Timestamp: 2019-04-21T22:02:29.186-0400\n\n\tSource: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453\n\n\tPolicy Threat Level: 5\n\n\tFingerprint:  SONATYPEIQ-aaaaaaa-testidegrandfathering-eec9d05f2395437db702c414d017a276-maven:org.json:json:20080701:jar-Found a license in the 'Non Standard' license threat group.\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  Found a license in the 'Non Standard' license threat group.",
         "duedate": null,
         "environment": null,
         "fixVersions": [
@@ -240,7 +258,7 @@
         "labels": [
 
         ],
-        "lastViewed": "2019-04-02T23:13:11.846+0000",
+        "lastViewed": "2019-04-22T02:07:23.785+0000",
         "priority": {
           "iconUrl": "http://localhost:8080/images/icons/priorities/low.svg",
           "id": "4",
@@ -297,29 +315,29 @@
         "subtasks": [
 
         ],
-        "summary": "Sonatype IQ Server License Policy Policy Violation - maven:json::jar:org.json:20080701",
+        "summary": "Sonatype IQ Server - Summary of Violations",
         "timeestimate": null,
         "timeoriginalestimate": null,
         "timespent": null,
-        "updated": "2019-04-02T23:09:19.000+0000",
+        "updated": "2019-04-22T02:02:30.000+0000",
         "versions": [
 
         ],
         "votes": {
           "hasVoted": false,
-          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-228/votes",
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-1722/votes",
           "votes": 0
         },
         "watches": {
           "isWatching": true,
-          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-228/watchers",
+          "self": "http://localhost:8080/rest/api/2/issue/JIRAIQ-1722/watchers",
           "watchCount": 1
         },
         "workratio": -1
       },
-      "id": "12001",
-      "key": "JIRAIQ-228",
-      "self": "http://localhost:8080/rest/api/2/issue/12001"
+      "id": "13854",
+      "key": "JIRAIQ-1722",
+      "self": "http://localhost:8080/rest/api/2/issue/13854"
     }
   ],
   "maxResults": 50,
