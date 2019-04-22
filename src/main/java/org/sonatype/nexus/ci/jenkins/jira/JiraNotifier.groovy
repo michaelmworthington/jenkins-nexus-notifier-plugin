@@ -142,6 +142,9 @@ class JiraNotifier
         //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
         logger.println("######################################")
         logger.println("        Compare Output")
+        logger.println("")
+        logComponentAndSubTaskConfig(jiraFieldMappingUtil)
+        logger.println("")
         logger.println("######################################")
         logger.println("Number of components that do not have tickets      : ${newIQComponents.size()}")
         logger.println("Number of findings   that do not have tickets      : ${newIQFindings.size()}")
@@ -217,6 +220,31 @@ class JiraNotifier
       logger.println(ex.message)
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
+    }
+  }
+
+  void logComponentAndSubTaskConfig(JiraFieldMappingUtil jiraFieldMappingUtil)
+  {
+    logger.println("Aggregate by Component: ${jiraFieldMappingUtil.shouldAggregateTicketsByComponent}")
+    logger.println("Create Subtasks: ${jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets}")
+
+    if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
+    {
+      logger.println("  * Component results should not be zero, and they will be created as type: ${jiraFieldMappingUtil.issueTypeName}")
+
+      if(jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
+      {
+        logger.println("  * And, Finding results should not be zero, and they will be created as type: ${jiraFieldMappingUtil.subTaskIssueTypeName}")
+      }
+      else
+      {
+        logger.println("  * And, Finding results will be zero.")
+      }
+    }
+    else
+    {
+      logger.println("  * Component results will be zero.")
+      logger.println("  * But, you should still have Findings, and they will be created as type: ${jiraFieldMappingUtil.issueTypeName}")
     }
   }
 
