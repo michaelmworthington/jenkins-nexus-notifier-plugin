@@ -64,11 +64,16 @@ public class JiraNotification
   private String violationDetectDateCustomFieldName;
   private String lastScanDateCustomFieldName;
   private String severityCustomFieldName;
+  private String maxSeverityCustomFieldName;
   private String cveCodeCustomFieldName;
+  private String maxCveCodeCustomFieldName;
   private String cvssCustomFieldName;
+  private String maxCvssCustomFieldName;
   private String iqServerReportLinkCustomFieldName;
   private String iqServerPolicyViolationNameCustomFieldName;
+  private String maxIqServerPolicyViolationNameCustomFieldName;
   private String iqServerPolicyViolationThreatLevelCustomFieldName;
+  private String maxIqServerPolicyViolationThreatLevelCustomFieldName;
   private String componentGroupCustomFieldName;
   private String componentNameCustomFieldName;
   private String componentVersionCustomFieldName;
@@ -108,11 +113,16 @@ public class JiraNotification
   public String getViolationDetectDateCustomFieldName() { return violationDetectDateCustomFieldName; }
   public String getLastScanDateCustomFieldName() { return lastScanDateCustomFieldName; }
   public String getSeverityCustomFieldName() { return severityCustomFieldName; }
+  public String getMaxSeverityCustomFieldName() { return maxSeverityCustomFieldName; }
   public String getCveCodeCustomFieldName() { return cveCodeCustomFieldName; }
+  public String getMaxCveCodeCustomFieldName() { return maxCveCodeCustomFieldName; }
   public String getCvssCustomFieldName() { return cvssCustomFieldName; }
+  public String getMaxCvssCustomFieldName() { return maxCvssCustomFieldName; }
   public String getIqServerReportLinkCustomFieldName() { return iqServerReportLinkCustomFieldName; }
   public String getIqServerPolicyViolationNameCustomFieldName() { return iqServerPolicyViolationNameCustomFieldName; }
+  public String getMaxIqServerPolicyViolationNameCustomFieldName() { return maxIqServerPolicyViolationNameCustomFieldName; }
   public String getIqServerPolicyViolationThreatLevelCustomFieldName() { return iqServerPolicyViolationThreatLevelCustomFieldName; }
+  public String getMaxIqServerPolicyViolationThreatLevelCustomFieldName() { return maxIqServerPolicyViolationThreatLevelCustomFieldName; }
   public String getComponentGroupCustomFieldName() { return componentGroupCustomFieldName; }
   public String getComponentNameCustomFieldName() { return componentNameCustomFieldName; }
   public String getComponentVersionCustomFieldName() { return componentVersionCustomFieldName; }
@@ -147,11 +157,16 @@ public class JiraNotification
                           final String violationDetectDateCustomFieldName,
                           final String lastScanDateCustomFieldName,
                           final String severityCustomFieldName,
+                          final String maxSeverityCustomFieldName,
                           final String cveCodeCustomFieldName,
+                          final String maxCveCodeCustomFieldName,
                           final String cvssCustomFieldName,
+                          final String maxCvssCustomFieldName,
                           final String iqServerReportLinkCustomFieldName,
                           final String iqServerPolicyViolationNameCustomFieldName,
+                          final String maxIqServerPolicyViolationNameCustomFieldName,
                           final String iqServerPolicyViolationThreatLevelCustomFieldName,
+                          final String maxIqServerPolicyViolationThreatLevelCustomFieldName,
                           final String componentGroupCustomFieldName,
                           final String componentNameCustomFieldName,
                           final String componentVersionCustomFieldName,
@@ -190,11 +205,16 @@ public class JiraNotification
     this.violationDetectDateCustomFieldName = violationDetectDateCustomFieldName;
     this.lastScanDateCustomFieldName = lastScanDateCustomFieldName;
     this.severityCustomFieldName = severityCustomFieldName;
+    this.maxSeverityCustomFieldName = maxSeverityCustomFieldName;
     this.cveCodeCustomFieldName = cveCodeCustomFieldName;
+    this.maxCveCodeCustomFieldName = maxCveCodeCustomFieldName;
     this.cvssCustomFieldName = cvssCustomFieldName;
+    this.maxCvssCustomFieldName = maxCvssCustomFieldName;
     this.iqServerReportLinkCustomFieldName = iqServerReportLinkCustomFieldName;
     this.iqServerPolicyViolationNameCustomFieldName = iqServerPolicyViolationNameCustomFieldName;
+    this.maxIqServerPolicyViolationNameCustomFieldName = maxIqServerPolicyViolationNameCustomFieldName;
     this.iqServerPolicyViolationThreatLevelCustomFieldName = iqServerPolicyViolationThreatLevelCustomFieldName;
+    this.maxIqServerPolicyViolationThreatLevelCustomFieldName = maxIqServerPolicyViolationThreatLevelCustomFieldName;
     this.componentGroupCustomFieldName = componentGroupCustomFieldName;
     this.componentNameCustomFieldName = componentNameCustomFieldName;
     this.componentVersionCustomFieldName = componentVersionCustomFieldName;

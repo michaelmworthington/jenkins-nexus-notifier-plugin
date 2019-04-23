@@ -47,6 +47,23 @@
   },
   {
     "clauseNames": [
+      "cf[11000]",
+      "Max Severity"
+    ],
+    "custom": true,
+    "id": "customfield_11000",
+    "name": "Max Severity",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11000,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
       "fixVersion"
     ],
     "custom": false,
@@ -63,6 +80,24 @@
   },
   {
     "clauseNames": [
+      "cf[11001]",
+      "Max CVE Code"
+    ],
+    "custom": true,
+    "id": "customfield_11001",
+    "name": "Max CVE Code",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11001,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+
     ],
     "custom": false,
     "id": "aggregatetimespent",
@@ -77,6 +112,23 @@
   },
   {
     "clauseNames": [
+      "cf[11002]",
+      "Max CVSS"
+    ],
+    "custom": true,
+    "id": "customfield_11002",
+    "name": "Max CVSS",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11002,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
       "resolution"
     ],
     "custom": false,
@@ -87,6 +139,40 @@
     "schema": {
       "system": "resolution",
       "type": "resolution"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[11003]",
+      "Max Violation Name"
+    ],
+    "custom": true,
+    "id": "customfield_11003",
+    "name": "Max Violation Name",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11003,
+      "type": "string"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[11004]",
+      "Max Threat Level"
+    ],
+    "custom": true,
+    "id": "customfield_11004",
+    "name": "Max Threat Level",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11004,
+      "type": "string"
     },
     "searchable": true
   },
@@ -305,6 +391,23 @@
     "schema": {
       "system": "workratio",
       "type": "number"
+    },
+    "searchable": true
+  },
+  {
+    "clauseNames": [
+      "cf[10905]",
+      "Finding Authentication"
+    ],
+    "custom": true,
+    "id": "customfield_10905",
+    "name": "Finding Authentication",
+    "navigable": true,
+    "orderable": true,
+    "schema": {
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 10905,
+      "type": "string"
     },
     "searchable": true
   },

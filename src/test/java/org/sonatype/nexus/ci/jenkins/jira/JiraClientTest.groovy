@@ -75,10 +75,10 @@ class JiraClientTest
                                                                 null,
                                                                 null,
                                                                 verboseLogging,
-                                                                false,
+                                                                dryRun,
                                                                 null,
-                                                                false,
-                                                                5,
+                                                                disableJqlFieldFilter,
+                                                                jqlMaxResultsOverride,
                                                                 null,
                                                                 "IQ Application",
                                                                 "IQ Organization",
@@ -87,11 +87,16 @@ class JiraClientTest
                                                                 "Detect Date",
                                                                 "Last Scan Date",
                                                                 "Severity",
+                                                                "Max Severity",
                                                                 "CVE Code",
+                                                                "Max CVE Code",
                                                                 "CVSS",
+                                                                "Max CVSS",
                                                                 "Report Link",
                                                                 "Violation Name",
+                                                                "Max Violation Name",
                                                                 "Threat Level",
+                                                                "Max Threat Level",
                                                                 "Finding Vendor",
                                                                 "Finding Library",
                                                                 "Finding Version",
@@ -287,7 +292,11 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Task and SubTask'() {
     setup:
+    jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+    jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
@@ -381,7 +390,7 @@ class JiraClientTest
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
-  def 'helper test to verify interaction with Jira Server - All Tickets'() {
+  def 'helper test to verify interaction with Jira Server - Close All Tickets'() {
     setup:
       JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"

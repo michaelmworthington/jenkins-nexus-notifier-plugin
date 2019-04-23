@@ -132,11 +132,23 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
 
+      f.entry(title: _('Jira Custom Field for Max Severity'), field: 'maxSeverityCustomFieldName') {
+        f.textbox()
+      }
+
       f.entry(title: _('Jira Custom Field for CVE Code'), field: 'cveCodeCustomFieldName') {
         f.textbox()
       }
 
+      f.entry(title: _('Jira Custom Field for Max CVE Code'), field: 'maxCveCodeCustomFieldName') {
+        f.textbox()
+      }
+
       f.entry(title: _('Jira Custom Field for CVSS'), field: 'cvssCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Max CVSS'), field: 'maxCvssCustomFieldName') {
         f.textbox()
       }
 
@@ -148,7 +160,15 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
 
+      f.entry(title: _('Jira Custom Field for Max IQ Server Policy Violation Name'), field: 'maxIqServerPolicyViolationNameCustomFieldName') {
+        f.textbox()
+      }
+
       f.entry(title: _('Jira Custom Field for IQ Server Policy Violation Threat Level'), field: 'iqServerPolicyViolationThreatLevelCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Max IQ Server Policy Violation Threat Level'), field: 'maxIqServerPolicyViolationThreatLevelCustomFieldName') {
         f.textbox()
       }
 

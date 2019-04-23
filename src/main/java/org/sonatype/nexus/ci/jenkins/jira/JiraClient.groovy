@@ -383,7 +383,7 @@ class JiraClient extends AbstractToolClient
       returnValue.fields.put("issuetype", [ name: jiraFieldMappingUtil.issueTypeName ])
     }
 
-    jiraFieldMappingUtil.addCustomFieldsToTicket(returnValue, nowFormatted, pPolicyViolation)
+    jiraFieldMappingUtil.addCustomFieldsToTicket(returnValue, nowFormatted, pPolicyViolation, pIsParentTicket)
 
     return returnValue
   }

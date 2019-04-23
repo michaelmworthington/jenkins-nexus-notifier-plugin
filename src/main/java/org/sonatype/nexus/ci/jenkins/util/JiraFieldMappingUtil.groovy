@@ -31,11 +31,16 @@ class JiraFieldMappingUtil
   private String violationDetectDateCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String lastScanDateCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String severityCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String maxSeverityCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String cveCodeCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String maxCveCodeCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String cvssCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String maxCvssCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String iqServerReportLinkCustomFieldName;
   private String iqServerPolicyViolationNameCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String maxIqServerPolicyViolationNameCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String iqServerPolicyViolationThreatLevelCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
+  private String maxIqServerPolicyViolationThreatLevelCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String componentGroupCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String componentNameCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
   private String componentVersionCustomFieldName //TODO: can I prevent Violation Level values from being set on this object?
@@ -61,11 +66,16 @@ class JiraFieldMappingUtil
   JiraCustomFieldMappings getViolationDetectDateCustomField() { return validatedCustomFieldMappings.get(violationDetectDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Detect Date", null) }
   JiraCustomFieldMappings getLastScanDateCustomField() { return validatedCustomFieldMappings.get(lastScanDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Last Scan Date", null) }
   JiraCustomFieldMappings getSeverityCustomField() { return validatedCustomFieldMappings.get(severityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Severity", null) }
+  JiraCustomFieldMappings getMaxSeverityCustomField() { return validatedCustomFieldMappings.get(maxSeverityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Severity", null) }
   JiraCustomFieldMappings getCveCodeCustomField() { return validatedCustomFieldMappings.get(cveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVE", null) }
+  JiraCustomFieldMappings getMaxCveCodeCustomField() { return validatedCustomFieldMappings.get(maxCveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max CVE", null) }
   JiraCustomFieldMappings getCvssCustomField() { return validatedCustomFieldMappings.get(cvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVSS", null) }
+  JiraCustomFieldMappings getMaxCvssCustomField() { return validatedCustomFieldMappings.get(maxCvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max CVSS", null) }
   JiraCustomFieldMappings getIqServerReportLinkCustomField() { return validatedCustomFieldMappings.get(iqServerReportLinkCustomFieldName) ?: new JiraCustomFieldMappings("Stub Report Link", null) }
   JiraCustomFieldMappings getIqServerPolicyViolationNameCustomField() { return validatedCustomFieldMappings.get(iqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Name", null) }
+  JiraCustomFieldMappings getMaxIqServerPolicyViolationNameCustomField() { return validatedCustomFieldMappings.get(maxIqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Policy Violation Name", null) }
   JiraCustomFieldMappings getIqServerPolicyViolationThreatLevelCustomField() { return validatedCustomFieldMappings.get(iqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Threat Level", null) }
+  JiraCustomFieldMappings getMaxIqServerPolicyViolationThreatLevelCustomField() { return validatedCustomFieldMappings.get(maxIqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Policy Violation Threat Level", null) }
   JiraCustomFieldMappings getComponentGroup() { return validatedCustomFieldMappings.get(componentGroupCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Group", null) }
   JiraCustomFieldMappings getComponentName() { return validatedCustomFieldMappings.get(componentNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Name", null) }
   JiraCustomFieldMappings getComponentVersion() { return validatedCustomFieldMappings.get(componentVersionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Version", null) }
@@ -89,23 +99,38 @@ class JiraFieldMappingUtil
     mapCustomFieldNamesToIds()
   }
 
-  void addCustomFieldsToTicket(Map returnValue, String nowFormatted, PolicyViolation pPolicyViolation)
+  void addCustomFieldsToTicket(Map returnValue, String nowFormatted, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
   {
     //TODO: are these available anywhere else (i.e. where they're defined) so i don't have to pass them all over the place
     //TODO: on second thought, JFMU is global. I don't think it's a good idea to set ticket level data on it
+    //TODO:                                     ^^^^^^ nope, it's not. the max fields got screwed up
     getViolationIdCustomField().customFieldValue =  pPolicyViolation.fingerprint
     getViolationDetectDateCustomField().customFieldValue = nowFormatted
     getLastScanDateCustomField().customFieldValue =  nowFormatted
-    getSeverityCustomField().customFieldValue =  pPolicyViolation.severity
-    getCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
-    getCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
-    getIqServerPolicyViolationNameCustomField().customFieldValue = pPolicyViolation.policyName
-    getIqServerPolicyViolationThreatLevelCustomField().customFieldValue = pPolicyViolation.policyThreatLevel
     getComponentGroup().customFieldValue = pPolicyViolation.componentIdentifier?.group
     getComponentName().customFieldValue = pPolicyViolation.componentIdentifier?.artifact
     getComponentVersion().customFieldValue = pPolicyViolation.componentIdentifier?.version
     getComponentClassifier().customFieldValue = pPolicyViolation.componentIdentifier?.classifier
     getComponentExtension().customFieldValue = pPolicyViolation.componentIdentifier?.extension
+
+    if (shouldAggregateTicketsByComponent && pIsParentTicket)
+    {
+      //This is an aggregated component ticket, set the "max" fields
+      getMaxSeverityCustomField().customFieldValue = pPolicyViolation.severity
+      getMaxCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
+      getMaxCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
+      getMaxIqServerPolicyViolationNameCustomField().customFieldValue = pPolicyViolation.policyName
+      getMaxIqServerPolicyViolationThreatLevelCustomField().customFieldValue = pPolicyViolation.policyThreatLevel
+    }
+    else
+    {
+      //This is a finding ticket, set the plain fields
+      getSeverityCustomField().customFieldValue =  pPolicyViolation.severity
+      getCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
+      getCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
+      getIqServerPolicyViolationNameCustomField().customFieldValue = pPolicyViolation.policyName
+      getIqServerPolicyViolationThreatLevelCustomField().customFieldValue = pPolicyViolation.policyThreatLevel
+    }
 
     validatedCustomFieldMappings.each {
       addCustomFieldToTicket(returnValue, it.value)
@@ -148,11 +173,16 @@ class JiraFieldMappingUtil
     violationDetectDateCustomFieldName = iJiraNotification.violationDetectDateCustomFieldName
     lastScanDateCustomFieldName = iJiraNotification.lastScanDateCustomFieldName
     severityCustomFieldName = iJiraNotification.severityCustomFieldName
+    maxSeverityCustomFieldName = iJiraNotification.maxSeverityCustomFieldName
     cveCodeCustomFieldName = iJiraNotification.cveCodeCustomFieldName
+    maxCveCodeCustomFieldName = iJiraNotification.maxCveCodeCustomFieldName
     cvssCustomFieldName = iJiraNotification.cvssCustomFieldName
+    maxCvssCustomFieldName = iJiraNotification.maxCvssCustomFieldName
     iqServerReportLinkCustomFieldName = iJiraNotification.iqServerReportLinkCustomFieldName
     iqServerPolicyViolationNameCustomFieldName = iJiraNotification.iqServerPolicyViolationNameCustomFieldName
+    maxIqServerPolicyViolationNameCustomFieldName = iJiraNotification.maxIqServerPolicyViolationNameCustomFieldName
     iqServerPolicyViolationThreatLevelCustomFieldName = iJiraNotification.iqServerPolicyViolationThreatLevelCustomFieldName
+    maxIqServerPolicyViolationThreatLevelCustomFieldName = iJiraNotification.maxIqServerPolicyViolationThreatLevelCustomFieldName
     componentGroupCustomFieldName = iJiraNotification.componentGroupCustomFieldName
     componentNameCustomFieldName = iJiraNotification.componentNameCustomFieldName
     componentVersionCustomFieldName = iJiraNotification.componentVersionCustomFieldName
@@ -181,11 +211,16 @@ class JiraFieldMappingUtil
     lookupAndValidateCustomField(customFields, violationDetectDateCustomFieldName,"Detect Date")
     lookupAndValidateCustomField(customFields, lastScanDateCustomFieldName,"Last Scan Date")
     lookupAndValidateCustomField(customFields, severityCustomFieldName, "Severity")
+    lookupAndValidateCustomField(customFields, maxSeverityCustomFieldName, "Max Severity")
     lookupAndValidateCustomField(customFields, cveCodeCustomFieldName, "CVE Code")
+    lookupAndValidateCustomField(customFields, maxCveCodeCustomFieldName, "Max CVE Code")
     lookupAndValidateCustomField(customFields, cvssCustomFieldName, "CVSS")
+    lookupAndValidateCustomField(customFields, maxCvssCustomFieldName, "Max CVSS")
     lookupAndValidateCustomField(customFields, iqServerReportLinkCustomFieldName, "Report Link")
     lookupAndValidateCustomField(customFields, iqServerPolicyViolationNameCustomFieldName, "Policy Violation Name")
+    lookupAndValidateCustomField(customFields, maxIqServerPolicyViolationNameCustomFieldName, "Max Policy Violation Name")
     lookupAndValidateCustomField(customFields, iqServerPolicyViolationThreatLevelCustomFieldName, "Policy Violation Threat Level")
+    lookupAndValidateCustomField(customFields, maxIqServerPolicyViolationThreatLevelCustomFieldName, "Max Policy Violation Threat Level")
     lookupAndValidateCustomField(customFields, componentGroupCustomFieldName, "Component Group")
     lookupAndValidateCustomField(customFields, componentNameCustomFieldName, "Component Name")
     lookupAndValidateCustomField(customFields, componentVersionCustomFieldName, "Component Version")

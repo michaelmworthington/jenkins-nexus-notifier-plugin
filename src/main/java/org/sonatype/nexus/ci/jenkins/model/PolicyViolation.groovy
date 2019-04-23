@@ -178,7 +178,7 @@ class PolicyViolation
 
     if (cvssScore < policyViolation.cvssScore)
     {
-      cvssScore = policyViolation.cvssScore //TODO: Max CVSS Score Seperate field
+      cvssScore = policyViolation.cvssScore
       severity = policyViolation.severity
       cveCode = policyViolation.cveCode
       cvssReason = policyViolation.cvssReason
