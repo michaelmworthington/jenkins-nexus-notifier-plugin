@@ -35,6 +35,7 @@ class PolicyViolation
 
   //generated fields
   Set<String> findingFingerprints = new HashSet<String>()
+  String detectDateString
   String componentFingerprintPrettyPrint
   String componentFingerprintKey
   String componentFingerprint

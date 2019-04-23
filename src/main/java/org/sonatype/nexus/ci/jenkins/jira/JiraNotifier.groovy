@@ -66,6 +66,7 @@ class JiraNotifier
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
       jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
       //jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "TODO: Scan Stage" //TODO: i cannot support this lookup right now. Perhaps it could be mapped through the passthrough fields
+      jiraFieldMappingUtil.getLastScanDateCustomField().customFieldValue = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
       {
@@ -514,6 +515,7 @@ class JiraNotifier
   {
     logger.println("Creating Jira Ticket in Project: ${jiraFieldMappingUtil.projectKey} for Component: ${pPolicyViolation.fingerprintPrettyPrint}")
 
+    pPolicyViolation.detectDateString = jiraFieldMappingUtil.getFormattedScanDateForJira()
     jiraClient.createIssue(jiraFieldMappingUtil, pPolicyViolation)
   }
 
@@ -524,6 +526,7 @@ class JiraNotifier
   {
     logger.println("Creating Jira Sub-task in Project: ${jiraFieldMappingUtil.projectKey} for Finding: ${pPolicyViolation.fingerprintPrettyPrint}")
 
+    pPolicyViolation.detectDateString = jiraFieldMappingUtil.getFormattedScanDateForJira()
     jiraClient.createSubTask(jiraFieldMappingUtil, pParentIssueKey, pPolicyViolation)
   }
 
