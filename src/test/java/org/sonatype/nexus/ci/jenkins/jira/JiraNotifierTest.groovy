@@ -45,7 +45,7 @@ class JiraNotifierTest
   def mockListener = Mock(TaskListener)
   def mockRun = Mock(Run)
 
-  def customFields, iqReport, iqApplication, iqOrganization
+  def customFields, iqReport
 
   PolicyEvaluationHealthAction policyEvaluationHealthAction
   JiraNotification jiraNotificationCreateParentTicketTest
@@ -68,8 +68,6 @@ class JiraNotifierTest
 
     customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
     iqReport = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-e8ef4d3d26dd48b3866019b1478c6453-policythreats.json'))
-    iqApplication = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-applicationInfo.json'))
-    iqOrganization = new JsonSlurper().parse(new File('src/test/resources/iq-organizations.json'))
 
     policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
             reportLink: 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453',

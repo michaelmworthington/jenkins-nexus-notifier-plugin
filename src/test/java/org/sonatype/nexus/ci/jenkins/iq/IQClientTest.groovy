@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.iq
 
+import groovy.json.JsonSlurper
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
 import spock.lang.Requires
 import spock.lang.Specification
@@ -24,11 +25,15 @@ class IQClientTest
 
   SonatypeHTTPBuilder http
   IQClient clientHttpMock, clientLive
+  def iqApplication, iqOrganizations
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
     clientHttpMock = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
     clientHttpMock.http = http
+
+    iqApplication = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-applicationInfo.json'))
+    iqOrganizations = new JsonSlurper().parse(new File('src/test/resources/iq-organizations.json'))
 
     clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true])
   }
@@ -45,6 +50,61 @@ class IQClientTest
     and:
       url != null
       url == "http://localhost:${port}/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json"
+  }
+
+  def 'lookup scan report component details has correct url'() {
+    def url
+
+    when:
+    clientHttpMock.lookupComponentDetailsFromIQ("a22d44d0209b47358c8dd2532bb7afb3", "aaaaaaa-testidegrandfathering")
+
+    then:
+    1 * http.get(_, _) >> { args -> url = args[0]}
+
+    and:
+    url != null
+    url == "http://localhost:${port}/iq/api/v2/applications/aaaaaaa-testidegrandfathering/reports/a22d44d0209b47358c8dd2532bb7afb3/raw"
+  }
+
+  def 'Lookup Application'() {
+    when:
+    def applicationResp = clientHttpMock.lookupApplication("aaaaaaa-testidegrandfathering" )
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+
+    applicationResp != null
+    applicationResp.applications.size == 1
+    applicationResp.applications[0].publicId == "aaaaaaa-testidegrandfathering"
+    applicationResp.applications[0].id == "e06a119c75d04d97b8d8c11b62719752"
+    applicationResp.applications[0].organizationId == "2d0dfb87b67b43a3b4271e462bae9eca"
+  }
+
+  def 'Lookup Organization Name for App Id'() {
+    when:
+    String orgName = clientHttpMock.lookupOrganizationName("aaaaaaa-testidegrandfathering")
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/organizations", _) >> iqOrganizations
+
+    and:
+    orgName == "Automatically Created Apps"
+  }
+
+  def 'Lookup Organization Name for App Id - Empty Org List returns Null'() {
+    setup:
+    def iqEmptyOrganizations = new JsonSlurper().parse(new File('src/test/resources/iq-organizations-empty.json'))
+
+    when:
+    String orgName = clientHttpMock.lookupOrganizationName("aaaaaaa-testidegrandfathering")
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/organizations", _) >> iqEmptyOrganizations
+
+    and:
+    orgName == null
   }
 
   /*
@@ -64,6 +124,21 @@ class IQClientTest
       resp.aaData[0].hash != null
       resp.aaData[0].activeViolations.size == 2
       resp.aaData[0].waivedViolations.size == 1
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Get Report Component Details'() {
+    when:
+    def resp = clientLive.lookupComponentDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+
+    then:
+    resp != null
+    resp.components.size > 0
+    resp.components[0].componentIdentifier != null
+    resp.components[0].hash != null
+    resp.components[0].licenseData != null
+    resp.components[0].pathnames != null
+    resp.components[0].securityData != null
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})

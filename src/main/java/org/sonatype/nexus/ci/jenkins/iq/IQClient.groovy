@@ -44,18 +44,26 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
+  def lookupComponentDetailsFromIQ(String iqReportInternalid, String iqAppExternalId)
+  {
+    def url = getComponentDetailsReportUrl(serverUrl, iqAppExternalId, iqReportInternalid)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
   def lookupOrganizationName(String iqAppExternalId)
   {
     def applicationResp = lookupApplication(iqAppExternalId)
     def organizationsResp = lookupOrganizations()
-    return organizationsResp.organizations.find { it.id == applicationResp.applications[0].organizationId }.name
+    return organizationsResp.organizations.find { it.id == applicationResp?.applications[0]?.organizationId }?.name
   }
 
-  private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalid) {
+  private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {
     verbosePrintLn("Get the Application Policy Threats Report from IQ Server")
 
     // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
-    return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalid}/browseReport/policythreats.json"
+    return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalId}/browseReport/policythreats.json"
   }
 
   private String getApplicationUrl(String serverUrl, String iqAppExternalId) {
@@ -69,5 +77,12 @@ class IQClient extends AbstractToolClient
     verbosePrintLn("Get the Organization Details from IQ Server")
 
     return "${serverUrl}/api/v2/organizations"
+  }
+
+  private String getComponentDetailsReportUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {
+    verbosePrintLn("Get the Application Component Details Report from IQ Server")
+
+    // {{iqURL}}/api/v2/applications/{{iqAppExternalId}}/reports/{{iqReportInternalId}}
+    return "${serverUrl}/api/v2/applications/${iqAppExternalId}/reports/${iqReportInternalId}/raw"
   }
 }
