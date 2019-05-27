@@ -56,7 +56,7 @@
     <jenkins.version>2.121.2</jenkins.version>
     <java.level>8</java.level>
 
-    <findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
+    <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
     <jvnet-localizer-plugin.version>1.23</jvnet-localizer-plugin.version>
 
     <buildsupport.version>10</buildsupport.version>
