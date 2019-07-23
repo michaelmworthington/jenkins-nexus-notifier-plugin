@@ -40,6 +40,14 @@ class JiraNotifier
     this.logger = listener.logger
   }
 
+  void continuousMonitor(final JiraNotification jiraNotification)
+  {
+    logger.println("######################################")
+    logger.println("Running Jira Continuous Monitoring")
+    logger.println("######################################")
+
+  }
+
   void send(final boolean buildPassing, //TODO: don't run if the build is failed??? Maybe the check on the IQ Report will fail the process, but make sure that we don't close all the jira tickets if there is an upstream failure
             final JiraNotification jiraNotification,
             final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction)

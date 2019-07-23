@@ -45,6 +45,7 @@ public class NotifierStep
 {
   private BitbucketNotification bitbucketNotification;
   private JiraNotification jiraNotification;
+  private boolean shouldRunWithContinuousMonitoring;
 
   @DataBoundSetter
   public void setBitbucketNotification(final BitbucketNotification bitbucketNotification) {
@@ -64,6 +65,15 @@ public class NotifierStep
     return jiraNotification;
   }
 
+  @DataBoundSetter
+  public void setShouldRunWithContinuousMonitoring(final boolean shouldRunWithContinuousMonitoring) {
+    this.shouldRunWithContinuousMonitoring = shouldRunWithContinuousMonitoring;
+  }
+
+  public boolean getShouldRunWithContinuousMonitoring() {
+    return shouldRunWithContinuousMonitoring;
+  }
+
   @DataBoundConstructor
   public NotifierStep() {}
 
@@ -78,26 +88,36 @@ public class NotifierStep
                @Nonnull final Launcher launcher,
                @Nonnull final TaskListener listener) throws AbortException
   {
-    PrintStream logger = listener.getLogger();
-    Optional<? extends Action> optionalPolicyEvaluation = run.getAllActions().stream()
-        .filter(PolicyEvaluationHealthAction::assignableFrom).findFirst();
-
-    if (!optionalPolicyEvaluation.isPresent()) {
-      logger.println(Messages.NotifierStep_NoPolicyAction());
-      throw new AbortException(Messages.NotifierStep_NoPolicyAction());
+    if (shouldRunWithContinuousMonitoring)
+    {
+      if (jiraNotification != null && jiraNotification.getSendJiraNotification())
+      {
+        new JiraNotifier(run, listener).continuousMonitor(jiraNotification);
+      }
     }
+    else
+    {
+      PrintStream logger = listener.getLogger();
+      Optional<? extends Action> optionalPolicyEvaluation = run.getAllActions().stream()
+          .filter(PolicyEvaluationHealthAction::assignableFrom).findFirst();
 
-    boolean buildPassing = run.getResult() == Result.SUCCESS;
+      if (!optionalPolicyEvaluation.isPresent()) {
+        logger.println(Messages.NotifierStep_NoPolicyAction());
+        throw new AbortException(Messages.NotifierStep_NoPolicyAction());
+      }
 
-    PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction
-        .build(optionalPolicyEvaluation.get());
+      boolean buildPassing = run.getResult() == Result.SUCCESS;
 
-    if (bitbucketNotification != null && bitbucketNotification.getSendBitbucketNotification()) {
-      new BitbucketNotifier(run, listener).send(buildPassing, bitbucketNotification, policyEvaluationHealthAction);
-    }
+      PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction
+              .build(optionalPolicyEvaluation.get());
 
-    if (jiraNotification != null && jiraNotification.getSendJiraNotification()) {
-      new JiraNotifier(run, listener).send(buildPassing, jiraNotification, policyEvaluationHealthAction);
+      if (bitbucketNotification != null && bitbucketNotification.getSendBitbucketNotification()) {
+        new BitbucketNotifier(run, listener).send(buildPassing, bitbucketNotification, policyEvaluationHealthAction);
+      }
+
+      if (jiraNotification != null && jiraNotification.getSendJiraNotification()) {
+        new JiraNotifier(run, listener).send(buildPassing, jiraNotification, policyEvaluationHealthAction);
+      }
     }
   }
 
