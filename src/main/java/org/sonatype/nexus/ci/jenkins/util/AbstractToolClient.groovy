@@ -29,6 +29,22 @@ abstract class AbstractToolClient
     this.logger = logger
     this.verboseLogging = verboseLogging
 
+    //this.http.parser.'text/html' = this.http.parser.'text/plain'
+    //http.parser.'application/json' = http.parser.'text/plain'
+
+    //Jira returns HTML for 401/403 rather than json. This causes parsing errors
+    // and, the error messages get garbled up in 2.46.3
+    // 1. try to provide a better error message, maybe a test button in the config
+    // 2. handle the parsing
+    //
+    //https://github.com/jgritman/httpbuilder/wiki/Content-Types
+    //https://stackoverflow.com/questions/8015391/groovy-httpbuilder-and-jackson
+    //https://www.jfrog.com/jira/browse/HAP-935
+    //https://groups.google.com/forum/#!topic/jenkinsci-users/n5mKk4bubhc
+    //https://issues.jenkins-ci.org/browse/JENKINS-39346
+    //https://issues.jenkins-ci.org/browse/JENKINS-38445
+
+
 
     if(logger)
     {

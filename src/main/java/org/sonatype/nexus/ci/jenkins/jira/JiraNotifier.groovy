@@ -46,10 +46,17 @@ class JiraNotifier
   {
     checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey()) //todo: the proper way to validate input strings - for custom fields in lookupAndValidateCustomField()
 
-    IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
-    JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId, logger, jiraNotification.verboseLogging, jiraNotification.dryRun, jiraNotification.disableJqlFieldFilter, jiraNotification.jqlMaxResultsOverride)
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotification, jiraClient, run.getEnvironment(listener), logger)
-    PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
+try
+{
+  IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
+  JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId,
+                                                          logger,
+                                                          jiraNotification.verboseLogging,
+                                                          jiraNotification.dryRun,
+                                                          jiraNotification.disableJqlFieldFilter,
+                                                          jiraNotification.jqlMaxResultsOverride)
+  JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotification, jiraClient, run.getEnvironment(listener), logger)
+  PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
 
     try {
       logger.println("######################################")
@@ -64,6 +71,7 @@ class JiraNotifier
       String iqReportInternalid = linkPieces[linkPieces.length-1]
       String iqAppExternalId = linkPieces[linkPieces.length-3]
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
+      //TODO: skip this if the org custom field is not mapped - to avoid any edge cases with permissions (customFieldID should be null, but double check that)
       jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
       //jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "TODO: Scan Stage" //TODO: i cannot support this lookup right now. Perhaps it could be mapped through the passthrough fields
       jiraFieldMappingUtil.getLastScanDateCustomField().customFieldValue = jiraFieldMappingUtil.getFormattedScanDateForJira()
@@ -93,6 +101,22 @@ class JiraNotifier
 
         //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
         def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
+        //TODO: Lookup Version of IQ Server
+        //TODO:       def findingComponents = iqClient.lookupComponentDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
+        //
+        //TODO: combine policy and components by hash
+        //TODO:     - licenseData - license information is overriddenLicenses ?: observed + declared
+        //TODO:     - matchState
+        //TODO:     - pathnames
+        //TODO:     - proprietary
+
+        //TODO: Futures
+        //TODO:   {{iqURL}}/rest/vulnerability/details/sonatype/sonatype-2016-0010?hash=796772bd4a6049b40f13
+        //TODO:   {{iqURL}}/rest/policyWaiver/application/{{iqAppExternalId}}
+        //TODO:   continuous monitoring mode (lookup all apps - i think this should probably be a different top level object and leverage a shared code base for the app sync)
+        //TODO:   refactor jenkins property config to create sub-objects
+        //TODO:   snow
+        //TODO:   recommended version - remediation API (no good version, you get empty arrays) - https://help.sonatype.com/iqserver/automating/rest-apis/component-remediation-rest-api---v2
 
         logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
         potentialFindings.aaData.each {
@@ -101,7 +125,7 @@ class JiraNotifier
                                       it,
                                       policyEvaluationHealthAction.reportLink,
                                       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
-                                      jiraFieldMappingUtil.policyFilterPrefix)
+                                      jiraFieldMappingUtil.policyFilterPrefix) //TODO: add Policy Threat Level Numeric Filter
         }
 
         /***************************************
@@ -222,6 +246,16 @@ class JiraNotifier
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
     }
+
+}
+catch (Throwable ex) {
+  logger.println("Could not initialize the Nexus Notifier Plugin. Please check Jira & IQ Server login credentials")
+  logger.println(ex.message)
+  ex.printStackTrace(logger)
+  throw new AbortException(ex.message)
+
+}
+
   }
 
   void logComponentAndSubTaskConfig(JiraFieldMappingUtil jiraFieldMappingUtil)
