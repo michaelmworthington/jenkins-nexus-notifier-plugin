@@ -29,11 +29,29 @@ f.section(title: typedDescriptor.displayName) {
     c.select(context: app, includeUser: false, expressionAllowed: false)
   }
 
+  f.block() {
+    f.validateButton(
+            title: _(Messages.Configuration_TestConnection()),
+            progress: _('Testing...'),
+            method: 'verifyJiraCredentials',
+            with: 'jiraServerUrl,jiraCredentialsId'
+    )
+  }
+
   f.entry(title: _(Messages.Configuration_IQServerUrl()), field: 'iqServerUrl') {
     f.textbox(clazz: 'required')
   }
 
   f.entry(title: _(Messages.Configuration_IQCredentials()), field: 'iqCredentialsId') {
     c.select(context: app, includeUser: false, expressionAllowed: false)
+  }
+
+  f.block() {
+    f.validateButton(
+            title: _(Messages.Configuration_TestConnection()),
+            progress: _('Testing...'),
+            method: 'verifyIqCredentials',
+            with: 'iqServerUrl,iqCredentialsId'
+    )
   }
 }

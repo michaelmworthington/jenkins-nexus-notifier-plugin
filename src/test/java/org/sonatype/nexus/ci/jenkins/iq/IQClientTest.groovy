@@ -25,7 +25,7 @@ class IQClientTest
 
   SonatypeHTTPBuilder http
   IQClient clientHttpMock, clientLive
-  def iqApplication, iqOrganizations
+  def iqApplication, iqOrganizations, iqApplications
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
@@ -34,6 +34,7 @@ class IQClientTest
 
     iqApplication = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-applicationInfo.json'))
     iqOrganizations = new JsonSlurper().parse(new File('src/test/resources/iq-organizations.json'))
+    iqApplications = new JsonSlurper().parse(new File('src/test/resources/iq-applications.json'))
 
     clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true])
   }
@@ -107,6 +108,17 @@ class IQClientTest
     orgName == null
   }
 
+  def 'Lookup All Applications'() {
+    when:
+    def resp = clientHttpMock.lookupApplications()
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications", _) >> iqApplications
+
+    and:
+    resp.applications.size == 102
+  }
+
   /*
   ****************************************************************************************************************************************************
   *                                                     Integration Tests                                                                            *
@@ -165,5 +177,14 @@ class IQClientTest
 
     then:
       resp == "Automatically Created Apps"
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Lookup Applications'() {
+    when:
+      def resp = clientLive.lookupApplications()
+
+    then:
+      resp.applications.size != 0
   }
 }

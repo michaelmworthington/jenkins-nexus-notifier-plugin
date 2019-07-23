@@ -41,6 +41,12 @@ class IQClientFactory
     return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging)
   }
 
+  static IQClient getIQClientForUrl(final String jobCredentialsId, final String url) {
+    def credentials = findCredentials(url, jobCredentialsId)
+
+    return new IQClient(url, credentials.username, credentials.password.plainText, null, false)
+  }
+
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {
     checkNotNull(credentialsId)
     checkNotNull(url)

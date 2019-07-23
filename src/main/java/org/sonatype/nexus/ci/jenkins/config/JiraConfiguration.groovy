@@ -19,10 +19,15 @@ import hudson.model.Descriptor
 import hudson.util.FormValidation
 import hudson.util.FormValidation.Kind
 import hudson.util.ListBoxModel
-import jenkins.model.Jenkins
 import org.kohsuke.stapler.DataBoundConstructor
 import org.kohsuke.stapler.QueryParameter
+import org.sonatype.nexus.ci.jenkins.iq.IQClient
+import org.sonatype.nexus.ci.jenkins.iq.IQClientFactory
+import org.sonatype.nexus.ci.jenkins.jira.JiraClient
+import org.sonatype.nexus.ci.jenkins.jira.JiraClientFactory
 import org.sonatype.nexus.ci.jenkins.util.FormUtil
+
+import javax.annotation.Nullable
 
 class JiraConfiguration
     extends AbstractDescribableImpl<JiraConfiguration>
@@ -54,6 +59,7 @@ class JiraConfiguration
       Messages.JiraConfiguration_DisplayName()
     }
 
+    @SuppressWarnings('unused')
     FormValidation doCheckJiraServerUrl(@QueryParameter String value) {
       def validation = FormUtil.validateUrl(value)
       if (validation.kind == Kind.OK) {
@@ -62,11 +68,30 @@ class JiraConfiguration
       return validation
     }
 
+    @SuppressWarnings('unused')
     ListBoxModel doFillJiraCredentialsIdItems(@QueryParameter String jiraServerUrl,
                                               @QueryParameter String jiraCredentialsId) {
       return FormUtil.newCredentialsItemsListBoxModel(jiraServerUrl, jiraCredentialsId, null)
     }
 
+    @SuppressWarnings('unused')
+    FormValidation doVerifyJiraCredentials(
+            @QueryParameter String jiraServerUrl,
+            @QueryParameter @Nullable String jiraCredentialsId) throws IOException
+    {
+      try {
+        JiraClient jiraClient = JiraClientFactory.getJiraClientForUrl(jiraCredentialsId, jiraServerUrl)
+        List customFields = (List) jiraClient.lookupCustomFields()
+
+        return FormValidation.ok(Messages.JiraConfiguration_ConnectionSucceeded(customFields.size()))
+      }
+      catch (Exception e) {
+        return FormValidation.error(e, Messages.JiraConfiguration_ConnectionFailed())
+      }
+
+    }
+
+    @SuppressWarnings('unused')
     FormValidation doCheckIqServerUrl(@QueryParameter String value) {
       def validation = FormUtil.validateUrl(value)
       if (validation.kind == Kind.OK) {
@@ -75,9 +100,30 @@ class JiraConfiguration
       return validation
     }
 
+    @SuppressWarnings('unused')
     ListBoxModel doFillIqCredentialsIdItems(@QueryParameter String iqServerUrl,
                                             @QueryParameter String iqCredentialsId) {
       return FormUtil.newCredentialsItemsListBoxModel(iqServerUrl, iqCredentialsId, null)
     }
+
+    @SuppressWarnings('unused')
+    FormValidation doVerifyIqCredentials(
+            @QueryParameter String iqServerUrl,
+            @QueryParameter @Nullable String iqCredentialsId) throws IOException
+    {
+      try
+      {
+        IQClient iqClient = IQClientFactory.getIQClientForUrl(iqCredentialsId, iqServerUrl)
+        def applicationsResp = iqClient.lookupApplications()
+
+        return FormValidation.ok(Messages.NxiqConfiguration_ConnectionSucceeded(applicationsResp.applications.size))
+      }
+      catch (Exception e)
+      {
+        return FormValidation.error(e, Messages.NxiqConfiguration_ConnectionFailed())
+      }
+
+    }
+
   }
 }

@@ -44,6 +44,14 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
+  def lookupApplications()
+  {
+    def url = getApplicationsUrl(serverUrl)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
   def lookupComponentDetailsFromIQ(String iqReportInternalid, String iqAppExternalId)
   {
     def url = getComponentDetailsReportUrl(serverUrl, iqAppExternalId, iqReportInternalid)
@@ -77,6 +85,12 @@ class IQClient extends AbstractToolClient
     verbosePrintLn("Get the Organization Details from IQ Server")
 
     return "${serverUrl}/api/v2/organizations"
+  }
+
+  private String getApplicationsUrl(String serverUrl) {
+    verbosePrintLn("Get the Application Details from IQ Server")
+
+    return "${serverUrl}/api/v2/applications"
   }
 
   private String getComponentDetailsReportUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {

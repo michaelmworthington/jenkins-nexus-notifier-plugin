@@ -51,6 +51,12 @@ class JiraClientFactory
     return new JiraClient(jiraConfig.jiraServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverrideValidated)
   }
 
+  static JiraClient getJiraClientForUrl(final String jobCredentialsId, final String url) {
+    def credentials = findCredentials(url, jobCredentialsId)
+
+    return new JiraClient(url, credentials.username, credentials.password.plainText, null, false, false, false, 50)
+  }
+
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {
     checkNotNull(credentialsId)
     checkNotNull(url)
