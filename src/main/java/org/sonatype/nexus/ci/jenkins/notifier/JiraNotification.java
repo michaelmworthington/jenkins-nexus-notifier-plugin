@@ -45,6 +45,8 @@ public class JiraNotification
   private String jiraTransitionStatus;
   private String jiraTransitionName;
   private String policyFilterPrefix;
+  private String dynamicData;
+  private String continuousMonitoringDynamicDataApplicationKey;
 
   //Advanced Options
   private String jobJiraCredentialsId;
@@ -93,6 +95,8 @@ public class JiraNotification
   public String getJiraTransitionStatus() { return jiraTransitionStatus; }
   public String getJiraTransitionName() { return jiraTransitionName; }
   public String getPolicyFilterPrefix() { return policyFilterPrefix; }
+  public String getDynamicData() { return dynamicData; }
+  public String getContinuousMonitoringDynamicDataApplicationKey() { return continuousMonitoringDynamicDataApplicationKey; }
 
   //Advanced Options
   public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
@@ -142,6 +146,8 @@ public class JiraNotification
                           final String jiraTransitionStatus,
                           final String jiraTransitionName,
                           final String policyFilterPrefix,
+                          final String dynamicData,
+                          final String continuousMonitoringDynamicDataApplicationKey,
                           final String jobJiraCredentialsId,
                           final String jobIQCredentialsId,
                           final boolean verboseLogging,
@@ -186,6 +192,8 @@ public class JiraNotification
     this.jiraTransitionStatus = jiraTransitionStatus;
     this.jiraTransitionName = jiraTransitionName;
     this.policyFilterPrefix = policyFilterPrefix;
+    this.dynamicData = dynamicData;
+    this.continuousMonitoringDynamicDataApplicationKey = continuousMonitoringDynamicDataApplicationKey;
 
     //Advanced Options
     this.jobJiraCredentialsId = jobJiraCredentialsId;

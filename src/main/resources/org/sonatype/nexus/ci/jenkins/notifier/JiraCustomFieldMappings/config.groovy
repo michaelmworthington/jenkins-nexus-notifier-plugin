@@ -14,4 +14,8 @@ f.section(title: typedDescriptor.displayName) {
   f.entry(title: _("Custom Field Value"), field: 'customFieldValue') {
     f.textbox(clazz: 'required')
   }
+
+  f.entry(title: _("Custom Field Value Lookup Key from Dynamic Data"), field: 'dynamicDataCustomFieldValue') {
+    f.textbox(clazz: 'required')
+  }
 }

@@ -91,6 +91,8 @@ class JiraNotifierTest
                                                                   "License",
                                                                   null,
                                                                   null,
+                                                                  null,
+                                                                  null,
                                                                   verboseLogging,
                                                                   false,
                                                                   null,
@@ -491,6 +493,23 @@ class JiraNotifierTest
       1 * jiraClient.createIssue(*_) >> createParentTicket
       2 * jiraClient.createSubTask(*_)
       12 * jiraClient.closeTicket(*_)
+  }
+
+  def 'Test Dynamic Data'() {
+    setup:
+      String dynamicData = '[ {"mnemonic": "aaaaaaa", "appName": "testidegrandfathering", "iqLookup": "aaaaaaa-testidegrandfathering" }, \
+                              {"mnemonic": "04", "appName": "explicit-staging-maven-plugin", "iqLookup": "04-explicit-staging-maven-plugin" } ]'
+
+    when:
+      def o = new JsonSlurper().parseText(dynamicData)
+
+    then:
+      o.size == 2
+      String fieldName = "appName"
+
+      o.each{
+        it[fieldName] != null
+      }
   }
 
   /*

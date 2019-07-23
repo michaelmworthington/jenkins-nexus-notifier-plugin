@@ -30,15 +30,18 @@ public class JiraCustomFieldMappings
 {
   public String customFieldName;
   public String customFieldValue;
+  public String dynamicDataCustomFieldValue;
   public String customFieldId;
   public String customFieldType;
 
   @DataBoundConstructor
   public JiraCustomFieldMappings(final String customFieldName,
-                                 final String customFieldValue)
+                                 final String customFieldValue,
+                                 final String dynamicDataCustomFieldValue)
   {
     this.customFieldName = customFieldName;
     this.customFieldValue = customFieldValue;
+    this.dynamicDataCustomFieldValue = dynamicDataCustomFieldValue;
   }
 
   @Extension

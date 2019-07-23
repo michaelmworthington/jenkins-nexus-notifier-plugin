@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
+import groovy.json.JsonSlurper
 import hudson.AbortException
 import hudson.model.Run
 import hudson.model.TaskListener
@@ -45,6 +46,21 @@ class JiraNotifier
     logger.println("######################################")
     logger.println("Running Jira Continuous Monitoring")
     logger.println("######################################")
+
+    String appKeyFieldName = jiraNotification.continuousMonitoringDynamicDataApplicationKey
+    def dynamicDataJson = new JsonSlurper().parseText(jiraNotification.dynamicData)
+
+    int current = 1
+    int total = dynamicDataJson.size
+    dynamicDataJson.each{
+      logger.println("${current}/${total} : ${it[appKeyFieldName]}")
+
+      //TODO: look up custom field dynamic data
+
+      //TODO: for each application, call send()
+
+      current++
+    }
 
   }
 
