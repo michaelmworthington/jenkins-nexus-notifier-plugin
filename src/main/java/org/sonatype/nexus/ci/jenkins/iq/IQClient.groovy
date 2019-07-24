@@ -71,7 +71,7 @@ class IQClient extends AbstractToolClient
     verbosePrintLn("Get the Application Policy Threats Report from IQ Server")
 
     // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
-    return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalId}/browseReport/policythreats.json"
+    return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalId}/browseReport/policythreats.json" //TODO: change to the official "Policy" & "Raw" APIs
   }
 
   private String getApplicationUrl(String serverUrl, String iqAppExternalId) {

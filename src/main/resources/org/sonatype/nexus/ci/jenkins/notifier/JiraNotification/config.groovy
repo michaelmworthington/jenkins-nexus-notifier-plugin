@@ -67,14 +67,6 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
-  f.entry(title: _('Dynamic Data Input'), field: 'dynamicData') {
-    f.textbox()
-  }
-
-  f.entry(title: _('Continuous Monitoring Application Key Field in Dynamic Data'), field: 'continuousMonitoringDynamicDataApplicationKey') {
-    f.textbox()
-  }
-
   f.advanced() {
     f.section(title: _('Advanced Options')) {
       f.entry(title: _('Use job specific credentials for Jira'), field: 'jobJiraCredentialsId') {

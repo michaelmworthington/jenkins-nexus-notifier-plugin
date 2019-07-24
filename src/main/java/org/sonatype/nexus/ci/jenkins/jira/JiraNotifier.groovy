@@ -20,6 +20,7 @@ import org.sonatype.nexus.ci.jenkins.iq.IQClient
 import org.sonatype.nexus.ci.jenkins.iq.IQClientFactory
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction
 import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
+import org.sonatype.nexus.ci.jenkins.notifier.ContinuousMonitoringConfig
 import org.sonatype.nexus.ci.jenkins.notifier.JiraCustomFieldMappings
 import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 import org.sonatype.nexus.ci.jenkins.util.JiraFieldMappingUtil
@@ -41,23 +42,28 @@ class JiraNotifier
     this.logger = listener.logger
   }
 
-  void continuousMonitor(final JiraNotification jiraNotification)
+  void continuousMonitor(final String dynamicData, final ContinuousMonitoringConfig continuousMonitoringConfig, final JiraNotification jiraNotification)
   {
     logger.println("######################################")
     logger.println("Running Jira Continuous Monitoring")
     logger.println("######################################")
 
-    String appKeyFieldName = jiraNotification.continuousMonitoringDynamicDataApplicationKey
-    def dynamicDataJson = new JsonSlurper().parseText(jiraNotification.dynamicData)
+    //todo : check for a specified individual application (and ignore dynamic data)
+    //TODO: pick up individual stage
+    //TODO: check for specified stage for each app
+    String appKeyFieldName = continuousMonitoringConfig.dynamicDataApplicationKey
+    def dynamicDataJson = new JsonSlurper().parseText(dynamicData) //todo: make optional
 
     int current = 1
     int total = dynamicDataJson.size
     dynamicDataJson.each{
-      logger.println("${current}/${total} : ${it[appKeyFieldName]}")
+      logger.println("${current}/${total} : ${it[appKeyFieldName]} at ${continuousMonitoringConfig.getStage()}")
 
       //TODO: look up custom field dynamic data
 
       //TODO: for each application, call send()
+      //    todo: generate the report url:         // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
+      //    todo: using the api: {{iqURL}}/api/v2/reports/applications/{{iqAppInternalId}}
 
       current++
     }

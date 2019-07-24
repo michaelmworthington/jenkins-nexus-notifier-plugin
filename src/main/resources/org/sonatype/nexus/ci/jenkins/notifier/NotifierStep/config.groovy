@@ -32,9 +32,12 @@ def hasJira = notifierConfiguration != null && notifierConfiguration.jiraConfigs
         notifierConfiguration.jiraConfigs.size() > 0
 
 f.section(title: typedDescriptor.displayName) {
-  f.entry(title: _('Continuous Monitoring'), field: 'shouldRunWithContinuousMonitoring') {
-    f.checkbox()
+
+  f.entry(title: _('Dynamic Data Input'), field: 'dynamicData') {
+    f.textbox()
   }
+
+  f.property(field: 'continuousMonitoringConfig')
 
   if (hasBitbucket) {
     f.property(field: 'bitbucketNotification')

@@ -91,8 +91,6 @@ class JiraNotifierTest
                                                                   "License",
                                                                   null,
                                                                   null,
-                                                                  null,
-                                                                  null,
                                                                   verboseLogging,
                                                                   false,
                                                                   null,

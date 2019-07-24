@@ -74,8 +74,6 @@ class JiraClientTest
                                                                 "License",
                                                                 null,
                                                                 null,
-                                                                null,
-                                                                null,
                                                                 verboseLogging,
                                                                 dryRun,
                                                                 null,

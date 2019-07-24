@@ -43,9 +43,24 @@ public class NotifierStep
     extends Notifier
     implements SimpleBuildStep
 {
+  private String dynamicData;
+  private ContinuousMonitoringConfig continuousMonitoringConfig;
   private BitbucketNotification bitbucketNotification;
   private JiraNotification jiraNotification;
-  private boolean shouldRunWithContinuousMonitoring;
+
+  @DataBoundSetter
+  public void setDynamicData(final String dynamicData) { this.dynamicData = dynamicData; }
+
+  public String getDynamicData() { return dynamicData; }
+
+  @DataBoundSetter
+  public void setContinuousMonitoringConfig(final ContinuousMonitoringConfig continuousMonitoringConfig) {
+    this.continuousMonitoringConfig = continuousMonitoringConfig;
+  }
+
+  public ContinuousMonitoringConfig getContinuousMonitoringConfig() {
+    return continuousMonitoringConfig;
+  }
 
   @DataBoundSetter
   public void setBitbucketNotification(final BitbucketNotification bitbucketNotification) {
@@ -65,15 +80,6 @@ public class NotifierStep
     return jiraNotification;
   }
 
-  @DataBoundSetter
-  public void setShouldRunWithContinuousMonitoring(final boolean shouldRunWithContinuousMonitoring) {
-    this.shouldRunWithContinuousMonitoring = shouldRunWithContinuousMonitoring;
-  }
-
-  public boolean getShouldRunWithContinuousMonitoring() {
-    return shouldRunWithContinuousMonitoring;
-  }
-
   @DataBoundConstructor
   public NotifierStep() {}
 
@@ -88,11 +94,12 @@ public class NotifierStep
                @Nonnull final Launcher launcher,
                @Nonnull final TaskListener listener) throws AbortException
   {
-    if (shouldRunWithContinuousMonitoring)
+    if (continuousMonitoringConfig != null && continuousMonitoringConfig.getShouldRunWithContinuousMonitoring())
     {
       if (jiraNotification != null && jiraNotification.getSendJiraNotification())
       {
-        new JiraNotifier(run, listener).continuousMonitor(jiraNotification);
+        //todo: form validation here or in ContinuousMonitoringConfig.java????
+        new JiraNotifier(run, listener).continuousMonitor(dynamicData, continuousMonitoringConfig, jiraNotification);
       }
     }
     else
