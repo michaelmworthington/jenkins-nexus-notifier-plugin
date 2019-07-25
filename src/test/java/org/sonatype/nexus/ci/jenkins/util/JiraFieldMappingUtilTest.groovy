@@ -153,7 +153,7 @@ class JiraFieldMappingUtilTest
       jiraNotificationMinimalTest.projectKey = '${projectKey}'
 
     when:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, ev, mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationMinimalTest, client, ev, mockLogger)
 
     then:
       assert jiraFieldMappingUtil.projectKey == "project"
@@ -171,7 +171,7 @@ class JiraFieldMappingUtilTest
           ]
 
     when:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     then:
       1 * client.lookupCustomFields() >> customFields
@@ -184,7 +184,7 @@ class JiraFieldMappingUtilTest
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
 
     when:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCustomFieldMapTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     then:
       1 * client.lookupCustomFields() >> customFields
@@ -214,7 +214,7 @@ class JiraFieldMappingUtilTest
       def customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
 
     when:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     then:
       1 * client.lookupCustomFields() >> customFields
@@ -231,7 +231,7 @@ class JiraFieldMappingUtilTest
 
   def 'format date to string'() {
     setup:
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     def url
     def d = new Date(1318980569908)
@@ -252,7 +252,7 @@ class JiraFieldMappingUtilTest
   def 'format date to string with format override'() {
     setup:
     jiraNotificationMinimalTest.jiraDateFormatOverride = "yyyy-MM-dd"
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     def url
     def d = new Date(2011 - 1900, 9, 19)
@@ -266,7 +266,7 @@ class JiraFieldMappingUtilTest
 
   def 'parse string to date'() {
     setup:
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationMinimalTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
     //def url = "1969-12-31T19:00:00.000-0500"
     def url = "2011-10-19T10:29:29.908+1100"
@@ -292,7 +292,7 @@ class JiraFieldMappingUtilTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Map Custom Fields'() {
     when:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCustomFieldMapTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCustomFieldMapTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
 
     then:
       1 * integrationTestJiraClient.lookupMetadataConfigurationForCreateIssue("JIRAIQ","Bug")

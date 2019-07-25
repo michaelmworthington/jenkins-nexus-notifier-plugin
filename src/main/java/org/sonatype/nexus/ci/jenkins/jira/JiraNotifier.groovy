@@ -12,6 +12,7 @@
  */
 package org.sonatype.nexus.ci.jenkins.jira
 
+import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import hudson.AbortException
 import hudson.model.Run
@@ -45,36 +46,95 @@ class JiraNotifier
   void continuousMonitor(final String dynamicData, final ContinuousMonitoringConfig continuousMonitoringConfig, final JiraNotification jiraNotification)
   {
     logger.println("######################################")
-    logger.println("Running Jira Continuous Monitoring")
+    logger.println("Starting Jira Continuous Monitoring")
     logger.println("######################################")
 
-    //todo : check for a specified individual application (and ignore dynamic data)
-    //TODO: pick up individual stage
-    //TODO: check for specified stage for each app
-    String appKeyFieldName = continuousMonitoringConfig.dynamicDataApplicationKey
-    def dynamicDataJson = new JsonSlurper().parseText(dynamicData) //todo: make optional
+    String singleAppId = continuousMonitoringConfig.applicationName
+    String singleStage = continuousMonitoringConfig.stage
 
-    int current = 1
-    int total = dynamicDataJson.size
-    dynamicDataJson.each{
-      logger.println("${current}/${total} : ${it[appKeyFieldName]} at ${continuousMonitoringConfig.getStage()}")
+    //if the application id is specified, use that and ignore the dynamic data
+    if (singleAppId)
+    {
+      checkArgument(!isNullOrEmpty(singleStage), "Continuous Monitoring Stage is required when specifying an application name")
 
-      //TODO: look up custom field dynamic data
+      logger.println("#################################################################################################################")
+      logger.println("Running Jira Continuous Monitoring for Single Application : ${singleAppId} at Stage : ${singleStage}")
+      logger.println("#################################################################################################################")
 
-      //TODO: for each application, call send()
-      //    todo: generate the report url:         // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
-      //    todo: using the api: {{iqURL}}/api/v2/reports/applications/{{iqAppInternalId}}
-
-      current++
+      runContinuousMonitorForApp(dynamicData, singleAppId, singleStage, jiraNotification, continuousMonitoringConfig.shouldUpdateLastScanDate)
     }
+    else
+    {
+      checkArgument(!isNullOrEmpty(continuousMonitoringConfig.dynamicDataApplicationKey), "Continuous Monitoring Dynamic Application Key or Application Name required")
+      checkArgument(!isNullOrEmpty(dynamicData), "Dynamic Data required when looking up Applications using Continuous Monitoring Dynamic Application Key")
 
+      String appKeyFieldName = continuousMonitoringConfig.dynamicDataApplicationKey
+      def dynamicDataJson = new JsonSlurper().parseText(dynamicData)
+
+      int current = 1
+      int total = dynamicDataJson.size
+      String stageToUse, appIdToUse
+      dynamicDataJson.each{
+        checkArgument(!isNullOrEmpty(it[appKeyFieldName]), "Application Name Value not found for key : ${appKeyFieldName} for Dynamic Data : ${it}")
+        appIdToUse = it[appKeyFieldName]
+
+        if(singleStage)
+        {
+          stageToUse = singleStage
+        }
+        else
+        {
+          checkArgument(!isNullOrEmpty(continuousMonitoringConfig.dynamicDataStageKey), "Continuous Monitoring Dynamic Stage Key or Stage Name required")
+          stageToUse = it[continuousMonitoringConfig.dynamicDataStageKey]
+          checkArgument(!isNullOrEmpty(stageToUse), "Continuous Monitoring Dynamic Stage Key Value : ${continuousMonitoringConfig.dynamicDataStageKey} not found for application : ${appIdToUse}")
+        }
+
+        logger.println("######################################################################")
+        logger.println("Running Jira Continuous Monitoring for Application ${current}/${total} : ${appIdToUse} at Stage : ${stageToUse}")
+        logger.println("######################################################################")
+        runContinuousMonitorForApp(new JsonBuilder([it]).toString(), appIdToUse, stageToUse, jiraNotification, continuousMonitoringConfig.shouldUpdateLastScanDate)
+
+        current++
+      }
+    }
+  }
+
+  private void runContinuousMonitorForApp(final String dynamicData, final String pAppId, final String pStage, final JiraNotification jiraNotification, final boolean shouldUpdateLastScanDate)
+  {
+    try
+    {
+      IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
+
+      PolicyEvaluationHealthAction policyEvaluationHealthAction = new PolicyEvaluationHealthAction()
+      //TODO: this does have the date, which may be useful for setting the date on jira tickets based on the report rather than current time
+      policyEvaluationHealthAction.reportLink = iqClient.lookupReportLink(pAppId, pStage)
+
+      //todo: skip updating the last scan date, but it still needs to be set for new tickets
+      send(true, dynamicData, jiraNotification, policyEvaluationHealthAction, shouldUpdateLastScanDate)
+    }
+    catch (Throwable ex)
+    {
+      logger.println("Could not initialize the Nexus Notifier Plugin. Please check Jira & IQ Server login credentials")
+      logger.println(ex.message)
+      ex.printStackTrace(logger)
+      throw new AbortException(ex.message)
+    }
   }
 
   void send(final boolean buildPassing, //TODO: don't run if the build is failed??? Maybe the check on the IQ Report will fail the process, but make sure that we don't close all the jira tickets if there is an upstream failure
+            final String dynamicData,
             final JiraNotification jiraNotification,
-            final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction)
+            final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction,
+            final boolean shouldUpdateLastScanDate = true)
   {
     checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey()) //todo: the proper way to validate input strings - for custom fields in lookupAndValidateCustomField()
+
+    def dynamicDataJson
+    if(dynamicData)
+    {
+      dynamicDataJson = new JsonSlurper().parseText(dynamicData)
+      checkArgument(dynamicDataJson.size == 1, "When running for a single app, only dynamic data with one object is supported.")
+    }
 
     try
     {
@@ -85,7 +145,7 @@ class JiraNotifier
                                                               jiraNotification.dryRun,
                                                               jiraNotification.disableJqlFieldFilter,
                                                               jiraNotification.jqlMaxResultsOverride)
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotification, jiraClient, run.getEnvironment(listener), logger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(dynamicDataJson, jiraNotification, jiraClient, run.getEnvironment(listener), logger)
       PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
 
       try
@@ -228,14 +288,21 @@ class JiraNotifier
            5. Update Scan Time on repeat findings
            ***************************************/
 
-          logger.println("Updating ${repeatJiraComponents.size()} repeat component tickets with the new scan date")
-          repeatJiraComponents.each{
-            updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
-          }
+          if(shouldUpdateLastScanDate)
+          {
+            logger.println("Updating ${repeatJiraComponents.size()} repeat component tickets with the new scan date")
+            repeatJiraComponents.each {
+              updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
+            }
 
-          logger.println("Updating ${repeatJiraFindings.size()} repeat finding tickets with the new scan date")
-          repeatJiraFindings.each{
-            updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
+            logger.println("Updating ${repeatJiraFindings.size()} repeat finding tickets with the new scan date")
+            repeatJiraFindings.each {
+              updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
+            }
+          }
+          else
+          {
+            logger.println("Skipping the update to last scan date due to configuration.")
           }
 
           /***************************************

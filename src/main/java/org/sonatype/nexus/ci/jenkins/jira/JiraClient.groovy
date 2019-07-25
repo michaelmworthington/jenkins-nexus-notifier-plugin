@@ -413,7 +413,7 @@ class JiraClient extends AbstractToolClient
 
   private static String buildTicketSummaryTitleText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
   {
-    def returnValue = "Sonatype IQ Server -"
+    def returnValue = "Sonatype Nexus IQ Server - ${jiraFieldMappingUtil.getApplicationCustomField().customFieldValue} -"
 
     if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
     {

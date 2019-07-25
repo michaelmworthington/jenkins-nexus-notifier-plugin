@@ -123,7 +123,7 @@ public class NotifierStep
       }
 
       if (jiraNotification != null && jiraNotification.getSendJiraNotification()) {
-        new JiraNotifier(run, listener).send(buildPassing, jiraNotification, policyEvaluationHealthAction);
+        new JiraNotifier(run, listener).send(buildPassing, dynamicData, jiraNotification, policyEvaluationHealthAction);
       }
     }
   }

@@ -25,7 +25,7 @@ class IQClientTest
 
   SonatypeHTTPBuilder http
   IQClient clientHttpMock, clientLive
-  def iqApplication, iqOrganizations, iqApplications
+  def iqApplication, iqOrganizations, iqApplications, iqReportLinks
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
@@ -35,6 +35,7 @@ class IQClientTest
     iqApplication = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-applicationInfo.json'))
     iqOrganizations = new JsonSlurper().parse(new File('src/test/resources/iq-organizations.json'))
     iqApplications = new JsonSlurper().parse(new File('src/test/resources/iq-applications.json'))
+    iqReportLinks = new JsonSlurper().parse(new File('src/test/resources/iq-report-links.json'))
 
     clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true])
   }
@@ -119,6 +120,41 @@ class IQClientTest
     resp.applications.size == 102
   }
 
+  def 'Lookup Report Links'() {
+    when:
+    def resp = clientHttpMock.lookupApplicationReportLinks("031f7716246c4bceb38672ed071fe918")
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/031f7716246c4bceb38672ed071fe918", _) >> iqReportLinks
+
+    and:
+    resp.size == 4
+  }
+
+  def 'Lookup Report Link for Stage'() {
+    when:
+    def resp = clientHttpMock.lookupReportLink("aaaaaaa-testidegrandfathering", "build")
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/e06a119c75d04d97b8d8c11b62719752", _) >> iqReportLinks
+
+    and:
+    resp == "http://localhost:${port}/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/73cbe478f71a4b8382d773a4248f2f88"
+  }
+
+  def 'Lookup Report Link for Stage - Unknown Stage Returns Null'() {
+    when:
+    def resp = clientHttpMock.lookupReportLink("aaaaaaa-testidegrandfathering", "foobar")
+
+    then:
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/e06a119c75d04d97b8d8c11b62719752", _) >> iqReportLinks
+
+    and:
+    resp == null
+  }
+
   /*
   ****************************************************************************************************************************************************
   *                                                     Integration Tests                                                                            *
@@ -186,5 +222,14 @@ class IQClientTest
 
     then:
       resp.applications.size != 0
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Lookup Report Links'() {
+    when:
+    def resp = clientLive.lookupApplicationReportLinks("031f7716246c4bceb38672ed071fe918")
+
+    then:
+    resp.size != 0
   }
 }

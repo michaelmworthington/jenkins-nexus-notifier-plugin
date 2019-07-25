@@ -115,7 +115,7 @@ class JiraClientTest
     def url, requestBody
 
     when:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "test"
 
       client.lookupJiraTickets(jiraFieldMappingUtil, 0)
@@ -140,7 +140,7 @@ class JiraClientTest
 
     when:
       jiraNotificationCreateParentTicketTest.applicationCustomFieldName = null
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
       client.lookupJiraTickets(jiraFieldMappingUtil, 0)
 
@@ -166,7 +166,7 @@ class JiraClientTest
       jiraNotificationCreateParentTicketTest.applicationCustomFieldName = null
       jiraNotificationCreateParentTicketTest.jiraTransitionStatus = null
       jiraNotificationCreateParentTicketTest.violationIdCustomFieldName = null
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, client, mockRun.getEnvironment(mockListener), mockLogger)
 
       client.lookupJiraTickets(jiraFieldMappingUtil, 0)
 
@@ -204,7 +204,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Get Not-Done Tickets for Project and App'() {
     setup:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
 
       def resp = integrationTestJiraClient.lookupJiraTickets(jiraFieldMappingUtil, 0)
@@ -243,7 +243,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Create Ticket'() {
     setup:
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
     jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
@@ -295,7 +295,7 @@ class JiraClientTest
     jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
     jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
 
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
 
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
@@ -360,7 +360,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Edit Task - Update Last Scan Time'() {
     setup:
-    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+    JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
 
     String ticketNumber = "JIRAIQ-156"
 
@@ -392,7 +392,7 @@ class JiraClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with Jira Server - Close All Tickets'() {
     setup:
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
+      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
 
     when: 'Get all the tickets'

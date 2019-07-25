@@ -1,0 +1,1886 @@
+{
+  "aaData": [
+    {
+      "activeViolations": [
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"80d84370edee40479191c9082fc5b6fa\",\"constraintName\":\"Bad Licenses - Beerware, JSON, and WTFPL are not approved for use by Mike Worthington. Send him a Slack message to see what's up.\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"License\",\"conditionIndex\":1,\"summary\":\"License is 'JSON'\",\"reason\":\"Found 'Nonsensical-Clause' and 'JSON' Licenses\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"id\\\":\\\"JSON\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found 'Nonsensical-Clause' and 'JSON' Licenses",
+                  "conditionSummary": "License is 'JSON'",
+                  "conditionType": "License"
+                }
+              ],
+              "constraintId": "80d84370edee40479191c9082fc5b6fa",
+              "constraintName": "Bad Licenses - Beerware, JSON, and WTFPL are not approved for use by Mike Worthington. Send him a Slack message to see what's up.",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "352bef903f2f401da0bcc6c45367b278",
+          "policyName": "License Policy",
+          "policyThreatCategory": "LICENSE",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"07f949ee2e064c4f8b456e3f54a972cb\",\"constraintName\":\"License needs legal review\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"License Threat Group\",\"conditionIndex\":0,\"summary\":\"License Threat Group is 'Non Standard'\",\"reason\":\"Found a license in the 'Non Standard' license threat group.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"id\\\":\\\"969239f261af47c6b299c13042445898\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found a license in the 'Non Standard' license threat group.",
+                  "conditionSummary": "License Threat Group is 'Non Standard'",
+                  "conditionType": "License Threat Group"
+                }
+              ],
+              "constraintId": "07f949ee2e064c4f8b456e3f54a972cb",
+              "constraintName": "License needs legal review",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "eec9d05f2395437db702c414d017a276",
+          "policyName": "License-Non Standard",
+          "policyThreatCategory": "LICENSE",
+          "policyThreatLevel": 5,
+          "waived": false
+        }
+      ],
+      "allViolations": [
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"80d84370edee40479191c9082fc5b6fa\",\"constraintName\":\"Bad Licenses - Beerware, JSON, and WTFPL are not approved for use by Mike Worthington. Send him a Slack message to see what's up.\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"License\",\"conditionIndex\":1,\"summary\":\"License is 'JSON'\",\"reason\":\"Found 'Nonsensical-Clause' and 'JSON' Licenses\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"id\\\":\\\"JSON\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found 'Nonsensical-Clause' and 'JSON' Licenses",
+                  "conditionSummary": "License is 'JSON'",
+                  "conditionType": "License"
+                }
+              ],
+              "constraintId": "80d84370edee40479191c9082fc5b6fa",
+              "constraintName": "Bad Licenses - Beerware, JSON, and WTFPL are not approved for use by Mike Worthington. Send him a Slack message to see what's up.",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "352bef903f2f401da0bcc6c45367b278",
+          "policyName": "License Policy",
+          "policyThreatCategory": "LICENSE",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"434fd74416f642be90611ed9c53e7763\",\"constraintName\":\"This was not idntified by a-name\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"Coordinates\",\"conditionIndex\":0,\"summary\":\"Coordinates do not match a-name:*:*:*\",\"reason\":\"Coordinates were org.json : json : 20080701\",\"triggerJson\":null}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Coordinates were org.json : json : 20080701",
+                  "conditionSummary": "Coordinates do not match a-name:*:*:*",
+                  "conditionType": "Coordinates"
+                }
+              ],
+              "constraintId": "434fd74416f642be90611ed9c53e7763",
+              "constraintName": "This was not idntified by a-name",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7f2fc816923d4eeca4f56e3a48b56fd3",
+          "policyName": "Only A-Name Allowed",
+          "policyThreatCategory": "OTHER",
+          "policyThreatLevel": 1,
+          "waived": true
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"07f949ee2e064c4f8b456e3f54a972cb\",\"constraintName\":\"License needs legal review\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"License Threat Group\",\"conditionIndex\":0,\"summary\":\"License Threat Group is 'Non Standard'\",\"reason\":\"Found a license in the 'Non Standard' license threat group.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"id\\\":\\\"969239f261af47c6b299c13042445898\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found a license in the 'Non Standard' license threat group.",
+                  "conditionSummary": "License Threat Group is 'Non Standard'",
+                  "conditionType": "License Threat Group"
+                }
+              ],
+              "constraintId": "07f949ee2e064c4f8b456e3f54a972cb",
+              "constraintName": "License needs legal review",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "eec9d05f2395437db702c414d017a276",
+          "policyName": "License-Non Standard",
+          "policyThreatCategory": "LICENSE",
+          "policyThreatLevel": 5,
+          "waived": false
+        }
+      ],
+      "componentIdentifier": {
+        "coordinates": {
+          "artifactId": "json",
+          "classifier": "",
+          "extension": "jar",
+          "groupId": "org.json",
+          "version": "20080701"
+        },
+        "format": "maven"
+      },
+      "hash": "d652f102185530c93b66",
+      "policyId": "352bef903f2f401da0bcc6c45367b278",
+      "policyName": "License Policy",
+      "policyThreatLevel": 9,
+      "waivedViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"434fd74416f642be90611ed9c53e7763\",\"constraintName\":\"This was not idntified by a-name\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"Coordinates\",\"conditionIndex\":0,\"summary\":\"Coordinates do not match a-name:*:*:*\",\"reason\":\"Coordinates were org.json : json : 20080701\",\"triggerJson\":null}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Coordinates were org.json : json : 20080701",
+                  "conditionSummary": "Coordinates do not match a-name:*:*:*",
+                  "conditionType": "Coordinates"
+                }
+              ],
+              "constraintId": "434fd74416f642be90611ed9c53e7763",
+              "constraintName": "This was not idntified by a-name",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7f2fc816923d4eeca4f56e3a48b56fd3",
+          "policyName": "Only A-Name Allowed",
+          "policyThreatCategory": "OTHER",
+          "policyThreatLevel": 1,
+          "waived": true
+        }
+      ]
+    },
+    {
+      "activeViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2018-0377 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0377\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2018-0377 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0377\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0377 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0377\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0377 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0377 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0377 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"434fd74416f642be90611ed9c53e7763\",\"constraintName\":\"This was not idntified by a-name\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"Coordinates\",\"conditionIndex\":0,\"summary\":\"Coordinates do not match a-name:*:*:*\",\"reason\":\"Coordinates were marked : 0.3.6\",\"triggerJson\":null}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Coordinates were marked : 0.3.6",
+                  "conditionSummary": "Coordinates do not match a-name:*:*:*",
+                  "conditionType": "Coordinates"
+                }
+              ],
+              "constraintId": "434fd74416f642be90611ed9c53e7763",
+              "constraintName": "This was not idntified by a-name",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7f2fc816923d4eeca4f56e3a48b56fd3",
+          "policyName": "Only A-Name Allowed",
+          "policyThreatCategory": "OTHER",
+          "policyThreatLevel": 1,
+          "waived": false
+        }
+      ],
+      "allViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2018-0377 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0377\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2018-0377 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0377\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0377 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0377\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0377 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0377 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0377 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"434fd74416f642be90611ed9c53e7763\",\"constraintName\":\"This was not idntified by a-name\",\"operatorName\":\"OR\",\"conditionFacts\":[{\"conditionTypeId\":\"Coordinates\",\"conditionIndex\":0,\"summary\":\"Coordinates do not match a-name:*:*:*\",\"reason\":\"Coordinates were marked : 0.3.6\",\"triggerJson\":null}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Coordinates were marked : 0.3.6",
+                  "conditionSummary": "Coordinates do not match a-name:*:*:*",
+                  "conditionType": "Coordinates"
+                }
+              ],
+              "constraintId": "434fd74416f642be90611ed9c53e7763",
+              "constraintName": "This was not idntified by a-name",
+              "constraintOperator": "OR"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7f2fc816923d4eeca4f56e3a48b56fd3",
+          "policyName": "Only A-Name Allowed",
+          "policyThreatCategory": "OTHER",
+          "policyThreatLevel": 1,
+          "waived": false
+        }
+      ],
+      "componentIdentifier": {
+        "coordinates": {
+          "packageId": "marked",
+          "version": "0.3.6"
+        },
+        "format": "npm"
+      },
+      "hash": "b2c6c618fccece4ef86c",
+      "policyId": "7b292e1d588e4838a02858bc7b314531",
+      "policyName": "Security-High",
+      "policyThreatLevel": 9,
+      "waivedViolations": [
+
+      ]
+    },
+    {
+      "activeViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        }
+      ],
+      "allViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2016-0030\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2016-0030 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0637\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0637 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with severity 6.1.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"severity\\\":6.1}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0638\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with severity 6.1.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0638 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"1004642ca68b44ff90dd50acfca4edc9\",\"constraintName\":\"Medium risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 4\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 7\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with severity 6.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"severity\\\":6.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0378\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 4",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with severity 6.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0378 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "1004642ca68b44ff90dd50acfca4edc9",
+              "constraintName": "Medium risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "6bbada345d6c433fa337156cdc98e94c",
+          "policyName": "Security-Medium",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 7,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability CVE-2015-8854 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"CVE-2015-8854\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability CVE-2015-8854 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with severity 7.2.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"severity\\\":7.2}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0008\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with severity 7.2.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0008 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0367\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0367 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2017-0636\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2017-0636 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        },
+        {
+          "actions": [
+            {
+              "actionSummary": "Build Warning",
+              "actionType": "warn"
+            }
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e756e10d77f7484e9699352aac9eb501\",\"constraintName\":\"High risk CVSS score\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":0,\"summary\":\"Security Vulnerability Severity >= 7\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":0,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilitySeverity\",\"conditionIndex\":1,\"summary\":\"Security Vulnerability Severity < 10\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with severity 7.5.\",\"triggerJson\":\"{\\\"conditionIndex\\\":1,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"severity\\\":7.5}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":2,\"summary\":\"Security Vulnerability Status is not NOT_APPLICABLE\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":2,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"},{\"conditionTypeId\":\"SecurityVulnerabilityStatus\",\"conditionIndex\":3,\"summary\":\"Security Vulnerability Status is not CONFIRMED\",\"reason\":\"Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.\",\"triggerJson\":\"{\\\"conditionIndex\\\":3,\\\"trigger\\\":{\\\"refId\\\":\\\"sonatype-2018-0076\\\",\\\"statusId\\\":\\\"OPEN\\\"}}\"}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity >= 7",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with severity 7.5.",
+                  "conditionSummary": "Security Vulnerability Severity < 10",
+                  "conditionType": "SecurityVulnerabilitySeverity"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Not Applicable'.",
+                  "conditionSummary": "Security Vulnerability Status is not NOT_APPLICABLE",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                },
+                {
+                  "conditionReason": "Found security vulnerability sonatype-2018-0076 with status 'Open', not 'Confirmed'.",
+                  "conditionSummary": "Security Vulnerability Status is not CONFIRMED",
+                  "conditionType": "SecurityVulnerabilityStatus"
+                }
+              ],
+              "constraintId": "e756e10d77f7484e9699352aac9eb501",
+              "constraintName": "High risk CVSS score",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "7b292e1d588e4838a02858bc7b314531",
+          "policyName": "Security-High",
+          "policyThreatCategory": "SECURITY",
+          "policyThreatLevel": 9,
+          "waived": false
+        }
+      ],
+      "componentIdentifier": {
+        "coordinates": {
+          "name": "marked",
+          "qualifier": "",
+          "version": "0.3.6"
+        },
+        "format": "a-name"
+      },
+      "hash": "c8f6dcb0732868e7e5c2",
+      "policyId": "7b292e1d588e4838a02858bc7b314531",
+      "policyName": "Security-High",
+      "policyThreatLevel": 9,
+      "waivedViolations": [
+
+      ]
+    },
+    {
+      "activeViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e65c33bf17e34209841e001ee298147b\",\"constraintName\":\"Contains code in your namespace\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"MatchState\",\"conditionIndex\":0,\"summary\":\"Match State is unknown\",\"reason\":\"Match State was unknown\",\"triggerJson\":null},{\"conditionTypeId\":\"Proprietary\",\"conditionIndex\":1,\"summary\":\"Proprietary is true\",\"reason\":\"Component contains proprietary packages\",\"triggerJson\":null}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Match State was unknown",
+                  "conditionSummary": "Match State is unknown",
+                  "conditionType": "MatchState"
+                },
+                {
+                  "conditionReason": "Component contains proprietary packages",
+                  "conditionSummary": "Proprietary is true",
+                  "conditionType": "Proprietary"
+                }
+              ],
+              "constraintId": "e65c33bf17e34209841e001ee298147b",
+              "constraintName": "Contains code in your namespace",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "d691a752818b4f5e9ba50afa9526b3c7",
+          "policyName": "Component-Unknown-Proprietary-Removed-From-Sample",
+          "policyThreatCategory": "OTHER",
+          "policyThreatLevel": 1,
+          "waived": false
+        }
+      ],
+      "allViolations": [
+        {
+          "actions": [
+
+          ],
+          "constraintFactsJson": "[{\"constraintId\":\"e65c33bf17e34209841e001ee298147b\",\"constraintName\":\"Contains code in your namespace\",\"operatorName\":\"AND\",\"conditionFacts\":[{\"conditionTypeId\":\"MatchState\",\"conditionIndex\":0,\"summary\":\"Match State is unknown\",\"reason\":\"Match State was unknown\",\"triggerJson\":null},{\"conditionTypeId\":\"Proprietary\",\"conditionIndex\":1,\"summary\":\"Proprietary is true\",\"reason\":\"Component contains proprietary packages\",\"triggerJson\":null}]}]",
+          "constraints": [
+            {
+              "conditions": [
+                {
+                  "conditionReason": "Match State was unknown",
+                  "conditionSummary": "Match State is unknown",
+                  "conditionType": "MatchState"
+                },
+                {
+                  "conditionReason": "Component contains proprietary packages",
+                  "conditionSummary": "Proprietary is true",
+                  "conditionType": "Proprietary"
+                }
+              ],
+              "constraintId": "e65c33bf17e34209841e001ee298147b",
+              "constraintName": "Contains code in your namespace",
+              "constraintOperator": "AND"
+            }
+          ],
+          "grandfathered": false,
+          "policyId": "d691a752818b4f5e9ba50afa9526b3c7",
+          "policyName": "Component-Unknown-Proprietary-Removed-From-Sample",
+          "policyThreatCategory": "OTHER",
+          "policyThreatLevel": 1,
+          "waived": false
+        }
+      ],
+      "componentIdentifier": null,
+      "hash": "a58450110e20cfc4b6cd",
+      "policyId": "d691a752818b4f5e9ba50afa9526b3c7",
+      "policyName": "Component-Unknown-Proprietary-Removed-From-Sample",
+      "policyThreatLevel": 1,
+      "waivedViolations": [
+
+      ]
+    }
+  ],
+  "version": 4
+}

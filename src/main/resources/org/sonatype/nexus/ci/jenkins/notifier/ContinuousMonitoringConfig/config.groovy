@@ -28,4 +28,8 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
+  f.entry(title: _('Should Update Last Scan Date'), field: 'shouldUpdateLastScanDate') {
+    f.checkbox()
+  }
+
 }

@@ -9,6 +9,7 @@ import org.sonatype.nexus.ci.jenkins.notifier.JiraNotification
 
 class JiraFieldMappingUtil
 {
+  private def iDynamicDataJsonOne
   private JiraNotification iJiraNotification
   private JiraClient jiraClient
   private EnvVars iEnvVars
@@ -36,7 +37,7 @@ class JiraFieldMappingUtil
   private String maxCveCodeCustomFieldName
   private String cvssCustomFieldName
   private String maxCvssCustomFieldName
-  private String iqServerReportLinkCustomFieldName;
+  private String iqServerReportLinkCustomFieldName
   private String iqServerPolicyViolationNameCustomFieldName
   private String maxIqServerPolicyViolationNameCustomFieldName
   private String iqServerPolicyViolationThreatLevelCustomFieldName
@@ -60,32 +61,33 @@ class JiraFieldMappingUtil
   private Map<String, JiraCustomFieldMappings> validatedGlobalCustomFieldMappings
   private Map<String, JiraCustomFieldMappings> validatedViolationCustomFieldMappings
 
-  JiraCustomFieldMappings getApplicationCustomField() { return validatedGlobalCustomFieldMappings.get(applicationCustomFieldName)  ?: new JiraCustomFieldMappings("Stub App", null) }
-  JiraCustomFieldMappings getOrganizationCustomField() { return validatedGlobalCustomFieldMappings.get(organizationCustomFieldName) ?: new JiraCustomFieldMappings("Stub Org", null) }
-  JiraCustomFieldMappings getScanStageCustomField() { return validatedGlobalCustomFieldMappings.get(scanStageCustomFieldName) ?: new JiraCustomFieldMappings("Stub Scan Stage", null) }
-  JiraCustomFieldMappings getViolationIdCustomField() { return validatedViolationCustomFieldMappings.get(violationIdCustomFieldName) ?: new JiraCustomFieldMappings("Stub Violation ID", null) }
-  JiraCustomFieldMappings getViolationDetectDateCustomField() { return validatedViolationCustomFieldMappings.get(violationDetectDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Detect Date", null) }
-  JiraCustomFieldMappings getLastScanDateCustomField() { return validatedGlobalCustomFieldMappings.get(lastScanDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Last Scan Date", null) }
-  JiraCustomFieldMappings getSeverityCustomField() { return validatedViolationCustomFieldMappings.get(severityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Severity", null) }
-  JiraCustomFieldMappings getMaxSeverityCustomField() { return validatedViolationCustomFieldMappings.get(maxSeverityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Severity", null) }
-  JiraCustomFieldMappings getCveCodeCustomField() { return validatedViolationCustomFieldMappings.get(cveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVE", null) }
-  JiraCustomFieldMappings getMaxCveCodeCustomField() { return validatedViolationCustomFieldMappings.get(maxCveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max CVE", null) }
-  JiraCustomFieldMappings getCvssCustomField() { return validatedViolationCustomFieldMappings.get(cvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVSS", null) }
-  JiraCustomFieldMappings getMaxCvssCustomField() { return validatedViolationCustomFieldMappings.get(maxCvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max CVSS", null) }
-  JiraCustomFieldMappings getIqServerReportLinkCustomField() { return validatedGlobalCustomFieldMappings.get(iqServerReportLinkCustomFieldName) ?: new JiraCustomFieldMappings("Stub Report Link", null) }
-  JiraCustomFieldMappings getIqServerPolicyViolationNameCustomField() { return validatedViolationCustomFieldMappings.get(iqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Name", null) }
-  JiraCustomFieldMappings getMaxIqServerPolicyViolationNameCustomField() { return validatedViolationCustomFieldMappings.get(maxIqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Policy Violation Name", null) }
-  JiraCustomFieldMappings getIqServerPolicyViolationThreatLevelCustomField() { return validatedViolationCustomFieldMappings.get(iqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Threat Level", null) }
-  JiraCustomFieldMappings getMaxIqServerPolicyViolationThreatLevelCustomField() { return validatedViolationCustomFieldMappings.get(maxIqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Policy Violation Threat Level", null) }
-  JiraCustomFieldMappings getComponentGroup() { return validatedViolationCustomFieldMappings.get(componentGroupCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Group", null) }
-  JiraCustomFieldMappings getComponentName() { return validatedViolationCustomFieldMappings.get(componentNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Name", null) }
-  JiraCustomFieldMappings getComponentVersion() { return validatedViolationCustomFieldMappings.get(componentVersionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Version", null) }
-  JiraCustomFieldMappings getComponentClassifier() { return validatedViolationCustomFieldMappings.get(componentClassifierCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Classifier", null) }
-  JiraCustomFieldMappings getComponentExtension() { return validatedViolationCustomFieldMappings.get(componentExtensionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Extension", null) }
-  JiraCustomFieldMappings getPassthroughCustomField(String pFieldName) { return validatedGlobalCustomFieldMappings.get(pFieldName) ?: new JiraCustomFieldMappings("Stub Passthrough ${pFieldName}", null) }
+  JiraCustomFieldMappings getApplicationCustomField() { return validatedGlobalCustomFieldMappings.get(applicationCustomFieldName)  ?: new JiraCustomFieldMappings("Stub App", null, null) }
+  JiraCustomFieldMappings getOrganizationCustomField() { return validatedGlobalCustomFieldMappings.get(organizationCustomFieldName) ?: new JiraCustomFieldMappings("Stub Org", null, null) }
+  JiraCustomFieldMappings getScanStageCustomField() { return validatedGlobalCustomFieldMappings.get(scanStageCustomFieldName) ?: new JiraCustomFieldMappings("Stub Scan Stage", null, null) }
+  JiraCustomFieldMappings getViolationIdCustomField() { return validatedViolationCustomFieldMappings.get(violationIdCustomFieldName) ?: new JiraCustomFieldMappings("Stub Violation ID", null, null) }
+  JiraCustomFieldMappings getViolationDetectDateCustomField() { return validatedViolationCustomFieldMappings.get(violationDetectDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Detect Date", null, null) }
+  JiraCustomFieldMappings getLastScanDateCustomField() { return validatedGlobalCustomFieldMappings.get(lastScanDateCustomFieldName) ?: new JiraCustomFieldMappings("Stub Last Scan Date", null, null) }
+  JiraCustomFieldMappings getSeverityCustomField() { return validatedViolationCustomFieldMappings.get(severityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Severity", null, null) }
+  JiraCustomFieldMappings getMaxSeverityCustomField() { return validatedViolationCustomFieldMappings.get(maxSeverityCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Severity", null, null) }
+  JiraCustomFieldMappings getCveCodeCustomField() { return validatedViolationCustomFieldMappings.get(cveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVE", null, null) }
+  JiraCustomFieldMappings getMaxCveCodeCustomField() { return validatedViolationCustomFieldMappings.get(maxCveCodeCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max CVE", null, null) }
+  JiraCustomFieldMappings getCvssCustomField() { return validatedViolationCustomFieldMappings.get(cvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub CVSS", null, null) }
+  JiraCustomFieldMappings getMaxCvssCustomField() { return validatedViolationCustomFieldMappings.get(maxCvssCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max CVSS", null, null) }
+  JiraCustomFieldMappings getIqServerReportLinkCustomField() { return validatedGlobalCustomFieldMappings.get(iqServerReportLinkCustomFieldName) ?: new JiraCustomFieldMappings("Stub Report Link", null, null) }
+  JiraCustomFieldMappings getIqServerPolicyViolationNameCustomField() { return validatedViolationCustomFieldMappings.get(iqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Name", null, null) }
+  JiraCustomFieldMappings getMaxIqServerPolicyViolationNameCustomField() { return validatedViolationCustomFieldMappings.get(maxIqServerPolicyViolationNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Policy Violation Name", null, null) }
+  JiraCustomFieldMappings getIqServerPolicyViolationThreatLevelCustomField() { return validatedViolationCustomFieldMappings.get(iqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Policy Violation Threat Level", null, null) }
+  JiraCustomFieldMappings getMaxIqServerPolicyViolationThreatLevelCustomField() { return validatedViolationCustomFieldMappings.get(maxIqServerPolicyViolationThreatLevelCustomFieldName) ?: new JiraCustomFieldMappings("Stub Max Policy Violation Threat Level", null, null) }
+  JiraCustomFieldMappings getComponentGroup() { return validatedViolationCustomFieldMappings.get(componentGroupCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Group", null, null) }
+  JiraCustomFieldMappings getComponentName() { return validatedViolationCustomFieldMappings.get(componentNameCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Name", null, null) }
+  JiraCustomFieldMappings getComponentVersion() { return validatedViolationCustomFieldMappings.get(componentVersionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Version", null, null) }
+  JiraCustomFieldMappings getComponentClassifier() { return validatedViolationCustomFieldMappings.get(componentClassifierCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Classifier", null, null) }
+  JiraCustomFieldMappings getComponentExtension() { return validatedViolationCustomFieldMappings.get(componentExtensionCustomFieldName) ?: new JiraCustomFieldMappings("Stub Component Extension", null, null) }
+  JiraCustomFieldMappings getPassthroughCustomField(String pFieldName) { return validatedGlobalCustomFieldMappings.get(pFieldName) ?: new JiraCustomFieldMappings("Stub Passthrough ${pFieldName}", null, null) }
 
-  JiraFieldMappingUtil(JiraNotification pJiraNotification, JiraClient pJiraClient, EnvVars pEnvVars, PrintStream pLogger)
+  JiraFieldMappingUtil(def pDynamicDataJsonOne, JiraNotification pJiraNotification, JiraClient pJiraClient, EnvVars pEnvVars, PrintStream pLogger)
   {
+    iDynamicDataJsonOne = pDynamicDataJsonOne
     iJiraNotification = pJiraNotification
     jiraClient = pJiraClient
     iEnvVars = pEnvVars
@@ -261,7 +263,15 @@ class JiraFieldMappingUtil
 
     jiraCustomFieldMappings.each {
       lookupAndValidateCustomField(customFields, true, it.customFieldName, "Passthrough Custom Field: ${it.customFieldName}")
-      getPassthroughCustomField(it.customFieldName).customFieldValue = it.customFieldValue
+
+      if(it.customFieldValue)
+      {
+        getPassthroughCustomField(it.customFieldName).customFieldValue = it.customFieldValue
+      }
+      else if (it.dynamicDataCustomFieldValue && iDynamicDataJsonOne)
+      {
+        getPassthroughCustomField(it.customFieldName).customFieldValue = iDynamicDataJsonOne[it.dynamicDataCustomFieldValue][0]
+      }
     }
   }
 
@@ -301,7 +311,7 @@ class JiraFieldMappingUtil
     customFields.each {
       if(it.name == fieldName)
       {
-        returnValue = new JiraCustomFieldMappings(fieldName, null)
+        returnValue = new JiraCustomFieldMappings(fieldName, null, null)
         returnValue.customFieldId = it.id
         returnValue.customFieldType = it.schema?.type //TODO: create an override mapping
       }

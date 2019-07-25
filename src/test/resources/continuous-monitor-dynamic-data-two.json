@@ -1,0 +1,14 @@
+[
+  {
+    "mnemonic": "aaaaaaa",
+    "appName": "testidegrandfathering",
+    "stage": "build",
+    "iqLookup": "aaaaaaa-testidegrandfathering"
+  },
+  {
+    "mnemonic": "04",
+    "appName": "explicit-staging-maven-plugin",
+    "stage": "release",
+    "iqLookup": "sandbox-application"
+  }
+]

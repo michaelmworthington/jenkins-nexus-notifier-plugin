@@ -35,6 +35,7 @@ public class ContinuousMonitoringConfig
   private String dynamicDataStageKey;
   private String applicationName;
   private String stage;
+  private boolean shouldUpdateLastScanDate;
 
   public boolean getShouldRunWithContinuousMonitoring()
   {
@@ -89,6 +90,17 @@ public class ContinuousMonitoringConfig
   public void setStage(String stage)
   {
     this.stage = stage;
+  }
+
+  public boolean getShouldUpdateLastScanDate()
+  {
+    return shouldUpdateLastScanDate;
+  }
+
+  @DataBoundSetter
+  public void setShouldUpdateLastScanDate(boolean shouldUpdateLastScanDate)
+  {
+    this.shouldUpdateLastScanDate = shouldUpdateLastScanDate;
   }
 
   @DataBoundConstructor

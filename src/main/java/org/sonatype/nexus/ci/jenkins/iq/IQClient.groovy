@@ -28,6 +28,26 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
+  def lookupReportLink(String iqAppExternalId, String iqStage)
+  {
+    def applicationResp = lookupApplication(iqAppExternalId)
+    def reportsResp = lookupApplicationReportLinks(applicationResp?.applications[0]?.id)
+    def reportHtmlUrl = reportsResp.find { it.stage == iqStage }?.reportHtmlUrl
+
+    if (reportHtmlUrl)
+    {
+      return "${serverUrl}/${reportHtmlUrl}"
+    }
+  }
+
+  def lookupApplicationReportLinks(String iqAppInternalId)
+  {
+    def url = getApplicationReportLinksUrl(serverUrl, iqAppInternalId)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
   def lookupApplication(String iqAppExternalId)
   {
     def url = getApplicationUrl(serverUrl, iqAppExternalId)
@@ -72,6 +92,13 @@ class IQClient extends AbstractToolClient
 
     // /rest/report/{{iqAppExternalId}}/{{iqReportInternalId}}/browseReport/policythreats.json
     return "${serverUrl}/rest/report/${iqAppExternalId}/${iqReportInternalId}/browseReport/policythreats.json" //TODO: change to the official "Policy" & "Raw" APIs
+  }
+
+  private String getApplicationReportLinksUrl(String serverUrl, String iqAppInternalId) {
+    verbosePrintLn("Get the Application Report Links from IQ Server")
+
+    //{{iqURL}}/api/v2/reports/applications/{{iqAppInternalId}}
+    return "${serverUrl}/api/v2/reports/applications/${iqAppInternalId}"
   }
 
   private String getApplicationUrl(String serverUrl, String iqAppExternalId) {
