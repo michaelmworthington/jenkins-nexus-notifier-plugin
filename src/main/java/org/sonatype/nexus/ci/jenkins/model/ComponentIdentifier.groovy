@@ -15,8 +15,6 @@ package org.sonatype.nexus.ci.jenkins.model
  */
 class ComponentIdentifier
 {
-  //TODO: PURL
-
   String format //todo: make an enum?
   String group
   String artifact

@@ -201,22 +201,14 @@ class JiraNotifier
           //TODO: Lookup Version of IQ Server - raw vs. old URLs
           def findingComponents = iqClient.lookupComponentDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
 
-          //
-          //TODO: combine policy and components by hash
-          //TODO:     - licenseData - license information is overriddenLicenses ?: observed + declared
-          //TODO:     - matchState
-          //TODO:     - pathnames
-          //TODO:     - proprietary
-
-          //TODO: Futures
-          //TODO:   {{iqURL}}/rest/policyWaiver/application/{{iqAppExternalId}}
-          //TODO:   snow
-
           logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
-          potentialFindings.aaData.each {
+          potentialFindings.aaData.each { policyFinding ->
+            def rawData = findingComponents.components.find({it.hash == policyFinding.hash})
+
             PolicyViolation.buildFromIQ(potentialComponentsMap,
                                         potentialFindingsMap,
-                                        it,
+                                        policyFinding,
+                                        rawData,
                                         policyEvaluationHealthAction.reportLink,
                                         jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
                                         jiraFieldMappingUtil.policyFilterPrefix) //TODO: add Policy Threat Level Numeric Filter
@@ -332,6 +324,10 @@ class JiraNotifier
           //      need to deal with the edge cases on this one
           //
           // loop through **repeatJiraFindings**
+          //TODO: Futures
+          //TODO:   {{iqURL}}/rest/policyWaiver/application/{{iqAppExternalId}}
+          //TODO:   snow
+
         }
         else
         {

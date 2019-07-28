@@ -48,13 +48,13 @@ class JiraFieldMappingUtil
   private String maxIqServerPolicyViolationNameCustomFieldName
   private String iqServerPolicyViolationThreatLevelCustomFieldName
   private String maxIqServerPolicyViolationThreatLevelCustomFieldName
-  private String declaredLicensesCustomFieldName; //todo
-  private String observedLicensesCustomFieldName; //todo
-  private String effectiveLicensesCustomFieldName; //todo
-  private String fileOccurrencesCustomFieldName;   //todo
+  private String declaredLicensesCustomFieldName
+  private String observedLicensesCustomFieldName
+  private String effectiveLicensesCustomFieldName
+  private String fileOccurrencesCustomFieldName
   private String recommendedRemediationCustomFieldName;      //todo
-  private String purlCustomFieldName;                        //todo
-  private String componentCombinedIdentifierCustomFieldName; //todo
+  private String purlCustomFieldName
+  private String componentCombinedIdentifierCustomFieldName
   private String componentGroupCustomFieldName
   private String componentNameCustomFieldName
   private String componentVersionCustomFieldName
@@ -153,16 +153,19 @@ class JiraFieldMappingUtil
    */
   void addCustomFieldsToTicket(Map returnValue, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
   {
+    //TODO: Split this into two private functions: 1) ETL policy and component data to custom fields and 2) assign custom field to the ticket
+
     getViolationIdCustomField().customFieldValue =  pPolicyViolation.fingerprint
     getViolationDetectDateCustomField().customFieldValue = pPolicyViolation.detectDateString
 
-    //todo: declared license
-    //todo: observed license
-    //todo: effective license
-    //todo: file occurrences
+    getDeclaredLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.declaredLicenseNames
+    getObservedLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.observedLicenseNames
+    getEffectiveLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.effectiveLicenseNames
+    getFileOccurrencesCustomField().customFieldValue = pPolicyViolation.occurrences.join("\n")
+
     //todo: recommended version
-    //getPurlCustomField().customFieldValue = pPolicyViolation.packageUrl //todo : populate
-    getComponentCombinedIdentifierCustomField().customFieldValue = pPolicyViolation.componentIdentifier?.prettyName //todo: populate
+    getPurlCustomField().customFieldValue = pPolicyViolation.packageUrl
+    getComponentCombinedIdentifierCustomField().customFieldValue = pPolicyViolation.componentIdentifier?.prettyName
     getComponentGroup().customFieldValue = pPolicyViolation.componentIdentifier?.group
     getComponentName().customFieldValue = pPolicyViolation.componentIdentifier?.artifact
     getComponentVersion().customFieldValue = pPolicyViolation.componentIdentifier?.version

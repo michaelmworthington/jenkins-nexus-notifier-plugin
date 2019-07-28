@@ -20,6 +20,9 @@ class PolicyViolation
 
   //IQ Fields
   String reportLink
+  String packageUrl
+  IQRawLicenseData licenseData
+  String[] occurrences
   ComponentIdentifier componentIdentifier
   String policyId
   String policyName
@@ -54,13 +57,20 @@ class PolicyViolation
 
   static void buildFromIQ(Map<String, PolicyViolation> potentialComponentsMap,
                           Map<String, PolicyViolation> potentialFindingsMap,
-                          Object component,
+                          Object componentPolicyData,
+                          Object componentRawData,
                           String pReportLink,
                           String iqAppExternalId,
                           String policyFilterPrefix)
   {
-    ComponentIdentifier componentIdentifier = new ComponentIdentifier(component.componentIdentifier)
+    ComponentIdentifier componentIdentifier = new ComponentIdentifier(componentPolicyData.componentIdentifier)
     String componentName = componentIdentifier.prettyName
+    String packageUrl = componentRawData?.packageUrl
+    IQRawLicenseData licenseData = new IQRawLicenseData(componentRawData?.licenseData)
+    def pathnames = componentRawData?.pathnames
+    //TODO:     - matchState
+    //TODO:     - proprietary
+
 
     String componentFingerprintPrettyPrint = "${componentName}"
     String componentFingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${componentName}"
@@ -68,11 +78,14 @@ class PolicyViolation
 
     PolicyViolation potentialComponentViolation = new PolicyViolation(reportLink: pReportLink,
                                                                       componentIdentifier: componentIdentifier,
+                                                                      packageUrl: packageUrl,
+                                                                      licenseData: licenseData,
+                                                                      occurrences: pathnames,
                                                                       fingerprintPrettyPrint: componentFingerprintPrettyPrint,
                                                                       fingerprintKey: componentFingerprintKey,
                                                                       fingerprint: componentFingerprintHash)
 
-    component.activeViolations?.each {
+    componentPolicyData.activeViolations?.each {
       if (policyFilterPrefix == null || it.policyName.startsWith(policyFilterPrefix))
       {
         String conditionReasonText = ""
@@ -111,6 +124,9 @@ class PolicyViolation
 
         PolicyViolation policyViolation = new PolicyViolation(reportLink: pReportLink,
                                                               componentIdentifier: componentIdentifier,
+                                                              packageUrl: packageUrl,
+                                                              licenseData: licenseData,
+                                                              occurrences: pathnames,
                                                               componentFingerprintPrettyPrint: componentFingerprintPrettyPrint,
                                                               componentFingerprintKey: componentFingerprintKey,
                                                               componentFingerprint: componentFingerprintHash,
