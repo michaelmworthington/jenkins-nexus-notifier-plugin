@@ -109,6 +109,23 @@
     }
   },
   {
+    "id": "customfield_11200",
+    "name": "Copied Detect Date",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11200]",
+      "Copied Detect Date"
+    ],
+    "schema": {
+      "type": "date",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:datepicker",
+      "customId": 11200
+    }
+  },
+  {
     "id": "customfield_11002",
     "name": "Max CVSS",
     "custom": true,
@@ -138,6 +155,23 @@
     "schema": {
       "type": "resolution",
       "system": "resolution"
+    }
+  },
+  {
+    "id": "customfield_11201",
+    "name": "CWE Code",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11201]",
+      "CWE Code"
+    ],
+    "schema": {
+      "type": "number",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:float",
+      "customId": 11201
     }
   },
   {
@@ -172,6 +206,40 @@
       "type": "string",
       "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
       "customId": 11004
+    }
+  },
+  {
+    "id": "customfield_11202",
+    "name": "Threat Vector",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11202]",
+      "Threat Vector"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11202
+    }
+  },
+  {
+    "id": "customfield_11203",
+    "name": "Finding File Occurrences",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11203]",
+      "Finding File Occurrences"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
+      "customId": 11203
     }
   },
   {
@@ -1185,6 +1253,40 @@
     }
   },
   {
+    "id": "customfield_11204",
+    "name": "Finding License",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11204]",
+      "Finding License"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
+      "customId": 11204
+    }
+  },
+  {
+    "id": "customfield_11205",
+    "name": "Finding Component Identifier",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11205]",
+      "Finding Component Identifier"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11205
+    }
+  },
+  {
     "id": "environment",
     "name": "Environment",
     "custom": false,
@@ -1197,6 +1299,40 @@
     "schema": {
       "type": "string",
       "system": "environment"
+    }
+  },
+  {
+    "id": "customfield_11206",
+    "name": "Declared License",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11206]",
+      "Declared License"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
+      "customId": 11206
+    }
+  },
+  {
+    "id": "customfield_11207",
+    "name": "Observed License",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11207]",
+      "Observed License"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
+      "customId": 11207
     }
   },
   {

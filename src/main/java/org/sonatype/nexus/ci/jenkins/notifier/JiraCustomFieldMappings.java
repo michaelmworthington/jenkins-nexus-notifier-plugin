@@ -31,17 +31,20 @@ public class JiraCustomFieldMappings
   public String customFieldName;
   public String customFieldValue;
   public String dynamicDataCustomFieldValue;
+  public String copyValueFromFieldName;        // todo - JiraFieldMappingUtil.groovy
   public String customFieldId;
   public String customFieldType;
 
   @DataBoundConstructor
   public JiraCustomFieldMappings(final String customFieldName,
                                  final String customFieldValue,
-                                 final String dynamicDataCustomFieldValue)
+                                 final String dynamicDataCustomFieldValue,
+                                 final String copyValueFromFieldName)
   {
     this.customFieldName = customFieldName;
     this.customFieldValue = customFieldValue;
     this.dynamicDataCustomFieldValue = dynamicDataCustomFieldValue;
+    this.copyValueFromFieldName = copyValueFromFieldName;
   }
 
   @Extension

@@ -2,13 +2,13 @@
   {
     "mnemonic": "aaaaaaa",
     "appName": "testidegrandfathering",
-    "stage": "build",
+    "stage": "stage-release",
     "iqLookup": "aaaaaaa-testidegrandfathering"
   },
   {
     "mnemonic": "04",
-    "appName": "explicit-staging-maven-plugin",
-    "stage": "release",
-    "iqLookup": "sandbox-application"
+    "appName": "spock-testing-04-explicit-staging-nexus2-plugin",
+    "stage": "build",
+    "iqLookup": "04-explicit-staging-nexus2-plugin"
   }
 ]

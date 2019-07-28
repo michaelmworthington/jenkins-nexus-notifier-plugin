@@ -12,10 +12,14 @@ f.section(title: typedDescriptor.displayName) {
   }
 
   f.entry(title: _("Custom Field Value"), field: 'customFieldValue') {
-    f.textbox(clazz: 'required')
+    f.textbox()
   }
 
   f.entry(title: _("Custom Field Value Lookup Key from Dynamic Data"), field: 'dynamicDataCustomFieldValue') {
-    f.textbox(clazz: 'required')
+    f.textbox()
+  }
+
+  f.entry(title: _("Custom Field Value Lookup Key from Other Custom Fields"), field: 'copyValueFromFieldName') {
+    f.textbox()
   }
 }

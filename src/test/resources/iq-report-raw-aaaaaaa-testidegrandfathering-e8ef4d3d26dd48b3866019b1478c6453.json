@@ -1,0 +1,328 @@
+{
+  "components": [
+    {
+      "componentIdentifier": {
+        "coordinates": {
+          "packageId": "marked",
+          "version": "0.3.6"
+        },
+        "format": "npm"
+      },
+      "hash": "b2c6c618fccece4ef86c",
+      "licenseData": {
+        "declaredLicenses": [
+          {
+            "licenseId": "MIT",
+            "licenseName": "MIT"
+          }
+        ],
+        "effectiveLicenseThreats": [
+          {
+            "licenseThreatGroupCategory": "no-threat",
+            "licenseThreatGroupLevel": 0,
+            "licenseThreatGroupName": "Liberal"
+          }
+        ],
+        "observedLicenses": [
+          {
+            "licenseId": "Not-Supported",
+            "licenseName": "Not Supported"
+          }
+        ],
+        "overriddenLicenses": [
+          {
+            "licenseId": "Apache-UNSPECIFIED",
+            "licenseName": "Apache"
+          }
+        ],
+        "status": "Overridden"
+      },
+      "matchState": "exact",
+      "packageUrl": "pkg:npm/marked@0.3.6",
+      "pathnames": [
+        "marked-0.3.6.tgz"
+      ],
+      "proprietary": false,
+      "securityData": {
+        "securityIssues": [
+          {
+            "reference": "CVE-2015-8854",
+            "severity": 7.5,
+            "source": "cve",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": "http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-8854"
+          },
+          {
+            "reference": "sonatype-2016-0030",
+            "severity": 6.1,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0008",
+            "severity": 7.2,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0367",
+            "severity": 7.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0636",
+            "severity": 7.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0637",
+            "severity": 6.1,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0638",
+            "severity": 6.1,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2018-0076",
+            "severity": 7.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2018-0377",
+            "severity": 6.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2018-0378",
+            "severity": 6.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          }
+        ]
+      }
+    },
+    {
+      "componentIdentifier": {
+        "coordinates": {
+          "name": "marked",
+          "qualifier": "",
+          "version": "0.3.6"
+        },
+        "format": "a-name"
+      },
+      "hash": "c8f6dcb0732868e7e5c2",
+      "licenseData": {
+        "declaredLicenses": [
+          {
+            "licenseId": "MIT",
+            "licenseName": "MIT"
+          }
+        ],
+        "effectiveLicenseThreats": [
+          {
+            "licenseThreatGroupCategory": "no-threat",
+            "licenseThreatGroupLevel": 0,
+            "licenseThreatGroupName": "Liberal"
+          },
+          {
+            "licenseThreatGroupCategory": "no-threat",
+            "licenseThreatGroupLevel": 0,
+            "licenseThreatGroupName": "Sonatype Informational"
+          }
+        ],
+        "observedLicenses": [
+          {
+            "licenseId": "Not-Supported",
+            "licenseName": "Not Supported"
+          }
+        ],
+        "overriddenLicenses": [
+
+        ],
+        "status": "Open"
+      },
+      "matchState": "exact",
+      "packageUrl": "pkg:a-name/marked@0.3.6",
+      "pathnames": [
+        "marked-0.3.6.tgz/package/lib/marked.js",
+        "marked-0.3.6.tgz/package/marked.min.js"
+      ],
+      "proprietary": false,
+      "securityData": {
+        "securityIssues": [
+          {
+            "reference": "CVE-2015-8854",
+            "severity": 7.5,
+            "source": "cve",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": "http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-8854"
+          },
+          {
+            "reference": "sonatype-2016-0030",
+            "severity": 6.1,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0008",
+            "severity": 7.2,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0367",
+            "severity": 7.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0636",
+            "severity": 7.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0637",
+            "severity": 6.1,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2017-0638",
+            "severity": 6.1,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2018-0378",
+            "severity": 6.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "severe",
+            "url": null
+          },
+          {
+            "reference": "sonatype-2018-0076",
+            "severity": 7.5,
+            "source": "sonatype",
+            "status": "Open",
+            "threatCategory": "critical",
+            "url": null
+          }
+        ]
+      }
+    },
+    {
+      "componentIdentifier": {
+        "coordinates": {
+          "artifactId": "json",
+          "classifier": "",
+          "extension": "jar",
+          "groupId": "org.json",
+          "version": "20080701"
+        },
+        "format": "maven"
+      },
+      "hash": "d652f102185530c93b66",
+      "licenseData": {
+        "declaredLicenses": [
+          {
+            "licenseId": "JSON",
+            "licenseName": "JSON"
+          },
+          {
+            "licenseId": "Nonsensical-Clause",
+            "licenseName": "Nonsensical-Clause"
+          }
+        ],
+        "effectiveLicenseThreats": [
+          {
+            "licenseThreatGroupCategory": "severe",
+            "licenseThreatGroupLevel": 6,
+            "licenseThreatGroupName": "Non Standard"
+          }
+        ],
+        "observedLicenses": [
+          {
+            "licenseId": "JSON",
+            "licenseName": "JSON"
+          }
+        ],
+        "overriddenLicenses": [
+          {
+            "licenseId": "JSON",
+            "licenseName": "JSON"
+          }
+        ],
+        "status": "Selected"
+      },
+      "matchState": "exact",
+      "packageUrl": "pkg:maven/org.json/json@20080701?type=jar",
+      "pathnames": [
+        "json-20080701.jar"
+      ],
+      "proprietary": false,
+      "securityData": {
+        "securityIssues": [
+
+        ]
+      }
+    },
+    {
+      "componentIdentifier": null,
+      "hash": "a58450110e20cfc4b6cd",
+      "licenseData": null,
+      "matchState": "unknown",
+      "packageUrl": null,
+      "pathnames": [
+        "nexus-notifier.jar"
+      ],
+      "proprietary": true,
+      "securityData": null
+    }
+  ],
+  "matchSummary": {
+    "knownComponentCount": 3,
+    "totalComponentCount": 4
+  }
+}

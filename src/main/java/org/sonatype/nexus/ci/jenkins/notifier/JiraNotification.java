@@ -45,6 +45,7 @@ public class JiraNotification
   private String jiraTransitionStatus;
   private String jiraTransitionName;
   private String policyFilterPrefix;
+  private int policyFilterThreatLevel; //todo
 
   //Advanced Options
   private String jobJiraCredentialsId;
@@ -67,6 +68,12 @@ public class JiraNotification
   private String maxSeverityCustomFieldName;
   private String cveCodeCustomFieldName;
   private String maxCveCodeCustomFieldName;
+  private String cveLinkCustomFieldName;          //todo
+  private String maxCveLinkCustomFieldName;       //todo
+  private String cweCodeCustomFieldName;          //todo - move to experimental section
+  private String maxCweCodeCustomFieldName;       //todo - move to experimental section
+  private String threatVectorCustomFieldName;     //todo - move to experimental section
+  private String maxThreatVectorCustomFieldName;  //todo - move to experimental section
   private String cvssCustomFieldName;
   private String maxCvssCustomFieldName;
   private String iqServerReportLinkCustomFieldName;
@@ -74,6 +81,13 @@ public class JiraNotification
   private String maxIqServerPolicyViolationNameCustomFieldName;
   private String iqServerPolicyViolationThreatLevelCustomFieldName;
   private String maxIqServerPolicyViolationThreatLevelCustomFieldName;
+  private String declaredLicensesCustomFieldName; //todo
+  private String observedLicensesCustomFieldName; //todo
+  private String effectiveLicensesCustomFieldName; //todo
+  private String fileOccurrencesCustomFieldName;   //todo
+  private String recommendedRemediationCustomFieldName;      //todo
+  private String purlCustomFieldName;                        //todo
+  private String componentCombinedIdentifierCustomFieldName; //todo
   private String componentGroupCustomFieldName;
   private String componentNameCustomFieldName;
   private String componentVersionCustomFieldName;
@@ -116,6 +130,12 @@ public class JiraNotification
   public String getMaxSeverityCustomFieldName() { return maxSeverityCustomFieldName; }
   public String getCveCodeCustomFieldName() { return cveCodeCustomFieldName; }
   public String getMaxCveCodeCustomFieldName() { return maxCveCodeCustomFieldName; }
+  public String getCveLinkCustomFieldName() { return cveLinkCustomFieldName; }
+  public String getMaxCveLinkCustomFieldName() { return maxCveLinkCustomFieldName; }
+  public String getCweCodeCustomFieldName() { return cweCodeCustomFieldName; }
+  public String getMaxCweCodeCustomFieldName() { return maxCweCodeCustomFieldName; }
+  public String getThreatVectorCustomFieldName() { return threatVectorCustomFieldName; }
+  public String getMaxThreatVectorCustomFieldName() { return maxThreatVectorCustomFieldName; }
   public String getCvssCustomFieldName() { return cvssCustomFieldName; }
   public String getMaxCvssCustomFieldName() { return maxCvssCustomFieldName; }
   public String getIqServerReportLinkCustomFieldName() { return iqServerReportLinkCustomFieldName; }
@@ -123,6 +143,13 @@ public class JiraNotification
   public String getMaxIqServerPolicyViolationNameCustomFieldName() { return maxIqServerPolicyViolationNameCustomFieldName; }
   public String getIqServerPolicyViolationThreatLevelCustomFieldName() { return iqServerPolicyViolationThreatLevelCustomFieldName; }
   public String getMaxIqServerPolicyViolationThreatLevelCustomFieldName() { return maxIqServerPolicyViolationThreatLevelCustomFieldName; }
+  public String getDeclaredLicensesCustomFieldName() { return declaredLicensesCustomFieldName;  }
+  public String getObservedLicensesCustomFieldName() { return observedLicensesCustomFieldName;  }
+  public String getEffectiveLicensesCustomFieldName() { return effectiveLicensesCustomFieldName;  }
+  public String getFileOccurrencesCustomFieldName()  {    return fileOccurrencesCustomFieldName;  }
+  public String getRecommendedRemediationCustomFieldName()  {    return recommendedRemediationCustomFieldName;  }
+  public String getPurlCustomFieldName()  {    return purlCustomFieldName;  }
+  public String getComponentCombinedIdentifierCustomFieldName()  {    return componentCombinedIdentifierCustomFieldName;  }
   public String getComponentGroupCustomFieldName() { return componentGroupCustomFieldName; }
   public String getComponentNameCustomFieldName() { return componentNameCustomFieldName; }
   public String getComponentVersionCustomFieldName() { return componentVersionCustomFieldName; }
@@ -160,6 +187,12 @@ public class JiraNotification
                           final String maxSeverityCustomFieldName,
                           final String cveCodeCustomFieldName,
                           final String maxCveCodeCustomFieldName,
+                          final String cveLinkCustomFieldName,
+                          final String maxCveLinkCustomFieldName,
+                          final String cweCodeCustomFieldName,
+                          final String maxCweCodeCustomFieldName,
+                          final String threatVectorCustomFieldName,
+                          final String maxThreatVectorCustomFieldName,
                           final String cvssCustomFieldName,
                           final String maxCvssCustomFieldName,
                           final String iqServerReportLinkCustomFieldName,
@@ -167,6 +200,13 @@ public class JiraNotification
                           final String maxIqServerPolicyViolationNameCustomFieldName,
                           final String iqServerPolicyViolationThreatLevelCustomFieldName,
                           final String maxIqServerPolicyViolationThreatLevelCustomFieldName,
+                          final String declaredLicensesCustomFieldName,
+                          final String observedLicensesCustomFieldName,
+                          final String effectiveLicensesCustomFieldName,
+                          final String fileOccurrencesCustomFieldName,
+                          final String recommendedRemediationCustomFieldName,
+                          final String purlCustomFieldName,
+                          final String componentCombinedIdentifierCustomFieldName,
                           final String componentGroupCustomFieldName,
                           final String componentNameCustomFieldName,
                           final String componentVersionCustomFieldName,
@@ -208,6 +248,12 @@ public class JiraNotification
     this.maxSeverityCustomFieldName = maxSeverityCustomFieldName;
     this.cveCodeCustomFieldName = cveCodeCustomFieldName;
     this.maxCveCodeCustomFieldName = maxCveCodeCustomFieldName;
+    this.cveLinkCustomFieldName = cveLinkCustomFieldName;
+    this.maxCveLinkCustomFieldName = maxCveLinkCustomFieldName;
+    this.cweCodeCustomFieldName = cweCodeCustomFieldName;
+    this.maxCweCodeCustomFieldName = maxCweCodeCustomFieldName;
+    this.threatVectorCustomFieldName = threatVectorCustomFieldName;
+    this.maxThreatVectorCustomFieldName = maxThreatVectorCustomFieldName;
     this.cvssCustomFieldName = cvssCustomFieldName;
     this.maxCvssCustomFieldName = maxCvssCustomFieldName;
     this.iqServerReportLinkCustomFieldName = iqServerReportLinkCustomFieldName;
@@ -215,6 +261,13 @@ public class JiraNotification
     this.maxIqServerPolicyViolationNameCustomFieldName = maxIqServerPolicyViolationNameCustomFieldName;
     this.iqServerPolicyViolationThreatLevelCustomFieldName = iqServerPolicyViolationThreatLevelCustomFieldName;
     this.maxIqServerPolicyViolationThreatLevelCustomFieldName = maxIqServerPolicyViolationThreatLevelCustomFieldName;
+    this.declaredLicensesCustomFieldName = declaredLicensesCustomFieldName;
+    this.observedLicensesCustomFieldName = observedLicensesCustomFieldName;
+    this.effectiveLicensesCustomFieldName = effectiveLicensesCustomFieldName;
+    this.fileOccurrencesCustomFieldName = fileOccurrencesCustomFieldName;
+    this.recommendedRemediationCustomFieldName = recommendedRemediationCustomFieldName;
+    this.purlCustomFieldName = purlCustomFieldName;
+    this.componentCombinedIdentifierCustomFieldName = componentCombinedIdentifierCustomFieldName;
     this.componentGroupCustomFieldName = componentGroupCustomFieldName;
     this.componentNameCustomFieldName = componentNameCustomFieldName;
     this.componentVersionCustomFieldName = componentVersionCustomFieldName;

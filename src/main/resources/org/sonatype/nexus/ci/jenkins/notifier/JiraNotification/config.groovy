@@ -144,6 +144,30 @@ f.section(title: typedDescriptor.displayName) {
         f.textbox()
       }
 
+      f.entry(title: _('Jira Custom Field for the Link to the CVE'), field: 'cveLinkCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for the Link to the Max CVE'), field: 'maxCveLinkCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for CWE Code (EXPERIMENTAL)'), field: 'cweCodeCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Max CWE Code (EXPERIMENTAL)'), field: 'maxCweCodeCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Threat Vector (EXPERIMENTAL)'), field: 'threatVectorCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Max Threat Vector (EXPERIMENTAL)'), field: 'maxThreatVectorCustomFieldName') {
+        f.textbox()
+      }
+
       f.entry(title: _('Jira Custom Field for CVSS'), field: 'cvssCustomFieldName') {
         f.textbox()
       }
@@ -169,6 +193,34 @@ f.section(title: typedDescriptor.displayName) {
       }
 
       f.entry(title: _('Jira Custom Field for Max IQ Server Policy Violation Threat Level'), field: 'maxIqServerPolicyViolationThreatLevelCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Component Declared License'), field: 'declaredLicensesCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Component Observed License'), field: 'observedLicensesCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Component Effective License'), field: 'effectiveLicensesCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Component Occurrences File Name and Path'), field: 'fileOccurrencesCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Recommended Remediation Version'), field: 'recommendedRemediationCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Component Package URL (PURL)'), field: 'purlCustomFieldName') {
+        f.textbox()
+      }
+
+      f.entry(title: _('Jira Custom Field for Component Identifier'), field: 'componentCombinedIdentifierCustomFieldName') {
         f.textbox()
       }
 

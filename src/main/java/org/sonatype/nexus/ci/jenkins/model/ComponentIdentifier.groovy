@@ -1,15 +1,22 @@
 package org.sonatype.nexus.ci.jenkins.model
 
 /**
+ * https://help.sonatype.com/iqserver/automating/rest-apis/using-other-supported-formats-with-the-rest-api
+ *
  *       {"format":"maven","coordinates":{"artifactId": "json", "classifier": "", "extension": "jar", "groupId": "org.json", "version": "20080701"}}
  *       {"format":"npm","coordinates":{"packageId":"macaddress","version":"0.2.8"}}
- *       {"format":"nuget","coordinates":{"packageId":"SPAuthN"}}
+ *       {"format":"nuget","coordinates":{"packageId":"SPAuthN","version":"2.1.3"}}
  *       {"format":"pypi","coordinates":{"extension":"tar.gz","name":"Flask-Admin","qualifier":"","version":"1.5.1"}}
  *       {"format":"a-name","coordinates":{"name":"vizion","qualifier":"","version":"0.1.0"}}
+ *       {"format":"rpm","coordinas": {"name": "AGReader","version": "1.2-6.el6","architecture": "ppc64"}}
+ *       {"format":"gem","coordinas": {"name": "rails","version": "5.","platform":""}}
+ *
  *
  */
 class ComponentIdentifier
 {
+  //TODO: PURL
+
   String format //todo: make an enum?
   String group
   String artifact
@@ -19,6 +26,7 @@ class ComponentIdentifier
   def coordinates
   String prettyName
 
+  //TODO: GO LANG!!!!!
   ComponentIdentifier(Map pComponentIdentifierJson)
   {
     if (pComponentIdentifierJson)
@@ -35,12 +43,12 @@ class ComponentIdentifier
           extension = coordinates.extension
           break
         case "npm":
-          //TODO: group
+          //TODO: no group in the docs
           artifact = coordinates.packageId
           version = coordinates.version
           break
         case "nuget":
-          //TODO: group
+          //TODO: no group in the docs
           artifact = coordinates.packageId
           version = coordinates.version
           break
@@ -56,13 +64,14 @@ class ComponentIdentifier
           classifier = coordinates.platform
           break
         case "rpm":
-          //todo
-          artifact = coordinates.name
-          break
-        case "a-name":
-          //TODO: what is the qualifier field
           artifact = coordinates.name
           version = coordinates.version
+          classifier = coordinates.architecture
+          break
+        case "a-name":
+          artifact = coordinates.name
+          version = coordinates.version
+          classifier = coordinates.qualifier
           break
         default:
           break
@@ -79,9 +88,6 @@ class ComponentIdentifier
 
   private String buildPrettyName()
   {
-    //TODO: this may need to be done specifically for each supported format
-    //      but for now, according to https://www.midgetontoes.com/2016/03/11/properties-ordering-of-groovy-jsonslurper-parsing/
-    //      the attributes of the json will be sorted - TODO: I may want to parse it anyway so it's easy to read. maybe i can dump the whole thing...
     String returnValue = format
 
     switch (format)
@@ -96,7 +102,7 @@ class ComponentIdentifier
         returnValue = [format, group, artifact, version, classifier, extension].findAll().join(":")
         break
       case "unknown":
-        //todo
+        //todo - what else can we set for unknowns?
         coordinates?.each {
           returnValue += ":${it.value}"
         }

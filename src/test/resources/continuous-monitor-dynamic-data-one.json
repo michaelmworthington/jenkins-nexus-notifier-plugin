@@ -2,7 +2,7 @@
   {
     "mnemonic": "aaaaaaa",
     "appName": "testidegrandfathering",
-    "stage": "build",
+    "stage": "stage-release",
     "iqLookup": "aaaaaaa-testidegrandfathering"
   }
 ]

@@ -90,6 +90,12 @@ class JiraClientTest
                                                                 "Max Severity",
                                                                 "CVE Code",
                                                                 "Max CVE Code",
+                                                                "CVE Link",
+                                                                "CVE Link",
+                                                                "CWE Code",
+                                                                "CWE Code",
+                                                                "Threat Vector",
+                                                                "Threat Vector",
                                                                 "CVSS",
                                                                 "Max CVSS",
                                                                 "Report Link",
@@ -97,6 +103,13 @@ class JiraClientTest
                                                                 "Max Violation Name",
                                                                 "Threat Level",
                                                                 "Max Threat Level",
+                                                                "Declared License",
+                                                                "Observed License",
+                                                                "Finding License",
+                                                                "Finding File Occurrences",
+                                                                "Recommended Version",
+                                                                "PURL",
+                                                                "Finding Component Identifier",
                                                                 "Finding Vendor",
                                                                 "Finding Library",
                                                                 "Finding Version",
@@ -393,7 +406,7 @@ class JiraClientTest
   def 'helper test to verify interaction with Jira Server - Close All Tickets'() {
     setup:
       JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
-      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
+      //jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
 
     when: 'Get all the tickets'
       def resp = integrationTestJiraClient.lookupJiraTickets(jiraFieldMappingUtil, 0)

@@ -227,7 +227,7 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Lookup Report Links'() {
     when:
-    def resp = clientLive.lookupApplicationReportLinks("031f7716246c4bceb38672ed071fe918")
+    def resp = clientLive.lookupApplicationReportLinks("e06a119c75d04d97b8d8c11b62719752")
 
     then:
     resp.size != 0
