@@ -1336,6 +1336,23 @@
     }
   },
   {
+    "id": "customfield_11208",
+    "name": "Copied Finding License",
+    "custom": true,
+    "orderable": true,
+    "navigable": true,
+    "searchable": true,
+    "clauseNames": [
+      "cf[11208]",
+      "Copied Finding License"
+    ],
+    "schema": {
+      "type": "string",
+      "custom": "com.atlassian.jira.plugin.system.customfieldtypes:textfield",
+      "customId": 11208
+    }
+  },
+  {
     "id": "duedate",
     "name": "Due Date",
     "custom": false,

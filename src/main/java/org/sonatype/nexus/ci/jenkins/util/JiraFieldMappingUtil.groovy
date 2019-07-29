@@ -197,14 +197,40 @@ class JiraFieldMappingUtil
     }
 
     //add global fields to the jira request
-    validatedGlobalCustomFieldMappings.each {
-      addCustomFieldToTicket(returnValue, it.value)
+    validatedGlobalCustomFieldMappings.each { fieldName, customFieldMapping ->
+
+      copyValueIfNeeded(customFieldMapping, validatedGlobalCustomFieldMappings, validatedViolationCustomFieldMappings)
+      addCustomFieldToTicket(returnValue, customFieldMapping)
     }
 
-    //add violation fields to the jira request, and clear the value since the map is reused for each ticket
+    //add violation fields to the jira request
     validatedViolationCustomFieldMappings.each {
       addCustomFieldToTicket(returnValue, it.value)
-      it.value.customFieldValue = null
+    }
+  }
+
+  private static void copyValueIfNeeded(JiraCustomFieldMappings pField, Map<String, JiraCustomFieldMappings> globalFields, Map<String, JiraCustomFieldMappings> violationFields)
+  {
+    if(pField.copyValueFromFieldName)
+    {
+      if(violationFields.containsKey(pField.copyValueFromFieldName))
+      {
+        pField.customFieldValue = violationFields.get(pField.copyValueFromFieldName).customFieldValue
+      }
+      else if(globalFields.containsKey(pField.copyValueFromFieldName))
+      {
+        pField.customFieldValue = globalFields.get(pField.copyValueFromFieldName).customFieldValue
+      }
+    }
+  }
+
+  private static void clearCopiedValueIfNeeded(JiraCustomFieldMappings pField)
+  {
+    //clear violation fields (NOT a global field)
+    //also, clear copied values
+    if(!pField.globalField || pField.copyValueFromFieldName)
+    {
+      pField.customFieldValue = null
     }
   }
 
@@ -343,13 +369,8 @@ class JiraFieldMappingUtil
       else if (it.copyValueFromFieldName)
       {
         logger.println("Copying Custom Field value from ${it.copyValueFromFieldName} to ${it.customFieldName}")
-
+        getPassthroughCustomField(it.customFieldName).copyValueFromFieldName = it.copyValueFromFieldName //i'll copy the actual value later on
       }
-      //todo: option to pull from other IQ known fields
-      //todo:      assume it's copying the value into two different fields,
-      //todo:      look up the field by name, and mark it to copy to the custom field name
-      //todo:    - the value for the field is not known at this point, but i think it's better to do this logic here,
-      //todo:      rather than all the way at the end because there is some special logic to clear out the field values once they're added to the ticket
     }
   }
 
@@ -362,6 +383,9 @@ class JiraFieldMappingUtil
       {
         //TODO: show Required, but that's going back to the Issue Type Specific REST API
         logger.println("Custom Field mapping for field description: ${pFieldDescription} created mapping ${pFieldName} -> ${returnValue.customFieldId} (${returnValue.customFieldType})")
+
+        //save this so we can clear the violation values when we iterate the loops
+        returnValue.globalField = pIsGlobalField
 
         if (pIsGlobalField)
         {
@@ -480,6 +504,9 @@ class JiraFieldMappingUtil
       {
         ticketFieldsArray.fields.put(pField.customFieldId, returnValue)
       }
+
+      // clear the value since the map is reused for each ticket
+      clearCopiedValueIfNeeded(pField)
     }
   }
 }
