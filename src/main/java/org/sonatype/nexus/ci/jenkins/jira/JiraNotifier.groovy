@@ -215,6 +215,7 @@ class JiraNotifier
                                         policyFinding,
                                         rawData,
                                         policyEvaluationHealthAction.reportLink,
+                                        iqClient.serverUrl,
                                         jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
                                         jiraFieldMappingUtil.policyFilterPrefix) //TODO: add Policy Threat Level Numeric Filter
           }

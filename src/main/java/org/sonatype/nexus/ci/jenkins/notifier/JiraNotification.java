@@ -68,8 +68,8 @@ public class JiraNotification
   private String maxSeverityCustomFieldName;
   private String cveCodeCustomFieldName;
   private String maxCveCodeCustomFieldName;
-  private String cveLinkCustomFieldName;          //todo
-  private String maxCveLinkCustomFieldName;       //todo
+  private String cveLinkCustomFieldName;
+  private String maxCveLinkCustomFieldName;
   private String cweCodeCustomFieldName;          //todo - move to experimental section
   private String maxCweCodeCustomFieldName;       //todo - move to experimental section
   private String threatVectorCustomFieldName;     //todo - move to experimental section

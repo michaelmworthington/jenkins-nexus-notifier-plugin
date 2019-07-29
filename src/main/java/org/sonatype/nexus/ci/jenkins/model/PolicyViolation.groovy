@@ -48,6 +48,7 @@ class PolicyViolation
   String fingerprint
   Double cvssScore
   String cveCode
+  String cveLink
   String severity
 
   static boolean assignableFrom(Object action) {
@@ -61,6 +62,7 @@ class PolicyViolation
                           Object componentPolicyData,
                           Object componentRawData,
                           String pReportLink,
+                          String pIQServerBaseUrl,
                           String iqAppExternalId,
                           String policyFilterPrefix)
   {
@@ -94,6 +96,7 @@ class PolicyViolation
         String fingerprintPrettyPrint = "${componentName} - ${it.policyName}"
         String fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}"
         String cveCode = ""
+        String cveLink = ""
         Double cvssScore = 0
         String severity = ""
 
@@ -112,6 +115,7 @@ class PolicyViolation
           String[] parts = conditionReasonText.split(' ')
           cvssScore = Double.parseDouble(parts[6][0..-2])
           cveCode = parts[3]
+          cveLink = "${pIQServerBaseUrl}/ui/links/vln/${cveCode}"
           severity = parseSecuritySeverity(it.policyName)
         }
         else if (licenseCondition)
@@ -138,6 +142,7 @@ class PolicyViolation
                                                               cvssReason: conditionReasonText,
                                                               cvssScore: cvssScore,
                                                               cveCode: cveCode,
+                                                              cveLink: cveLink,
                                                               severity: severity,
                                                               fingerprintPrettyPrint: fingerprintPrettyPrint,
                                                               fingerprintKey: fingerprintKey,
@@ -200,6 +205,7 @@ class PolicyViolation
       cvssScore = policyViolation.cvssScore
       severity = policyViolation.severity
       cveCode = policyViolation.cveCode
+      cveLink = policyViolation.cveLink
       cvssReason = policyViolation.cvssReason
     }
 

@@ -35,8 +35,8 @@ class JiraFieldMappingUtil
   private String maxSeverityCustomFieldName
   private String cveCodeCustomFieldName
   private String maxCveCodeCustomFieldName
-  private String cveLinkCustomFieldName //todo
-  private String maxCveLinkCustomFieldName //todo
+  private String cveLinkCustomFieldName
+  private String maxCveLinkCustomFieldName
   private String cweCodeCustomFieldName //todo
   private String maxCweCodeCustomFieldName //todo
   private String threatVectorCustomFieldName //todo
@@ -176,7 +176,7 @@ class JiraFieldMappingUtil
       //This is an aggregated component ticket, set the "max" fields
       getMaxSeverityCustomField().customFieldValue = pPolicyViolation.severity
       getMaxCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
-      //getMaxCveLinkCustomField().customFieldValue =  pPolicyViolation.cveLink        //todo
+      getMaxCveLinkCustomField().customFieldValue =  pPolicyViolation.cveLink
       //getMaxCweCodeCustomField().customFieldValue =  pPolicyViolation.cweCode        //todo
       //getMaxThreatVectorCustomField().customFieldValue = pPolicyViolation.threatVector //todo
       getMaxCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
@@ -188,7 +188,7 @@ class JiraFieldMappingUtil
       //This is a finding ticket, set the plain fields
       getSeverityCustomField().customFieldValue =  pPolicyViolation.severity
       getCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
-      //todo: cve link
+      getCveLinkCustomField().customFieldValue =  pPolicyViolation.cveLink
       //todo: cwe code
       //todo: threat vector
       getCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
