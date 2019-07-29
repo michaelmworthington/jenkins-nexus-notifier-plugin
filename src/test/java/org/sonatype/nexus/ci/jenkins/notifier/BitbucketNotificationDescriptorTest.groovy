@@ -31,7 +31,7 @@ class BitbucketNotificationDescriptorTest
   def 'it validates project key'() {
     when:
       "validating $key"
-      def validation = descriptor.doCheckProjectKey(key)
+      def validation = descriptor.doCheckProjectKey(true, key)
 
     then:
       "it returns $result with message $message"
@@ -48,7 +48,7 @@ class BitbucketNotificationDescriptorTest
   def 'it validates repository slug'() {
     when:
       "validating $slug"
-      def validation = descriptor.doCheckRepositorySlug(slug)
+      def validation = descriptor.doCheckRepositorySlug(true, slug)
 
     then:
       "it returns $result with message $message"
@@ -65,7 +65,7 @@ class BitbucketNotificationDescriptorTest
   def 'it validates commit hash'() {
     when:
       "validating $hash"
-      def validation = descriptor.doCheckCommitHash(hash)
+      def validation = descriptor.doCheckCommitHash(true, hash)
 
     then:
       "it returns $result with message $message"
