@@ -2,29 +2,29 @@
   {
     "stage": "build",
     "applicationId": "e06a119c75d04d97b8d8c11b62719752",
-    "evaluationDate": "2019-07-24T21:22:52.712-04:00",
-    "reportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/73cbe478f71a4b8382d773a4248f2f88",
-    "embeddableReportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/73cbe478f71a4b8382d773a4248f2f88/embeddable",
-    "reportPdfUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/73cbe478f71a4b8382d773a4248f2f88/pdf",
-    "reportDataUrl": "api/v2/applications/aaaaaaa-testidegrandfathering/reports/73cbe478f71a4b8382d773a4248f2f88"
+    "evaluationDate": "2019-07-28T15:36:15.973-04:00",
+    "reportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/6354f0c8f2bf4e2aa52aacf3177c5630",
+    "embeddableReportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/6354f0c8f2bf4e2aa52aacf3177c5630/embeddable",
+    "reportPdfUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/6354f0c8f2bf4e2aa52aacf3177c5630/pdf",
+    "reportDataUrl": "api/v2/applications/aaaaaaa-testidegrandfathering/reports/6354f0c8f2bf4e2aa52aacf3177c5630/raw"
   },
   {
     "stage": "stage-release",
     "applicationId": "e06a119c75d04d97b8d8c11b62719752",
-    "evaluationDate": "2019-07-24T22:00:35.294-04:00",
-    "reportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/b1af6429c49b44398b0de379905c54f0",
-    "embeddableReportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/b1af6429c49b44398b0de379905c54f0/embeddable",
-    "reportPdfUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/b1af6429c49b44398b0de379905c54f0/pdf",
-    "reportDataUrl": "api/v2/applications/aaaaaaa-testidegrandfathering/reports/b1af6429c49b44398b0de379905c54f0"
+    "evaluationDate": "2019-07-28T17:44:14.009-04:00",
+    "reportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453",
+    "embeddableReportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453/embeddable",
+    "reportPdfUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/e8ef4d3d26dd48b3866019b1478c6453/pdf",
+    "reportDataUrl": "api/v2/applications/aaaaaaa-testidegrandfathering/reports/e8ef4d3d26dd48b3866019b1478c6453/raw"
   },
   {
     "stage": "release",
     "applicationId": "e06a119c75d04d97b8d8c11b62719752",
-    "evaluationDate": "2019-07-24T22:02:34.515-04:00",
-    "reportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/a635ccca6ca8463d81d3f89fc8ecbeec",
-    "embeddableReportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/a635ccca6ca8463d81d3f89fc8ecbeec/embeddable",
-    "reportPdfUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/a635ccca6ca8463d81d3f89fc8ecbeec/pdf",
-    "reportDataUrl": "api/v2/applications/aaaaaaa-testidegrandfathering/reports/a635ccca6ca8463d81d3f89fc8ecbeec"
+    "evaluationDate": "2019-07-28T11:33:40.321-04:00",
+    "reportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/729af8111f1f47e2988b4c2020f3e92f",
+    "embeddableReportHtmlUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/729af8111f1f47e2988b4c2020f3e92f/embeddable",
+    "reportPdfUrl": "ui/links/application/aaaaaaa-testidegrandfathering/report/729af8111f1f47e2988b4c2020f3e92f/pdf",
+    "reportDataUrl": "api/v2/applications/aaaaaaa-testidegrandfathering/reports/729af8111f1f47e2988b4c2020f3e92f/raw"
   },
   {
     "stage": "operate",

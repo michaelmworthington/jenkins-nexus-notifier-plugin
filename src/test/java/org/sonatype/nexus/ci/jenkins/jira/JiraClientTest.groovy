@@ -259,7 +259,7 @@ class JiraClientTest
     JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(null, jiraNotificationCreateParentTicketTest, integrationTestJiraClient, mockRun.getEnvironment(mockListener), mockLogger)
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
-    jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
+    jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "build"
 
     def pReportLink = "SonatypeIQ:IQServerAppId:scanIQ"
     ComponentIdentifier componentIdentifier = new ComponentIdentifier([format     : "maven",
@@ -312,7 +312,7 @@ class JiraClientTest
 
     jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = "aaaaaaa-testidegrandfathering"
     jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = "test org"
-    jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "Build"
+    jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "build"
 
     //The Story Aggregated Component
     def pReportLink = "SonatypeIQ:IQServerAppId:scanIQ"

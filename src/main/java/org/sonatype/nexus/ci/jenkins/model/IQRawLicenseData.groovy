@@ -5,6 +5,7 @@ class IQRawLicenseData
   def declaredLicenses
   def observedLicenses
   def overriddenLicenses
+  def status
 
   IQRawLicenseData(Map pLicenseData)
   {
@@ -13,6 +14,7 @@ class IQRawLicenseData
       declaredLicenses = pLicenseData.declaredLicenses
       observedLicenses = pLicenseData.observedLicenses
       overriddenLicenses = pLicenseData.overriddenLicenses
+      status = pLicenseData.status
     }
   }
 
@@ -48,8 +50,13 @@ class IQRawLicenseData
     }
     else
     {
-      nameArray += getDeclaredLicenseNames()
-      nameArray += getObservedLicenseNames()
+      //do it separate because the unique won't work with the new lines already joined
+      declaredLicenses.each{
+        nameArray += it.licenseName
+      }
+      observedLicenses.each{
+        nameArray += it.licenseName
+      }
     }
 
     return nameArray.unique().join("\n")

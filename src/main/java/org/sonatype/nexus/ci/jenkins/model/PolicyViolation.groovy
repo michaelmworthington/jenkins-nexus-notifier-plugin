@@ -28,6 +28,7 @@ class PolicyViolation
   String policyName
   Integer policyThreatLevel
   String cvssReason
+  IQVersionRecommendation recommendedRemediation
 
   //Jira Fields
   String ticketInternalId
@@ -67,6 +68,7 @@ class PolicyViolation
     String componentName = componentIdentifier.prettyName
     String packageUrl = componentRawData?.packageUrl
     IQRawLicenseData licenseData = new IQRawLicenseData(componentRawData?.licenseData)
+    //TODO: license status
     def pathnames = componentRawData?.pathnames
     //TODO:     - matchState
     //TODO:     - proprietary

@@ -14,6 +14,7 @@ package org.sonatype.nexus.ci.jenkins.iq
 
 import groovy.json.JsonSlurper
 import org.sonatype.nexus.ci.jenkins.http.SonatypeHTTPBuilder
+import org.sonatype.nexus.ci.jenkins.model.IQVersionRecommendation
 import spock.lang.Requires
 import spock.lang.Specification
 
@@ -26,16 +27,28 @@ class IQClientTest
   SonatypeHTTPBuilder http
   IQClient clientHttpMock, clientLive
   def iqApplication, iqOrganizations, iqApplications, iqReportLinks
+  def iqVersionRecommendationEmpty, iqVersionRecommendationDifferent, iqVersionRecommendationSame, iqVersionRecommendationOnlyNonFail, iqVersionRecommendationOnlyNoViolations
+
+  private static final String iqTestAppExternalId = "aaaaaaa-testidegrandfathering"
+  private static final String iqTestAppInternalId = "e06a119c75d04d97b8d8c11b62719752"
+
+  private static final String iqTestReportInternalId = "e8ef4d3d26dd48b3866019b1478c6453" //demo (69)
+
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
     clientHttpMock = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
     clientHttpMock.http = http
 
-    iqApplication = new JsonSlurper().parse(new File('src/test/resources/iq-aaaaaaa-testidegrandfathering-applicationInfo.json'))
+    iqApplication = new JsonSlurper().parse(new File("src/test/resources/iq-${iqTestAppExternalId}-applicationInfo.json"))
     iqOrganizations = new JsonSlurper().parse(new File('src/test/resources/iq-organizations.json'))
     iqApplications = new JsonSlurper().parse(new File('src/test/resources/iq-applications.json'))
     iqReportLinks = new JsonSlurper().parse(new File('src/test/resources/iq-report-links.json'))
+    iqVersionRecommendationEmpty = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-empty.json'))
+    iqVersionRecommendationDifferent = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-different-nofail-noviolation.json'))
+    iqVersionRecommendationSame = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-same-nofail-noviolation.json'))
+    iqVersionRecommendationOnlyNonFail = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-only-non-failing.json'))
+    iqVersionRecommendationOnlyNoViolations = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-only-no-violations.json'))
 
     clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true])
   }
@@ -44,50 +57,50 @@ class IQClientTest
     def url
 
     when:
-      clientHttpMock.lookupPolcyDetailsFromIQ("a22d44d0209b47358c8dd2532bb7afb3", "aaaaaaa-testidegrandfathering")
+      clientHttpMock.lookupPolcyDetailsFromIQ("a22d44d0209b47358c8dd2532bb7afb3", iqTestAppExternalId)
 
     then:
       1 * http.get(_, _) >> { args -> url = args[0]}
 
     and:
       url != null
-      url == "http://localhost:${port}/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json"
+      url == "http://localhost:${port}/iq/rest/report/${iqTestAppExternalId}/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json"
   }
 
   def 'lookup scan report component details has correct url'() {
     def url
 
     when:
-    clientHttpMock.lookupComponentDetailsFromIQ("a22d44d0209b47358c8dd2532bb7afb3", "aaaaaaa-testidegrandfathering")
+    clientHttpMock.lookupComponentDetailsFromIQ("a22d44d0209b47358c8dd2532bb7afb3", iqTestAppExternalId)
 
     then:
     1 * http.get(_, _) >> { args -> url = args[0]}
 
     and:
     url != null
-    url == "http://localhost:${port}/iq/api/v2/applications/aaaaaaa-testidegrandfathering/reports/a22d44d0209b47358c8dd2532bb7afb3/raw"
+    url == "http://localhost:${port}/iq/api/v2/applications/${iqTestAppExternalId}/reports/a22d44d0209b47358c8dd2532bb7afb3/raw"
   }
 
   def 'Lookup Application'() {
     when:
-    def applicationResp = clientHttpMock.lookupApplication("aaaaaaa-testidegrandfathering" )
+    def applicationResp = clientHttpMock.lookupApplication(iqTestAppExternalId )
 
     then:
-    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=${iqTestAppExternalId}", _) >> iqApplication
 
     applicationResp != null
     applicationResp.applications.size == 1
-    applicationResp.applications[0].publicId == "aaaaaaa-testidegrandfathering"
-    applicationResp.applications[0].id == "e06a119c75d04d97b8d8c11b62719752"
+    applicationResp.applications[0].publicId == iqTestAppExternalId
+    applicationResp.applications[0].id == iqTestAppInternalId
     applicationResp.applications[0].organizationId == "2d0dfb87b67b43a3b4271e462bae9eca"
   }
 
   def 'Lookup Organization Name for App Id'() {
     when:
-    String orgName = clientHttpMock.lookupOrganizationName("aaaaaaa-testidegrandfathering")
+    String orgName = clientHttpMock.lookupOrganizationName(iqTestAppExternalId)
 
     then:
-    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=${iqTestAppExternalId}", _) >> iqApplication
     1 * http.get("http://localhost:${port}/iq/api/v2/organizations", _) >> iqOrganizations
 
     and:
@@ -99,10 +112,10 @@ class IQClientTest
     def iqEmptyOrganizations = new JsonSlurper().parse(new File('src/test/resources/iq-organizations-empty.json'))
 
     when:
-    String orgName = clientHttpMock.lookupOrganizationName("aaaaaaa-testidegrandfathering")
+    String orgName = clientHttpMock.lookupOrganizationName(iqTestAppExternalId)
 
     then:
-    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=${iqTestAppExternalId}", _) >> iqApplication
     1 * http.get("http://localhost:${port}/iq/api/v2/organizations", _) >> iqEmptyOrganizations
 
     and:
@@ -122,10 +135,10 @@ class IQClientTest
 
   def 'Lookup Report Links'() {
     when:
-    def resp = clientHttpMock.lookupApplicationReportLinks("031f7716246c4bceb38672ed071fe918")
+    def resp = clientHttpMock.lookupApplicationReportLinks(iqTestAppInternalId)
 
     then:
-    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/031f7716246c4bceb38672ed071fe918", _) >> iqReportLinks
+    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/${iqTestAppInternalId}", _) >> iqReportLinks
 
     and:
     resp.size == 4
@@ -133,26 +146,121 @@ class IQClientTest
 
   def 'Lookup Report Link for Stage'() {
     when:
-    def resp = clientHttpMock.lookupReportLink("aaaaaaa-testidegrandfathering", "build")
+    def resp = clientHttpMock.lookupReportLink(iqTestAppExternalId, stageName)
 
     then:
-    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
-    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/e06a119c75d04d97b8d8c11b62719752", _) >> iqReportLinks
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=${iqTestAppExternalId}", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/${iqTestAppInternalId}", _) >> iqReportLinks
 
     and:
-    resp == "http://localhost:${port}/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/73cbe478f71a4b8382d773a4248f2f88"
+    resp == responseUrl
+
+    where:
+    stageName | responseUrl
+    "build"                 | "http://localhost:${port}/iq/ui/links/application/${iqTestAppExternalId}/report/6354f0c8f2bf4e2aa52aacf3177c5630"
+    "stage-release"         | "http://localhost:${port}/iq/ui/links/application/${iqTestAppExternalId}/report/${iqTestReportInternalId}"
+    "release"               | "http://localhost:${port}/iq/ui/links/application/${iqTestAppExternalId}/report/729af8111f1f47e2988b4c2020f3e92f"
+    "operate"               | "http://localhost:${port}/iq/ui/links/application/${iqTestAppExternalId}/report/1a017b0f54e04ac388f580ad7378893f"
+    "foobar"                | null
   }
 
-  def 'Lookup Report Link for Stage - Unknown Stage Returns Null'() {
+  def 'Lookup Stage for Report Link'() {
     when:
-    def resp = clientHttpMock.lookupReportLink("aaaaaaa-testidegrandfathering", "foobar")
+    def resp = clientHttpMock.lookupStageForReport(iqTestAppExternalId, reportInternalId)
 
     then:
-    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=aaaaaaa-testidegrandfathering", _) >> iqApplication
-    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/e06a119c75d04d97b8d8c11b62719752", _) >> iqReportLinks
+    1 * http.get("http://localhost:${port}/iq/api/v2/applications/?publicId=${iqTestAppExternalId}", _) >> iqApplication
+    1 * http.get("http://localhost:${port}/iq/api/v2/reports/applications/${iqTestAppInternalId}", _) >> iqReportLinks
 
     and:
-    resp == null
+    resp == stageName
+
+    where:
+    reportInternalId | stageName
+    "6354f0c8f2bf4e2aa52aacf3177c5630" | "build"
+    iqTestReportInternalId             | "stage-release"
+    "729af8111f1f47e2988b4c2020f3e92f" | "release"
+    "1a017b0f54e04ac388f580ad7378893f" | "operate"
+    "xyz"                              | null
+  }
+
+  def 'Lookup Remediation Recommendation - Returns No Recommendation'() {
+    when:
+    String purl = "pkg:maven/org.apache.httpcomponents/httpclient@4.5.1?type=jar"
+
+    IQVersionRecommendation resp = new IQVersionRecommendation(clientHttpMock.lookupRecommendedVersion(purl,"release", iqTestAppInternalId), "release")
+
+    then:
+    1 * http.post("http://localhost:${port}/iq/api/v2/components/remediation/application/${iqTestAppInternalId}?stageId=release", _, _) >> iqVersionRecommendationEmpty
+
+    and:
+    resp != null
+    resp.data != null
+    resp.getRecommendationText("4.5.1") == "No recommended versions are available for the current component"
+  }
+
+  def 'Lookup Remediation Recommendation - Old Version Returns both NoFail/NoViolation and Current Version Returns Current Recommendation'() {
+    when:
+    String purl = "pkg:maven/org.apache.httpcomponents/httpclient@4.5.1?type=jar"
+
+    IQVersionRecommendation resp = new IQVersionRecommendation(clientHttpMock.lookupRecommendedVersion(purl,"release", iqTestAppInternalId), "release")
+
+    then:
+    1 * http.post("http://localhost:${port}/iq/api/v2/components/remediation/application/${iqTestAppInternalId}?stageId=release", _, _) >> iqVersionRecommendationSame
+
+    and:
+    resp != null
+    resp.data != null
+    resp.getRecommendationText("4.5.1") == "4.5.3: Next version with no failing policy violations also has no violations"
+    resp.getRecommendationText("4.5.3") == "Current version has no policy violations"
+  }
+
+  def 'Lookup Remediation Recommendation - Different Version Recommendations return both versions'() {
+    when:
+    String purl = "pkg:maven/org.apache.httpcomponents/httpclient@4.5.1?type=jar"
+
+    IQVersionRecommendation resp = new IQVersionRecommendation(clientHttpMock.lookupRecommendedVersion(purl,"release", iqTestAppInternalId), "release")
+
+    then:
+    1 * http.post("http://localhost:${port}/iq/api/v2/components/remediation/application/${iqTestAppInternalId}?stageId=release", _, _) >> iqVersionRecommendationDifferent
+
+    and:
+    resp != null
+    resp.data != null
+    resp.getRecommendationText("4.5.1") == "4.5.2: Next version with no failing policy\n4.5.3: Next version with no policy violations"
+    resp.getRecommendationText("4.5.2") == "Current version has no failing violations\n4.5.3: Next version with no policy violations"
+  }
+
+  def 'Lookup Remediation Recommendation - Only Non-Fail version available'() {
+    when:
+    String purl = "pkg:maven/org.apache.httpcomponents/httpclient@4.5.1?type=jar"
+
+    IQVersionRecommendation resp = new IQVersionRecommendation(clientHttpMock.lookupRecommendedVersion(purl,"release", iqTestAppInternalId), "release")
+
+    then:
+    1 * http.post("http://localhost:${port}/iq/api/v2/components/remediation/application/${iqTestAppInternalId}?stageId=release", _, _) >> iqVersionRecommendationOnlyNonFail
+
+    and:
+    resp != null
+    resp.data != null
+    resp.getRecommendationText("4.5.1") == "4.5.2: Next version with no failing policy\nNo recommended version clean of policy violations"
+    resp.getRecommendationText("4.5.2") == "Current version has no failing violations\nNo recommended version clean of policy violations"
+  }
+
+  def 'Lookup Remediation Recommendation - Only No-Violations version available'() {
+    when:
+    String purl = "pkg:maven/org.apache.httpcomponents/httpclient@4.5.1?type=jar"
+
+    IQVersionRecommendation resp = new IQVersionRecommendation(clientHttpMock.lookupRecommendedVersion(purl,"release", iqTestAppInternalId), "release")
+
+    then:
+    1 * http.post("http://localhost:${port}/iq/api/v2/components/remediation/application/${iqTestAppInternalId}?stageId=release", _, _) >> iqVersionRecommendationOnlyNoViolations
+
+    and:
+    resp != null
+    resp.data != null
+    resp.getRecommendationText("4.5.1") == "4.5.3: Next version with no policy violations"
+    resp.getRecommendationText("4.5.3") == "Current version has no policy violations"
   }
 
   /*
@@ -164,7 +272,7 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Get Report Violations'() {
     when:
-      def resp = clientLive.lookupPolcyDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+      def resp = clientLive.lookupPolcyDetailsFromIQ(iqTestReportInternalId, iqTestAppExternalId)
 
     then:
       resp != null
@@ -177,7 +285,7 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Get Report Component Details'() {
     when:
-    def resp = clientLive.lookupComponentDetailsFromIQ("e8ef4d3d26dd48b3866019b1478c6453", "aaaaaaa-testidegrandfathering")
+    def resp = clientLive.lookupComponentDetailsFromIQ(iqTestReportInternalId, iqTestAppExternalId)
 
     then:
     resp != null
@@ -192,14 +300,14 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Lookup Organization for App Id'() {
     when:
-      def applicationResp = clientLive.lookupApplication("aaaaaaa-testidegrandfathering" )
+      def applicationResp = clientLive.lookupApplication(iqTestAppExternalId )
       def organizationsResp = clientLive.lookupOrganizations()
 
     then:
       applicationResp != null
       applicationResp.applications.size == 1
-      applicationResp.applications[0].publicId == "aaaaaaa-testidegrandfathering"
-      applicationResp.applications[0].id == "e06a119c75d04d97b8d8c11b62719752"
+      applicationResp.applications[0].publicId == iqTestAppExternalId
+      applicationResp.applications[0].id == iqTestAppInternalId
       applicationResp.applications[0].organizationId == "2d0dfb87b67b43a3b4271e462bae9eca"
       organizationsResp != null
       organizationsResp.organizations.size > 0
@@ -209,7 +317,7 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Lookup Organization Name for App Id'() {
     when:
-      def resp = clientLive.lookupOrganizationName("aaaaaaa-testidegrandfathering" )
+      def resp = clientLive.lookupOrganizationName(iqTestAppExternalId )
 
     then:
       resp == "Automatically Created Apps"
@@ -227,9 +335,26 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Lookup Report Links'() {
     when:
-    def resp = clientLive.lookupApplicationReportLinks("e06a119c75d04d97b8d8c11b62719752")
+    def resp = clientLive.lookupApplicationReportLinks(iqTestAppInternalId)
 
     then:
     resp.size != 0
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Lookup Remediation Recommendation'() {
+    String appId = iqTestAppInternalId
+    appId = "a5004e5c189349faac376647f8863a19"
+
+    String purl = "pkg:maven/org.apache.httpcomponents/httpclient@4.5.1?type=jar"
+    //purl = "pkg:maven/axis/axis@1.4?type=jar"
+
+    when:
+    IQVersionRecommendation resp = new IQVersionRecommendation(clientLive.lookupRecommendedVersion(purl,"release", appId), "release")
+
+    then:
+    resp != null
+    resp.data != null
+
   }
 }

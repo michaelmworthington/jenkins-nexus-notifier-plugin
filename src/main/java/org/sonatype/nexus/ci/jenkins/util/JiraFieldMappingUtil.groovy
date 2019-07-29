@@ -52,7 +52,7 @@ class JiraFieldMappingUtil
   private String observedLicensesCustomFieldName
   private String effectiveLicensesCustomFieldName
   private String fileOccurrencesCustomFieldName
-  private String recommendedRemediationCustomFieldName;      //todo
+  private String recommendedRemediationCustomFieldName
   private String purlCustomFieldName
   private String componentCombinedIdentifierCustomFieldName
   private String componentGroupCustomFieldName
@@ -162,8 +162,7 @@ class JiraFieldMappingUtil
     getObservedLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.observedLicenseNames
     getEffectiveLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.effectiveLicenseNames
     getFileOccurrencesCustomField().customFieldValue = pPolicyViolation.occurrences.join("\n")
-
-    //todo: recommended version
+    getRecommendedRemediationCustomField().customFieldValue = pPolicyViolation.recommendedRemediation.getRecommendationText(pPolicyViolation.componentIdentifier?.version)
     getPurlCustomField().customFieldValue = pPolicyViolation.packageUrl
     getComponentCombinedIdentifierCustomField().customFieldValue = pPolicyViolation.componentIdentifier?.prettyName
     getComponentGroup().customFieldValue = pPolicyViolation.componentIdentifier?.group

@@ -28,7 +28,15 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
-  def lookupReportLink(String iqAppExternalId, String iqStage)
+  String lookupStageForReport(String iqAppExternalId, String iqReportInternalId)
+  {
+    def applicationResp = lookupApplication(iqAppExternalId)
+    def reportsResp = lookupApplicationReportLinks(applicationResp?.applications[0]?.id)
+
+    return reportsResp.find { it.reportHtmlUrl.endsWith(iqReportInternalId) }?.stage
+  }
+
+  String lookupReportLink(String iqAppExternalId, String iqStage)
   {
     def applicationResp = lookupApplication(iqAppExternalId)
     def reportsResp = lookupApplicationReportLinks(applicationResp?.applications[0]?.id)
@@ -38,6 +46,19 @@ class IQClient extends AbstractToolClient
     {
       return "${serverUrl}/${reportHtmlUrl}"
     }
+    else
+    {
+      return null
+    }
+  }
+
+  def lookupRecommendedVersion(String pPackageUrl, String pStage, String pIQApplicationInternalId)
+  {
+    def url = getComponentRemediationDetailsUrl(serverUrl, pIQApplicationInternalId, pStage)
+    Map body = getComponentRemediationDetailsBody(pPackageUrl)
+    def headers = getRequestHeaders(username, password)
+
+    http.post(url, body, headers)
   }
 
   private def lookupApplicationReportLinks(String iqAppInternalId)
@@ -48,7 +69,7 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
-  private def lookupApplication(String iqAppExternalId)
+  def lookupApplication(String iqAppExternalId)
   {
     def url = getApplicationUrl(serverUrl, iqAppExternalId)
     def headers = getRequestHeaders(username, password)
@@ -80,7 +101,7 @@ class IQClient extends AbstractToolClient
     http.get(url, headers)
   }
 
-  def lookupOrganizationName(String iqAppExternalId)
+  String lookupOrganizationName(String iqAppExternalId)
   {
     def applicationResp = lookupApplication(iqAppExternalId)
     def organizationsResp = lookupOrganizations()
@@ -129,7 +150,7 @@ class IQClient extends AbstractToolClient
 
     //todo: raw = new in 65
     //todo: new in 67 = 		 "packageUrl": "pkg:maven/tomcat/tomcat-util@5.5.23?type=jar",
-    return "${serverUrl}/api/v2/applications/${iqAppExternalId}/reports/${iqReportInternalId}/raw"
+    return "${serverUrl}/api/v2/applications/${iqAppExternalId}/reports/${iqReportInternalId}/raw" //TODO: does raw work with 59?
   }
 
   private String getPolicyDetailsReportUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId)
@@ -149,12 +170,14 @@ class IQClient extends AbstractToolClient
     //POST /api/v2/components/remediation/application/{applicationInternalId}?stageId={stageId}
 
     //todo: new in 64
-    //todo:        64: next-no-violations
-    //todo:        64: next-non-failing
-    //todo:  if no version satisfies, returns null / empty array
-    //todo:  if the current version satisfies, returns the curent version
     //todo: new in 67 = 		 "packageUrl": "pkg:maven/tomcat/tomcat-util@5.5.23?type=jar",
-    return "${serverUrl}/api/v2/components/remediation/application/${applicationInternalId}?stageId=${stageId}"
+
+    String returnValue = "${serverUrl}/api/v2/components/remediation/application/${iqAppExternalId}"
+    if(stageId)
+    {
+      returnValue += "?stageId=${stageId}"
+    }
+    return returnValue
   }
 
   private String getCVELinkUrl(String serverUrl) {
@@ -177,4 +200,9 @@ class IQClient extends AbstractToolClient
     return "${serverUrl}/api/v2/applications"
   }
 
+  private static Map getComponentRemediationDetailsBody(String pPackageUrl) {
+    return [
+            packageUrl : pPackageUrl
+    ]
+  }
 }

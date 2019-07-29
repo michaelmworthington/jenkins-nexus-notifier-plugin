@@ -1,0 +1,44 @@
+{
+  "remediation": {
+    "versionChanges": [
+      {
+        "data": {
+          "component": {
+            "componentIdentifier": {
+              "coordinates": {
+                "artifactId": "httpclient",
+                "classifier": "",
+                "extension": "jar",
+                "groupId": "org.apache.httpcomponents",
+                "version": "4.5.3"
+              },
+              "format": "maven"
+            },
+            "hash": null,
+            "packageUrl": "pkg:maven/org.apache.httpcomponents/httpclient@4.5.3?type=jar"
+          }
+        },
+        "type": "next-no-violations"
+      },
+      {
+        "data": {
+          "component": {
+            "componentIdentifier": {
+              "coordinates": {
+                "artifactId": "httpclient",
+                "classifier": "",
+                "extension": "jar",
+                "groupId": "org.apache.httpcomponents",
+                "version": "4.5.2"
+              },
+              "format": "maven"
+            },
+            "hash": null,
+            "packageUrl": "pkg:maven/org.apache.httpcomponents/httpclient@4.5.2?type=jar"
+          }
+        },
+        "type": "next-non-failing"
+      }
+    ]
+  }
+}

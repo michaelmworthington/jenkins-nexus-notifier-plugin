@@ -85,7 +85,7 @@ public class JiraNotification
   private String observedLicensesCustomFieldName;
   private String effectiveLicensesCustomFieldName;
   private String fileOccurrencesCustomFieldName;
-  private String recommendedRemediationCustomFieldName;      //todo
+  private String recommendedRemediationCustomFieldName;
   private String purlCustomFieldName;
   private String componentCombinedIdentifierCustomFieldName;
   private String componentGroupCustomFieldName;

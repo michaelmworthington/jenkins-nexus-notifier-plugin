@@ -1,0 +1,25 @@
+{
+  "remediation": {
+    "versionChanges": [
+      {
+        "type": "next-non-failing",
+        "data": {
+          "component": {
+            "packageUrl": "pkg:maven/org.apache.httpcomponents/httpclient@4.5.3?type=jar",
+            "hash": null,
+            "componentIdentifier": {
+              "format": "maven",
+              "coordinates": {
+                "artifactId": "httpclient",
+                "classifier": "",
+                "extension": "jar",
+                "groupId": "org.apache.httpcomponents",
+                "version": "4.5.2"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

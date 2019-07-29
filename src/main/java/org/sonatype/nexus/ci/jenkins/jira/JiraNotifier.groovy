@@ -19,6 +19,7 @@ import hudson.model.Run
 import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.iq.IQClient
 import org.sonatype.nexus.ci.jenkins.iq.IQClientFactory
+import org.sonatype.nexus.ci.jenkins.model.IQVersionRecommendation
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction
 import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
 import org.sonatype.nexus.ci.jenkins.notifier.ContinuousMonitoringConfig
@@ -165,9 +166,13 @@ class JiraNotifier
         String iqReportInternalid = linkPieces[linkPieces.length-1]
         String iqAppExternalId = linkPieces[linkPieces.length-3]
         jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
-        //TODO: skip this if the org custom field is not mapped - to avoid any edge cases with permissions (customFieldID should be null, but double check that)
-        jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
-        //jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = "TODO: Scan Stage" //TODO: i cannot support this lookup right now. Perhaps it could be mapped through the passthrough fields
+        jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = iqClient.lookupStageForReport(iqAppExternalId, iqReportInternalid)
+
+        //skip this if the org custom field is not mapped - to avoid any edge cases with permissions (customFieldID should be null, but double check that)
+        if(jiraFieldMappingUtil.getOrganizationCustomField().customFieldId)
+        {
+          jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
+        }
 
         //todo: skip for continuous monitoring
         jiraFieldMappingUtil.getLastScanDateCustomField().customFieldValue = jiraFieldMappingUtil.getFormattedScanDateForJira()
@@ -276,6 +281,7 @@ class JiraNotifier
           createJiraTickets(newIQComponents,
                             repeatJiraComponentsWithNewFindings,
                             newIQFindings,
+                            iqClient,
                             jiraClient,
                             jiraFieldMappingUtil)
 
@@ -326,7 +332,7 @@ class JiraNotifier
           // loop through **repeatJiraFindings**
           //TODO: Futures
           //TODO:   {{iqURL}}/rest/policyWaiver/application/{{iqAppExternalId}}
-          //TODO:   snow
+          //TODO:   service now
 
         }
         else
@@ -445,9 +451,12 @@ class JiraNotifier
   private void createJiraTickets(Map<String, PolicyViolation> newIQComponents,
                                  Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings,
                                  Map<String, PolicyViolation> newIQFindings,
+                                 IQClient iqClient,
                                  JiraClient jiraClient,
                                  JiraFieldMappingUtil jiraFieldMappingUtil)
   {
+    String iqApplicationInternalId = iqClient.lookupApplication(jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)?.applications[0]?.id
+
     if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
     {
       Set<String> createdSubTasks = new HashSet<String>()
@@ -455,25 +464,34 @@ class JiraNotifier
 
       logger.println("Creating ${newIQComponents.size()} component tickets")
 
-      newIQComponents.each {
-        if (it.value.findingFingerprints.isEmpty())
+      newIQComponents.each { fingerprint, policyViolation ->
+        if (policyViolation.findingFingerprints.isEmpty())
         {
-          logger.println("Skipping Jira Ticket for Component: ${it.value.fingerprintPrettyPrint} - findings have been filtered out")
+          logger.println("Skipping Jira Ticket for Component: ${policyViolation.fingerprintPrettyPrint} - findings have been filtered out")
         }
         else
         {
+          //lookup recommended version from IQ Server
+          //Because it's another API call, do it only when creating tickets
+          safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
+
           resp = createIndividualTicket(jiraClient,
                                         jiraFieldMappingUtil,
-                                        it.value)
+                                        policyViolation)
 
           if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
           {
-            logger.println("Creating ${it.value.findingFingerprints.size()} finding tickets")
-            it.value.findingFingerprints.each {
+            logger.println("Creating ${policyViolation.findingFingerprints.size()} finding tickets")
+            policyViolation.findingFingerprints.each {
+              PolicyViolation childPolicyViolation = newIQFindings.get(it)
+
+              //copy recommended version from parent
+              childPolicyViolation.recommendedRemediation = policyViolation.recommendedRemediation
+
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
                             resp.key,
-                            newIQFindings.get(it))
+                            childPolicyViolation)
 
               createdSubTasks.add(it)
             }
@@ -486,19 +504,23 @@ class JiraNotifier
         int moreFindings = newIQFindings.size() - createdSubTasks.size()
         logger.println("Creating ${moreFindings} finding tickets for repeat components")
 
-        newIQFindings.each {
-          if (!createdSubTasks.contains(it.key))
+        newIQFindings.each { fingerprint, policyViolation ->
+          if (!createdSubTasks.contains(fingerprint))
           {
-            if (repeatJiraComponentsWithNewFindings.containsKey(it.value.componentFingerprint))
+            if (repeatJiraComponentsWithNewFindings.containsKey(policyViolation.componentFingerprint))
             {
+              //lookup recommended version from IQ Server
+              //Because it's another API call, do it only when creating tickets
+              safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
+
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
-                            repeatJiraComponentsWithNewFindings.get(it.value.componentFingerprint).ticketExternalId,
-                            it.value)
+                            repeatJiraComponentsWithNewFindings.get(policyViolation.componentFingerprint).ticketExternalId,
+                            policyViolation)
             }
             else
             {
-              logger.println("WARNING: skipping creating Jira Sub-task for finding: ${it.value.fingerprintPrettyPrint} because I could not find the parent task for fingerprint: ${it.value.componentFingerprintPrettyPrint}")
+              logger.println("WARNING: skipping creating Jira Sub-task for finding: ${policyViolation.fingerprintPrettyPrint} because I could not find the parent task for fingerprint: ${policyViolation.componentFingerprintPrettyPrint}")
             }
           }
         }
@@ -506,11 +528,26 @@ class JiraNotifier
     } else
     {
       logger.println("Creating ${newIQFindings.size()} finding tickets")
-      newIQFindings.each {
+      newIQFindings.each { fingerprint, policyViolation ->
+        //lookup recommended version from IQ Server
+        //Because it's another API call, do it only when creating tickets
+        safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
+
         createIndividualTicket(jiraClient,
                                jiraFieldMappingUtil,
-                               it.value)
+                               policyViolation)
         }
+    }
+  }
+
+  private static void safeLookupRecommendedVersion(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation policyViolation, IQClient iqClient, String iqApplicationInternalId)
+  {
+    if (jiraFieldMappingUtil.getRecommendedRemediationCustomField().customFieldId && policyViolation.packageUrl)
+    {
+      policyViolation.recommendedRemediation = new IQVersionRecommendation(iqClient.lookupRecommendedVersion(policyViolation.packageUrl,
+                                                                                                             jiraFieldMappingUtil.getScanStageCustomField().customFieldValue,
+                                                                                                             iqApplicationInternalId),
+                                                                           jiraFieldMappingUtil.getScanStageCustomField().customFieldValue)
     }
   }
 
