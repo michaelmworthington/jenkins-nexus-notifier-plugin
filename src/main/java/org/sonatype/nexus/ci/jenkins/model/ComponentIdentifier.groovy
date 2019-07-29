@@ -10,7 +10,7 @@ package org.sonatype.nexus.ci.jenkins.model
  *       {"format":"a-name","coordinates":{"name":"vizion","qualifier":"","version":"0.1.0"}}
  *       {"format":"rpm","coordinas": {"name": "AGReader","version": "1.2-6.el6","architecture": "ppc64"}}
  *       {"format":"gem","coordinas": {"name": "rails","version": "5.","platform":""}}
- *
+ *       {"format":"golang","coordinas": {"name": "github.com/rs/cors","version": "v1.4.0"}}
  *
  */
 class ComponentIdentifier
@@ -24,7 +24,6 @@ class ComponentIdentifier
   def coordinates
   String prettyName
 
-  //TODO: GO LANG!!!!!
   ComponentIdentifier(Map pComponentIdentifierJson)
   {
     if (pComponentIdentifierJson)
@@ -66,6 +65,10 @@ class ComponentIdentifier
           version = coordinates.version
           classifier = coordinates.architecture
           break
+        case "golang":
+          artifact = coordinates.name
+          version = coordinates.version
+          break
         case "a-name":
           artifact = coordinates.name
           version = coordinates.version
@@ -96,6 +99,7 @@ class ComponentIdentifier
       case "pypi":
       case "gem":
       case "rpm":
+      case "golang":
       case "a-name":
         returnValue = [format, group, artifact, version, classifier, extension].findAll().join(":")
         break
