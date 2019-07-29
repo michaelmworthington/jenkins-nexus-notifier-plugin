@@ -140,220 +140,22 @@ class JiraNotifier
       checkArgument(dynamicDataJson.size == 1, "When running for a single app, only dynamic data with one object is supported.")
     }
 
+    IQClient iqClient
+    JiraClient jiraClient
+    JiraFieldMappingUtil jiraFieldMappingUtil
+    PolicyEvaluationHealthAction policyEvaluationHealthAction
+
     try
     {
-      IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
-      JiraClient jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId,
-                                                              logger,
-                                                              jiraNotification.verboseLogging,
-                                                              jiraNotification.dryRun,
-                                                              jiraNotification.disableJqlFieldFilter,
-                                                              jiraNotification.jqlMaxResultsOverride)
-      JiraFieldMappingUtil jiraFieldMappingUtil = new JiraFieldMappingUtil(dynamicDataJson, jiraNotification, jiraClient, run.getEnvironment(listener), logger)
-      PolicyEvaluationHealthAction policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
-
-      try
-      {
-        logger.println("######################################")
-        logger.println("Creating Jira Tickets for Project: ${jiraFieldMappingUtil.projectKey} with issue type: ${jiraFieldMappingUtil.issueTypeName} and priority: ${jiraFieldMappingUtil.priorityName}")
-        logger.println("######################################")
-
-        // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
-        logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
-        jiraFieldMappingUtil.getIqServerReportLinkCustomField().customFieldValue = policyEvaluationHealthAction.reportLink
-
-        String[] linkPieces = policyEvaluationHealthAction.reportLink.split("/")
-        String iqReportInternalid = linkPieces[linkPieces.length-1]
-        String iqAppExternalId = linkPieces[linkPieces.length-3]
-        jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
-        jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = iqClient.lookupStageForReport(iqAppExternalId, iqReportInternalid)
-
-        //skip this if the org custom field is not mapped - to avoid any edge cases with permissions (customFieldID should be null, but double check that)
-        if(jiraFieldMappingUtil.getOrganizationCustomField().customFieldId)
-        {
-          jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
-        }
-
-        //todo: skip for continuous monitoring
-        jiraFieldMappingUtil.getLastScanDateCustomField().customFieldValue = jiraFieldMappingUtil.getFormattedScanDateForJira()
-
-        if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
-        {
-          // Data from IQ Server ("potential") and JIRA ("current") mapped by Fingerprint
-          Map<String, PolicyViolation> potentialComponentsMap = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> potentialFindingsMap = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> currentComponentsMap = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> currentFindingsMap = new HashMap<String, PolicyViolation>()
-
-          // Deduplicated findings
-          Map<String, PolicyViolation> newIQComponents = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> repeatJiraFindingsWithNewComponents = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> newIQFindings = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> repeatJiraComponents = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> repeatJiraFindings = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> oldJiraComponents = new HashMap<String, PolicyViolation>()
-          Map<String, PolicyViolation> oldJiraFindings = new HashMap<String, PolicyViolation>()
-
-
-          /***************************************
-                1. Get Policy Findings from IQ
-           ***************************************/
-
-          //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
-          def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
-
-          //TODO: Lookup Version of IQ Server - raw vs. old URLs
-          def findingComponents = iqClient.lookupComponentDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
-
-          logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
-          potentialFindings.aaData.each { policyFinding ->
-            def rawData = findingComponents.components.find({it.hash == policyFinding.hash})
-
-            PolicyViolation.buildFromIQ(potentialComponentsMap,
-                                        potentialFindingsMap,
-                                        policyFinding,
-                                        rawData,
-                                        policyEvaluationHealthAction.reportLink,
-                                        iqClient.serverUrl,
-                                        jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
-                                        jiraFieldMappingUtil.policyFilterPrefix,
-                                        jiraFieldMappingUtil.policyFilterThreatLevel)
-          }
-
-          /***************************************
-              2. Get Tickets from Jira
-           ***************************************/
-
-          lookupJiraTickets(jiraClient, jiraFieldMappingUtil, currentFindingsMap, currentComponentsMap, 0)
-
-          /***************************************
-              3. Filter out Existing Tickets
-           ***************************************/
-          //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
-          logger.println("######################################")
-          logger.println("        Compare Input")
-          logger.println("######################################")
-          logger.println("Potential Components from the IQ Server Report : ${potentialComponentsMap.size()}")
-          logger.println("Potential Findings   from the IQ Server Report : ${potentialFindingsMap.size()}")
-          logger.println("Current Components   in Jira before filtering  : ${currentComponentsMap.size()}")
-          logger.println("Current Findings     in Jira before filtering  : ${currentFindingsMap.size()}")
-          logger.println("######################################")
-          logger.println("######################################")
-
-          //which results from IQ do we need to create, and which alredy exist, and which need to be closed
-          //  Loop through potential findings map and current findings map
-          compareIQServerAndJira(jiraFieldMappingUtil,
-                                 potentialComponentsMap,
-                                 potentialFindingsMap,
-                                 currentComponentsMap,
-                                 currentFindingsMap,
-                                 newIQComponents,
-                                 repeatJiraComponentsWithNewFindings,
-                                 repeatJiraFindingsWithNewComponents,
-                                 newIQFindings,
-                                 repeatJiraComponents,
-                                 repeatJiraFindings,
-                                 oldJiraComponents,
-                                 oldJiraFindings)
-
-          //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
-          logger.println("######################################")
-          logger.println("        Compare Output")
-          logger.println("")
-          logComponentAndSubTaskConfig(jiraFieldMappingUtil)
-          logger.println("")
-          logger.println("######################################")
-          logger.println("Number of components that do not have tickets      : ${newIQComponents.size()}")
-          logger.println("Number of findings   that do not have tickets      : ${newIQFindings.size()}")
-          logger.println("Number of components that have existing tickets    : ${repeatJiraComponents.size()} (${repeatJiraComponentsWithNewFindings.size()} have new findings)")
-          logger.println("Number of findings   that have existing tickets    : ${repeatJiraFindings.size()} (${repeatJiraFindingsWithNewComponents.size()} have new components)")
-          logger.println("Number of tickets    that no longer have components: ${oldJiraComponents.size()}")
-          logger.println("Number of tickets    that no longer have findings  : ${oldJiraFindings.size()}")
-          logger.println("######################################")
-          logger.println("######################################")
-
-          /***************************************
-            4. Create New Tickets
-           ***************************************/
-
-          //From now on, we can treat the repeat jira findings as new iq findings
-          newIQFindings.putAll(repeatJiraFindingsWithNewComponents)
-
-          createJiraTickets(newIQComponents,
-                            repeatJiraComponentsWithNewFindings,
-                            newIQFindings,
-                            iqClient,
-                            jiraClient,
-                            jiraFieldMappingUtil)
-
-          /***************************************
-           5. Update Scan Time on repeat findings
-           ***************************************/
-
-          if(shouldUpdateLastScanDate)
-          {
-            logger.println("Updating ${repeatJiraComponents.size()} repeat component tickets with the new scan date")
-            repeatJiraComponents.each {
-              updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
-            }
-
-            logger.println("Updating ${repeatJiraFindings.size()} repeat finding tickets with the new scan date")
-            repeatJiraFindings.each {
-              updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
-            }
-          }
-          else
-          {
-            logger.println("Skipping the update to last scan date due to configuration.")
-          }
-
-          /***************************************
-            6. Close Tickets that have no finding (i.e. they have been fixed)
-           ***************************************/
-          if (jiraFieldMappingUtil.shouldTransitionJiraTickets) {
-            logger.println("Transitioning ${oldJiraFindings.size()} old finding tickets to: ${jiraFieldMappingUtil.transitionStatus} using transition: ${jiraFieldMappingUtil.transitionName}")
-            oldJiraFindings.each{
-              transitionTicket(jiraClient, jiraFieldMappingUtil.transitionName, it.value)
-            }
-
-            //todo: log only if configured to manage component (?aggregated?) tickets
-            logger.println("Transitioning ${oldJiraComponents.size()} old component tickets to: ${jiraFieldMappingUtil.transitionStatus} using transition: ${jiraFieldMappingUtil.transitionName}")
-            oldJiraComponents.each{
-              transitionTicket(jiraClient, jiraFieldMappingUtil.transitionName, it.value)
-            }
-          }
-
-          /***************************************
-             7. Waive findings where the ticket has been closed
-           ***************************************/
-
-          //TODO: What tickets in Jira have been closed where we can apply a waiver in IQ
-          //      need to deal with the edge cases on this one
-          //
-          // loop through **repeatJiraFindings**
-          //TODO: Futures
-          //TODO:   {{iqURL}}/rest/policyWaiver/application/{{iqAppExternalId}}
-          //TODO:   service now
-
-        }
-        else
-        {
-          logger.println("Creating just one ticket with a violation summary in the description")
-          createSummaryTicket(jiraClient, jiraFieldMappingUtil, policyEvaluationHealthAction, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue, iqReportInternalid)
-
-          if (jiraFieldMappingUtil.shouldTransitionJiraTickets)
-          {
-            logger.println("Skipping Transitioning tickets when in Summary Mode")
-          }
-        }
-      }
-      catch (ex)
-      {
-        logger.println(ex.message)
-        ex.printStackTrace(logger)
-        throw new AbortException(ex.message)
-      }
+      iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
+      jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId,
+                                                   logger,
+                                                   jiraNotification.verboseLogging,
+                                                   jiraNotification.dryRun,
+                                                   jiraNotification.disableJqlFieldFilter,
+                                                   jiraNotification.jqlMaxResultsOverride)
+      jiraFieldMappingUtil = new JiraFieldMappingUtil(dynamicDataJson, jiraNotification, jiraClient, run.getEnvironment(listener), logger)
+      policyEvaluationHealthAction = PolicyEvaluationHealthAction.build(pPolicyEvaluationHealthAction)
     }
     catch (Throwable ex)
     {
@@ -361,7 +163,209 @@ class JiraNotifier
       logger.println(ex.message)
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
+    }
 
+    try
+    {
+      logger.println("######################################")
+      logger.println("Creating Jira Tickets for Project: ${jiraFieldMappingUtil.projectKey} with issue type: ${jiraFieldMappingUtil.issueTypeName} and priority: ${jiraFieldMappingUtil.priorityName}")
+      logger.println("######################################")
+
+      // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
+      logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
+      jiraFieldMappingUtil.getIqServerReportLinkCustomField().customFieldValue = policyEvaluationHealthAction.reportLink
+
+      String[] linkPieces = policyEvaluationHealthAction.reportLink.split("/")
+      String iqReportInternalid = linkPieces[linkPieces.length-1]
+      String iqAppExternalId = linkPieces[linkPieces.length-3]
+      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
+      jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = iqClient.lookupStageForReport(iqAppExternalId, iqReportInternalid)
+
+      //skip this if the org custom field is not mapped - to avoid any edge cases with permissions (customFieldID should be null, but double check that)
+      if(jiraFieldMappingUtil.getOrganizationCustomField().customFieldId)
+      {
+        jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
+      }
+
+      //todo: skip for continuous monitoring
+      jiraFieldMappingUtil.getLastScanDateCustomField().customFieldValue = jiraFieldMappingUtil.getFormattedScanDateForJira()
+
+      if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
+      {
+        // Data from IQ Server ("potential") and JIRA ("current") mapped by Fingerprint
+        Map<String, PolicyViolation> potentialComponentsMap = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> potentialFindingsMap = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> currentComponentsMap = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> currentFindingsMap = new HashMap<String, PolicyViolation>()
+
+        // Deduplicated findings
+        Map<String, PolicyViolation> newIQComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraComponentsWithNewFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraFindingsWithNewComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> newIQFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> repeatJiraFindings = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> oldJiraComponents = new HashMap<String, PolicyViolation>()
+        Map<String, PolicyViolation> oldJiraFindings = new HashMap<String, PolicyViolation>()
+
+
+        /***************************************
+              1. Get Policy Findings from IQ
+         ***************************************/
+
+        //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
+        def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
+
+        //TODO: Lookup Version of IQ Server - raw vs. old URLs
+        def findingComponents = iqClient.lookupComponentDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
+
+        logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
+        potentialFindings.aaData.each { policyFinding ->
+          def rawData = findingComponents.components.find({it.hash == policyFinding.hash})
+
+          PolicyViolation.buildFromIQ(potentialComponentsMap,
+                                      potentialFindingsMap,
+                                      policyFinding,
+                                      rawData,
+                                      policyEvaluationHealthAction.reportLink,
+                                      iqClient.serverUrl,
+                                      jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
+                                      jiraFieldMappingUtil.policyFilterPrefix,
+                                      jiraFieldMappingUtil.policyFilterThreatLevel)
+        }
+
+        /***************************************
+            2. Get Tickets from Jira
+         ***************************************/
+
+        lookupJiraTickets(jiraClient, jiraFieldMappingUtil, currentFindingsMap, currentComponentsMap, 0)
+
+        /***************************************
+            3. Filter out Existing Tickets
+         ***************************************/
+        //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
+        logger.println("######################################")
+        logger.println("        Compare Input")
+        logger.println("######################################")
+        logger.println("Potential Components from the IQ Server Report : ${potentialComponentsMap.size()}")
+        logger.println("Potential Findings   from the IQ Server Report : ${potentialFindingsMap.size()}")
+        logger.println("Current Components   in Jira before filtering  : ${currentComponentsMap.size()}")
+        logger.println("Current Findings     in Jira before filtering  : ${currentFindingsMap.size()}")
+        logger.println("######################################")
+        logger.println("######################################")
+
+        //which results from IQ do we need to create, and which alredy exist, and which need to be closed
+        //  Loop through potential findings map and current findings map
+        compareIQServerAndJira(jiraFieldMappingUtil,
+                               potentialComponentsMap,
+                               potentialFindingsMap,
+                               currentComponentsMap,
+                               currentFindingsMap,
+                               newIQComponents,
+                               repeatJiraComponentsWithNewFindings,
+                               repeatJiraFindingsWithNewComponents,
+                               newIQFindings,
+                               repeatJiraComponents,
+                               repeatJiraFindings,
+                               oldJiraComponents,
+                               oldJiraFindings)
+
+        //TODO: filter logging messages, and maybe input based on aggregation and sub-task creation
+        logger.println("######################################")
+        logger.println("        Compare Output")
+        logger.println("")
+        logComponentAndSubTaskConfig(jiraFieldMappingUtil)
+        logger.println("")
+        logger.println("######################################")
+        logger.println("Number of components that do not have tickets      : ${newIQComponents.size()}")
+        logger.println("Number of findings   that do not have tickets      : ${newIQFindings.size()}")
+        logger.println("Number of components that have existing tickets    : ${repeatJiraComponents.size()} (${repeatJiraComponentsWithNewFindings.size()} have new findings)")
+        logger.println("Number of findings   that have existing tickets    : ${repeatJiraFindings.size()} (${repeatJiraFindingsWithNewComponents.size()} have new components)")
+        logger.println("Number of tickets    that no longer have components: ${oldJiraComponents.size()}")
+        logger.println("Number of tickets    that no longer have findings  : ${oldJiraFindings.size()}")
+        logger.println("######################################")
+        logger.println("######################################")
+
+        /***************************************
+          4. Create New Tickets
+         ***************************************/
+
+        //From now on, we can treat the repeat jira findings as new iq findings
+        newIQFindings.putAll(repeatJiraFindingsWithNewComponents)
+
+        createJiraTickets(newIQComponents,
+                          repeatJiraComponentsWithNewFindings,
+                          newIQFindings,
+                          iqClient,
+                          jiraClient,
+                          jiraFieldMappingUtil)
+
+        /***************************************
+         5. Update Scan Time on repeat findings
+         ***************************************/
+
+        if(shouldUpdateLastScanDate)
+        {
+          logger.println("Updating ${repeatJiraComponents.size()} repeat component tickets with the new scan date")
+          repeatJiraComponents.each {
+            updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
+          }
+
+          logger.println("Updating ${repeatJiraFindings.size()} repeat finding tickets with the new scan date")
+          repeatJiraFindings.each {
+            updateTicketScanDate(jiraClient, jiraFieldMappingUtil, it.value)
+          }
+        }
+        else
+        {
+          logger.println("Skipping the update to last scan date due to configuration.")
+        }
+
+        /***************************************
+          6. Close Tickets that have no finding (i.e. they have been fixed)
+         ***************************************/
+        if (jiraFieldMappingUtil.shouldTransitionJiraTickets) {
+          logger.println("Transitioning ${oldJiraFindings.size()} old finding tickets to: ${jiraFieldMappingUtil.transitionStatus} using transition: ${jiraFieldMappingUtil.transitionName}")
+          oldJiraFindings.each{
+            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionName, it.value)
+          }
+
+          //todo: log only if configured to manage component (?aggregated?) tickets
+          logger.println("Transitioning ${oldJiraComponents.size()} old component tickets to: ${jiraFieldMappingUtil.transitionStatus} using transition: ${jiraFieldMappingUtil.transitionName}")
+          oldJiraComponents.each{
+            transitionTicket(jiraClient, jiraFieldMappingUtil.transitionName, it.value)
+          }
+        }
+
+        /***************************************
+           7. Waive findings where the ticket has been closed
+         ***************************************/
+
+        //TODO: What tickets in Jira have been closed where we can apply a waiver in IQ
+        //      need to deal with the edge cases on this one
+        //
+        // loop through **repeatJiraFindings**
+        //TODO: Futures
+        //TODO:   {{iqURL}}/rest/policyWaiver/application/{{iqAppExternalId}}
+        //TODO:   service now
+
+      }
+      else
+      {
+        logger.println("Creating just one ticket with a violation summary in the description")
+        createSummaryTicket(jiraClient, jiraFieldMappingUtil, policyEvaluationHealthAction, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue, iqReportInternalid)
+
+        if (jiraFieldMappingUtil.shouldTransitionJiraTickets)
+        {
+          logger.println("Skipping Transitioning tickets when in Summary Mode")
+        }
+      }
+    }
+    catch (ex)
+    {
+      logger.println(ex.message)
+      ex.printStackTrace(logger)
+      throw new AbortException(ex.message)
     }
   }
 
@@ -544,6 +548,7 @@ class JiraNotifier
 
   private static void safeLookupRecommendedVersion(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation policyViolation, IQClient iqClient, String iqApplicationInternalId)
   {
+    //todo: flagging based on PURL is not quite accurate, remediation API was released in 64, PURL was released in 67. at the end of the day, i'm assuming a minimum supported version of 67
     if (jiraFieldMappingUtil.getRecommendedRemediationCustomField().customFieldId && policyViolation.packageUrl)
     {
       policyViolation.recommendedRemediation = new IQVersionRecommendation(iqClient.lookupRecommendedVersion(policyViolation.packageUrl,
