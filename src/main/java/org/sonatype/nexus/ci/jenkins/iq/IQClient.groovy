@@ -136,7 +136,7 @@ class IQClient extends AbstractToolClient
   }
 
   private String getApplicationsUrl(String serverUrl) {
-    verbosePrintLn("Get the Application Details from IQ Server")
+    verbosePrintLn("Get All Applications from IQ Server")
 
     return "${serverUrl}/api/v2/applications"
   }
@@ -148,14 +148,14 @@ class IQClient extends AbstractToolClient
     // 65<= reports/id/policy  + reports/id/raw
     // {{iqURL}}/api/v2/applications/{{iqAppExternalId}}/reports/{{iqReportInternalId}}
 
-    //todo: raw = new in 65
+    //todo: raw = new in 65 (/raw does not work with 59 - as of 69, the old one (/) still works, so use that for now until i need to develop a switch
     //todo: new in 67 = 		 "packageUrl": "pkg:maven/tomcat/tomcat-util@5.5.23?type=jar",
-    return "${serverUrl}/api/v2/applications/${iqAppExternalId}/reports/${iqReportInternalId}/raw" //TODO: does raw work with 59?
+    return "${serverUrl}/api/v2/applications/${iqAppExternalId}/reports/${iqReportInternalId}"
   }
 
   private String getPolicyDetailsReportUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId)
   {
-    verbosePrintLn("Get the Application Component Details Report from IQ Server")
+    verbosePrintLn("Get the Application Policy Details Report from IQ Server")
 
     //todo: policy = new in 65
     //todo: new in 67 = 		 "packageUrl": "pkg:maven/tomcat/tomcat-util@5.5.23?type=jar",
@@ -180,8 +180,8 @@ class IQClient extends AbstractToolClient
     return returnValue
   }
 
-  private String getCVELinkUrl(String serverUrl) {
-    verbosePrintLn("Get the CVE Link from IQ Server")
+  private String getCVELinkUrl(String serverUrl, String cveCode) {
+    verbosePrintLn("Get the CVE Details from IQ Server")
 
     // /iq/rest/vulnerability/details/sonatype/sonatype-2016-0030?hash=c8f6dcb0732868e7e5c2&componentIdentifier=%7B%22format%22%3A%22a-name%22%2C%22coordinates%22%3A%7B%22name%22%3A%22marked%22%2C%22qualifier%22%3A%22%22%2C%22version%22%3A%220.3.6%22%7D%7D
     // {"refId":"sonatype-2016-0030","source":"sonatype","htmlDetails":"<style> dt { color: #070707; font-weight: bold; margin-top: 18px; margin-bottom: 4px;} dt:first-of-type { margin-top: 0;} p:first-of-type { margin-top: 0;} </style>\n<div id=\"hds-sd\" class=\"iq-grid-row\">\n  <div class=\"iq-grid-col iq-grid-col--25\">\n    <div class=\"iq-grid-header\">\n      <h2 class=\"iq-grid-header__title\">Vulnerability</h2>\n      <hr class=\"iq-grid-header__hrule\">\n    </div>\n    <dl class=\"vulnerability\">\n<dt>\nIssue\n</dt>\n<dd>\nsonatype-2016-0030\n</dd>\n<dt>\nSeverity\n</dt>\n<dd>\nSonatype CVSS 3.0: 6.1\n</dd>\n<dt>\nWeakness\n</dt>\n<dd>\nSonatype CWE: <a target=\"_blank\" href=\"https://cwe.mitre.org/data/definitions/79.html\">79</a>\n</dd>\n<dt>\nSource\n</dt>\n<dd>\nSonatype Data Research\n</dd>\n<dt>\nCategories\n</dt>\n<dd>\nData\n</dd>\n    </dl>\n  </div>\n  <div class=\"iq-grid-col\">\n    <div class=\"iq-grid-header\">\n      <h2 class=\"iq-grid-header__title\">Description</h2>\n      <hr class=\"iq-grid-header__hrule\">\n    </div>\n    <dl class=\"vulnerability-description\">\n<dt>\nExplanation\n</dt>\n<dd>\n<p>The marked package is vulnerable to Cross-Site Scripting (XSS). The <code>unescape</code> function in the <code>marked.js</code> file fails to decode certain user-supplied characters. These still-encoded characters are then ignored when the package tries to sanitize the input. An attacker can inject malicious encoded JavaScript into markdown and submit that markdown to this package. This package will render that markdown, including the malicious JavaScript, as HTML.</p>\n<p>Note: This vulnerability has been assigned CVE-2016-10531.</p>\n\n</dd>\n<dt>\nDetection\n</dt>\n<dd>\n<p>The application is vulnerable by using this component.</p>\n\n</dd>\n<dt>\nRecommendation\n</dt>\n<dd>\n<p>We recommend upgrading to a version of this component that is not vulnerable to this specific issue.</p>\n\n</dd>\n<dt>\nRoot Cause\n</dt>\n<dd>\norg.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : ( , 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : ( , 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : ( , 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : ( , 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : [0.3.3, 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : [0.3.3, 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : [0.3.3, 0.3.6) <br> org.wso2.carbon.apimgt.rest.api.store-6.3.30.war <b>&lt;=</b> org.wso2.carbon.apimgt.rest.api.util-6.3.30.jar <b>&lt;=</b> marked.min.js : [0.3.3, 0.3.6)\n</dd>\n<dt>\nAdvisories\n</dt>\n<dd>\nProject: <a href=\"https://github.com/markedjs/marked/pull/592\" target=\"_blank\">https://github.com/markedjs/marked/pull/592</a>\n</dd>\n<dt>\nCVSS Details\n</dt>\n<dd>\nSonatype CVSS 3.0: 6.1\n</dd>\n    </dl>\n  </div>\n</div>\n"}
@@ -196,8 +196,25 @@ class IQClient extends AbstractToolClient
 
     // http://localhost:8060/iq/ui/links/vln/sonatype-2017-0367
     // https://my.sonatype.com/nexus-intelligence/sonatype-2017-0367
+    String cveSource = "cve"
+    if(cveCode.toLowerCase().startsWith("sonatype"))
+    {
+      cveSource = "sonatype"
+    }
 
-    return "${serverUrl}/api/v2/applications"
+    return "${serverUrl}/rest/vulnerability/details/${cveSource}/${cveCode}"
+  }
+
+  private String getProductLicenseUrl(String serverUrl) {
+    verbosePrintLn("Get the IQ Server License Details")
+
+    return "${serverUrl}/rest/product/license"
+  }
+
+  private String getProductVersionUrl(String serverUrl) {
+    verbosePrintLn("Get the IQ Server Version Details")
+
+    return "${serverUrl}/rest/product/version"
   }
 
   private static Map getComponentRemediationDetailsBody(String pPackageUrl) {
