@@ -108,6 +108,43 @@ class IQClient extends AbstractToolClient
     return organizationsResp.organizations.find { it.id == applicationResp?.applications[0]?.organizationId }?.name
   }
 
+  String lookupCveLinkBaseUrl()
+  {
+    // Introduced in 67
+    // http://localhost:8060/iq/ui/links/vln/sonatype-2017-0367
+    // https://my.sonatype.com/nexus-intelligence/sonatype-2017-0367
+
+    if(isVersionSupported("1.67"))
+    {
+      return "${serverUrl}/ui/links/vln"
+    }
+    else
+    {
+      return "https://my.sonatype.com/nexus-intelligence"
+    }
+  }
+
+  private boolean isVersionSupported(String pRequestedVersion)
+  {
+
+    String iqVersion = lookupProductVersion()?.version
+
+    String[] currentVersionParts = iqVersion.split('\\.')
+    String [] requestedVersionParts = pRequestedVersion.split('\\.')
+
+    //current version should be the same or after the version of the requested feature
+    return (currentVersionParts[0].toInteger() >= requestedVersionParts[0].toInteger()
+         && currentVersionParts[1].toInteger() >= requestedVersionParts[1].toInteger())
+  }
+
+  private def lookupProductVersion()
+  {
+    def url = getProductVersionUrl(serverUrl)
+    def headers = getRequestHeaders(username, password)
+
+    http.get(url, headers)
+  }
+
   private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {
     verbosePrintLn("Get the Application Policy Threats Report from IQ Server")
 
@@ -141,6 +178,7 @@ class IQClient extends AbstractToolClient
     return "${serverUrl}/api/v2/applications"
   }
 
+  //TODO: Lookup Version of IQ Server - raw vs. old URLs
   private String getComponentDetailsReportUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {
     verbosePrintLn("Get the Application Component Details Report from IQ Server")
 
@@ -193,9 +231,6 @@ class IQClient extends AbstractToolClient
     //todo: cwe
     // todo: CVSS Vector
 
-
-    // http://localhost:8060/iq/ui/links/vln/sonatype-2017-0367
-    // https://my.sonatype.com/nexus-intelligence/sonatype-2017-0367
     String cveSource = "cve"
     if(cveCode.toLowerCase().startsWith("sonatype"))
     {

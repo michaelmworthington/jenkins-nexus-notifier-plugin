@@ -347,21 +347,8 @@ class JiraClient extends AbstractToolClient
 
   private static Map getCreateIssueRequestBody(JiraFieldMappingUtil jiraFieldMappingUtil, boolean pIsParentTicket, PolicyViolation pPolicyViolation)
   {
-    def detail = pPolicyViolation.cvssReason
-    def source = pPolicyViolation.reportLink
-    def severity = pPolicyViolation.policyThreatLevel
-    def fprint = pPolicyViolation.fingerprintKey
-
-    String description = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, pIsParentTicket)
-
-    //TODO: Pull these out and take them in as parameters (maybe, i seem to be moving the data objects here for formatting
-    //TODO: also format a summary ticket
-    String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
-
-    //TODO: Nice Summary
-    String formatted_summary = "${description}"
-    //TODO: Nice Description (Add all policy violations if we are aggregating and not creating subtasks
-    String formatted_description = "\n\tDescription: ${description}\n\n\tFirst Found Timestamp: ${nowFormatted}\n\n\tSource: ${source}\n\n\tPolicy Threat Level: ${severity}\n\n\tFingerprint:  ${fprint}\n\n\tFound by:  SonatypeIQ\n\n\tDetail:  ${detail}"
+    String formatted_summary = buildTicketSummaryTitleText(jiraFieldMappingUtil, pPolicyViolation, pIsParentTicket)
+    String formatted_description = buildTicketBodyText(jiraFieldMappingUtil, pPolicyViolation, pIsParentTicket)
 
     def returnValue = [
             fields : [
@@ -411,6 +398,7 @@ class JiraClient extends AbstractToolClient
     return [ fields: date ]
   }
 
+  //TODO: make a nice looking summary
   private static String buildTicketSummaryTitleText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
   {
     def returnValue = "Sonatype Nexus IQ Server - ${jiraFieldMappingUtil.getApplicationCustomField().customFieldValue} -"
@@ -444,6 +432,39 @@ class JiraClient extends AbstractToolClient
     {
       returnValue <<= " Summary of Violations"
     }
+
+    return returnValue
+  }
+
+  //TODO: make a nice looking Description (Add all policy violations if we are aggregating and not creating subtasks
+  private static String buildTicketBodyText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
+  {
+    String maxLabel = ""
+    if(pIsParentTicket)
+    {
+      maxLabel = "Max "
+    }
+
+    //TODO: Pull these out and take them in as parameters (maybe, i seem to be moving the data objects here for formatting
+    //TODO: also format a summary ticket
+    String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
+
+    def returnValue = "\n" +
+            "First Found Timestamp: ${nowFormatted}\n\n" +
+            "Source: ${pPolicyViolation.reportLink}\n\n";
+
+    if(pPolicyViolation.cveLink)
+    {
+      returnValue <<= "${maxLabel}Vulnerability Info: ${pPolicyViolation.cveLink}\n\n"
+    }
+
+    returnValue <<= "${maxLabel}Policy Threat Level: ${pPolicyViolation.policyThreatLevel}\n\n"
+
+    returnValue <<= "Fingerprint:  ${pPolicyViolation.fingerprint}\n\n" +
+                    "Fingerprint Key:  ${pPolicyViolation.fingerprintKey}\n\n" +
+                    "Fingerprint Pretty Print:  ${pPolicyViolation.fingerprintPrettyPrint}\n\n" +
+                    "Found by:  SonatypeIQ\n\n" +
+                    "Detail:  ${pPolicyViolation.cvssReason}"
 
     return returnValue
   }

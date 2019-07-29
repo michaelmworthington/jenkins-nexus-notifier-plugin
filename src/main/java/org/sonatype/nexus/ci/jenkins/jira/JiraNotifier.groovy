@@ -216,8 +216,10 @@ class JiraNotifier
         //http://localhost:8060/iq/rest/report/aaaaaaa-testidegrandfathering/a22d44d0209b47358c8dd2532bb7afb3/browseReport/policythreats.json
         def potentialFindings = iqClient.lookupPolcyDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
 
-        //TODO: Lookup Version of IQ Server - raw vs. old URLs
+        //http://localhost:8060/iq/api/v2/applications/aaaaaaa-testidegrandfathering/reports/a22d44d0209b47358c8dd2532bb7afb3
         def findingComponents = iqClient.lookupComponentDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
+
+        String cveLinkBaseUrl = iqClient.lookupCveLinkBaseUrl()
 
         logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
         potentialFindings.aaData.each { policyFinding ->
@@ -228,7 +230,7 @@ class JiraNotifier
                                       policyFinding,
                                       rawData,
                                       policyEvaluationHealthAction.reportLink,
-                                      iqClient.serverUrl,
+                                      cveLinkBaseUrl,
                                       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue,
                                       jiraFieldMappingUtil.policyFilterPrefix,
                                       jiraFieldMappingUtil.policyFilterThreatLevel)
@@ -548,7 +550,11 @@ class JiraNotifier
 
   private static void safeLookupRecommendedVersion(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation policyViolation, IQClient iqClient, String iqApplicationInternalId)
   {
-    //todo: flagging based on PURL is not quite accurate, remediation API was released in 64, PURL was released in 67. at the end of the day, i'm assuming a minimum supported version of 67
+    //todo: flagging based on PURL is not quite accurate,
+    // remediation API was released in 64, PURL was released in 67.
+    // at the end of the day, i'm assuming a minimum supported version of 67
+    // (I have a version check now in IQClient, but I don't really feel like changing it - and don't want to
+    // make another API call for each recommendation lookup, and don't want to code a caching mechanism)
     if (jiraFieldMappingUtil.getRecommendedRemediationCustomField().customFieldId && policyViolation.packageUrl)
     {
       policyViolation.recommendedRemediation = new IQVersionRecommendation(iqClient.lookupRecommendedVersion(policyViolation.packageUrl,

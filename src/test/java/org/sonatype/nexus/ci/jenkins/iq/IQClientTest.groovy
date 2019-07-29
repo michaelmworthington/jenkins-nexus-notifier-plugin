@@ -272,7 +272,8 @@ class IQClientTest
   @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Get Report Violations'() {
     when:
-      def resp = clientLive.lookupPolcyDetailsFromIQ(iqTestReportInternalId, iqTestAppExternalId)
+    def resp = clientLive.lookupPolcyDetailsFromIQ(iqTestReportInternalId, iqTestAppExternalId)
+    //a go-lang report = def resp = clientLive.lookupPolcyDetailsFromIQ("f3e278dbee1d417aa34909513e089e6d", "go-demo")
 
     then:
       resp != null
@@ -356,5 +357,19 @@ class IQClientTest
     resp != null
     resp.data != null
 
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Lookup Product Version'() {
+
+    when:
+    boolean before = clientLive.isVersionSupported("1.59")
+    boolean thisVersion = clientLive.isVersionSupported("1.69")
+    boolean after = clientLive.isVersionSupported("1.70")
+
+    then:
+    before == true
+    thisVersion == true
+    after == false
   }
 }

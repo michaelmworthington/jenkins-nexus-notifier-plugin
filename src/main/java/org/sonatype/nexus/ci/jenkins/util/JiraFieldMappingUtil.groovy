@@ -159,10 +159,10 @@ class JiraFieldMappingUtil
     getViolationIdCustomField().customFieldValue =  pPolicyViolation.fingerprint
     getViolationDetectDateCustomField().customFieldValue = pPolicyViolation.detectDateString
 
-    getDeclaredLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.declaredLicenseNames
-    getObservedLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.observedLicenseNames
-    getEffectiveLicensesCustomField().customFieldValue = pPolicyViolation.licenseData.effectiveLicenseNames
-    getFileOccurrencesCustomField().customFieldValue = pPolicyViolation.occurrences.join("\n")
+    getDeclaredLicensesCustomField().customFieldValue = pPolicyViolation.licenseData?.declaredLicenseNames
+    getObservedLicensesCustomField().customFieldValue = pPolicyViolation.licenseData?.observedLicenseNames
+    getEffectiveLicensesCustomField().customFieldValue = pPolicyViolation.licenseData?.effectiveLicenseNames
+    getFileOccurrencesCustomField().customFieldValue = pPolicyViolation.occurrences?.join("\n")
     getRecommendedRemediationCustomField().customFieldValue = pPolicyViolation.recommendedRemediation?.getRecommendationText(pPolicyViolation.componentIdentifier?.version)
     getPurlCustomField().customFieldValue = pPolicyViolation.packageUrl
     getComponentCombinedIdentifierCustomField().customFieldValue = pPolicyViolation.componentIdentifier?.prettyName

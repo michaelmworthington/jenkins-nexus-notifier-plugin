@@ -62,7 +62,7 @@ class PolicyViolation
                           Object componentPolicyData,
                           Object componentRawData,
                           String pReportLink,
-                          String pIQServerBaseUrl,
+                          String pCveLinkBaseUrl,
                           String iqAppExternalId,
                           String policyFilterPrefix,
                           int policyFilterThreatLevel)
@@ -91,6 +91,8 @@ class PolicyViolation
                                                                       fingerprint: componentFingerprintHash)
 
     componentPolicyData.activeViolations?.each {
+      //only create tickets if the policy name and threat level
+      //match the filters (i.e. only create tickets for Security-High)
       if ((policyFilterPrefix == null || it.policyName.startsWith(policyFilterPrefix))
           && it.policyThreatLevel >= policyFilterThreatLevel)
       {
@@ -117,7 +119,7 @@ class PolicyViolation
           String[] parts = conditionReasonText.split(' ')
           cvssScore = Double.parseDouble(parts[6][0..-2])
           cveCode = parts[3]
-          cveLink = "${pIQServerBaseUrl}/ui/links/vln/${cveCode}"
+          cveLink = "${pCveLinkBaseUrl}/${cveCode}"
           severity = parseSecuritySeverity(it.policyName)
         }
         else if (licenseCondition)
@@ -219,6 +221,14 @@ class PolicyViolation
     pPolicyName.replaceFirst("Security-", "")
   }
 
+  /**
+   * TODO: This is the most important thing to making the whole Sync work.
+   * If the fingerprint hash changes, the tickets will not line up with the policy violations,
+   * which could cause close/new ticket churn
+   *
+   * @param fingerprintKey
+   * @return
+   */
   private static String getFingerprintHash(final String fingerprintKey)
   {
     MessageDigest.getInstance("SHA-256").digest(fingerprintKey.bytes).encodeHex().toString()
