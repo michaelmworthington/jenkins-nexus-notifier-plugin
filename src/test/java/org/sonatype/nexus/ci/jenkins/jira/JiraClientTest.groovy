@@ -72,6 +72,7 @@ class JiraClientTest
                                                                 "Done",
                                                                 "Resolve",
                                                                 "License",
+                                                                0,
                                                                 null,
                                                                 null,
                                                                 verboseLogging,

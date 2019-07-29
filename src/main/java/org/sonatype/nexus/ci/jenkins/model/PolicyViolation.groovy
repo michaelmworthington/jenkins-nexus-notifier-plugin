@@ -64,7 +64,8 @@ class PolicyViolation
                           String pReportLink,
                           String pIQServerBaseUrl,
                           String iqAppExternalId,
-                          String policyFilterPrefix)
+                          String policyFilterPrefix,
+                          int policyFilterThreatLevel)
   {
     ComponentIdentifier componentIdentifier = new ComponentIdentifier(componentPolicyData.componentIdentifier)
     String componentName = componentIdentifier.prettyName
@@ -90,7 +91,8 @@ class PolicyViolation
                                                                       fingerprint: componentFingerprintHash)
 
     componentPolicyData.activeViolations?.each {
-      if (policyFilterPrefix == null || it.policyName.startsWith(policyFilterPrefix))
+      if ((policyFilterPrefix == null || it.policyName.startsWith(policyFilterPrefix))
+          && it.policyThreatLevel >= policyFilterThreatLevel)
       {
         String conditionReasonText = ""
         String fingerprintPrettyPrint = "${componentName} - ${it.policyName}"

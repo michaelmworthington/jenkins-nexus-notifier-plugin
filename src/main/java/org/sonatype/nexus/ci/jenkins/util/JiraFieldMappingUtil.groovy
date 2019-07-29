@@ -62,6 +62,7 @@ class JiraFieldMappingUtil
   private String componentExtensionCustomFieldName
 
   String policyFilterPrefix
+  int policyFilterThreatLevel
   String jiraDateFormatOverride
   Boolean shouldAggregateTicketsByComponent
   Boolean shouldCreateSubTasksForAggregatedTickets
@@ -256,6 +257,7 @@ class JiraFieldMappingUtil
     transitionStatus = iJiraNotification.jiraTransitionStatus
     transitionName = iJiraNotification.jiraTransitionName
     policyFilterPrefix = iJiraNotification.policyFilterPrefix
+    policyFilterThreatLevel = iJiraNotification.policyFilterThreatLevel
 
     //Advanced Options
 //only passed to JiraClient               this.jobJiraCredentialsId = jobJiraCredentialsId;

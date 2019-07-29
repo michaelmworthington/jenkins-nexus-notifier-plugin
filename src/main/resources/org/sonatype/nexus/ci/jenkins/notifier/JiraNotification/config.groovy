@@ -67,6 +67,10 @@ f.section(title: typedDescriptor.displayName) {
     f.textbox()
   }
 
+  f.entry(title: _('Create Tickets only for Policies with threat level greater than or equal to'), field: 'policyFilterThreatLevel') {
+    f.textbox()
+  }
+
   f.advanced() {
     f.section(title: _('Advanced Options')) {
       f.entry(title: _('Use job specific credentials for Jira'), field: 'jobJiraCredentialsId') {

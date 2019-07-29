@@ -45,7 +45,7 @@ public class JiraNotification
   private String jiraTransitionStatus;
   private String jiraTransitionName;
   private String policyFilterPrefix;
-  private int policyFilterThreatLevel; //todo
+  private int policyFilterThreatLevel;
 
   //Advanced Options
   private String jobJiraCredentialsId;
@@ -107,6 +107,7 @@ public class JiraNotification
   public String getJiraTransitionStatus() { return jiraTransitionStatus; }
   public String getJiraTransitionName() { return jiraTransitionName; }
   public String getPolicyFilterPrefix() { return policyFilterPrefix; }
+  public int getPolicyFilterThreatLevel() { return policyFilterThreatLevel; }
 
   //Advanced Options
   public String getJobJiraCredentialsId() { return jobJiraCredentialsId; }
@@ -169,6 +170,7 @@ public class JiraNotification
                           final String jiraTransitionStatus,
                           final String jiraTransitionName,
                           final String policyFilterPrefix,
+                          final int policyFilterThreatLevel,
                           final String jobJiraCredentialsId,
                           final String jobIQCredentialsId,
                           final boolean verboseLogging,
@@ -226,6 +228,7 @@ public class JiraNotification
     this.jiraTransitionStatus = jiraTransitionStatus;
     this.jiraTransitionName = jiraTransitionName;
     this.policyFilterPrefix = policyFilterPrefix;
+    this.policyFilterThreatLevel = policyFilterThreatLevel;
 
     //Advanced Options
     this.jobJiraCredentialsId = jobJiraCredentialsId;
