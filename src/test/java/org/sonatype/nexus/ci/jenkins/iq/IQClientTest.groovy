@@ -28,6 +28,8 @@ class IQClientTest
   IQClient clientHttpMock, clientLive
   def iqApplication, iqOrganizations, iqApplications, iqReportLinks
   def iqVersionRecommendationEmpty, iqVersionRecommendationDifferent, iqVersionRecommendationSame, iqVersionRecommendationOnlyNonFail, iqVersionRecommendationOnlyNoViolations
+  String dateQualifier = "As of " + new Date().format("yyyy-MM-dd") + ":"
+
 
   private static final String iqTestAppExternalId = "aaaaaaa-testidegrandfathering"
   private static final String iqTestAppInternalId = "e06a119c75d04d97b8d8c11b62719752"
@@ -78,7 +80,7 @@ class IQClientTest
 
     and:
     url != null
-    url == "http://localhost:${port}/iq/api/v2/applications/${iqTestAppExternalId}/reports/a22d44d0209b47358c8dd2532bb7afb3/raw"
+    url == "http://localhost:${port}/iq/api/v2/applications/${iqTestAppExternalId}/reports/a22d44d0209b47358c8dd2532bb7afb3"
   }
 
   def 'Lookup Application'() {
@@ -196,7 +198,7 @@ class IQClientTest
     and:
     resp != null
     resp.data != null
-    resp.getRecommendationText("4.5.1") == "No recommended versions are available for the current component"
+    resp.getRecommendationText("4.5.1") == "${dateQualifier}\n\t* No recommended versions are available for the current component"
   }
 
   def 'Lookup Remediation Recommendation - Old Version Returns both NoFail/NoViolation and Current Version Returns Current Recommendation'() {
@@ -211,8 +213,8 @@ class IQClientTest
     and:
     resp != null
     resp.data != null
-    resp.getRecommendationText("4.5.1") == "4.5.3: Next version with no failing policy violations also has no violations"
-    resp.getRecommendationText("4.5.3") == "Current version has no policy violations"
+    resp.getRecommendationText("4.5.1") == "${dateQualifier}\n\t* 4.5.3: Next version with no failing policy violations also has no violations"
+    resp.getRecommendationText("4.5.3") == "${dateQualifier}\n\t* Current version has no policy violations"
   }
 
   def 'Lookup Remediation Recommendation - Different Version Recommendations return both versions'() {
@@ -227,8 +229,8 @@ class IQClientTest
     and:
     resp != null
     resp.data != null
-    resp.getRecommendationText("4.5.1") == "4.5.2: Next version with no failing policy\n4.5.3: Next version with no policy violations"
-    resp.getRecommendationText("4.5.2") == "Current version has no failing violations\n4.5.3: Next version with no policy violations"
+    resp.getRecommendationText("4.5.1") == "${dateQualifier}\n\t* 4.5.2: Next version with no failing policy when evaluated at Nexus IQ Server scan stage: release\n\t* 4.5.3: Next version with no policy violations"
+    resp.getRecommendationText("4.5.2") == "${dateQualifier}\n\t* Current version has no failing violations when evaluated at Nexus IQ Server scan stage: release\n\t* 4.5.3: Next version with no policy violations"
   }
 
   def 'Lookup Remediation Recommendation - Only Non-Fail version available'() {
@@ -243,8 +245,8 @@ class IQClientTest
     and:
     resp != null
     resp.data != null
-    resp.getRecommendationText("4.5.1") == "4.5.2: Next version with no failing policy\nNo recommended version clean of policy violations"
-    resp.getRecommendationText("4.5.2") == "Current version has no failing violations\nNo recommended version clean of policy violations"
+    resp.getRecommendationText("4.5.1") == "${dateQualifier}\n\t* 4.5.2: Next version with no failing policy when evaluated at Nexus IQ Server scan stage: release\n\t* No recommended version clean of policy violations"
+    resp.getRecommendationText("4.5.2") == "${dateQualifier}\n\t* Current version has no failing violations when evaluated at Nexus IQ Server scan stage: release\n\t* No recommended version clean of policy violations"
   }
 
   def 'Lookup Remediation Recommendation - Only No-Violations version available'() {
@@ -259,8 +261,8 @@ class IQClientTest
     and:
     resp != null
     resp.data != null
-    resp.getRecommendationText("4.5.1") == "4.5.3: Next version with no policy violations"
-    resp.getRecommendationText("4.5.3") == "Current version has no policy violations"
+    resp.getRecommendationText("4.5.1") == "${dateQualifier}\n\t* 4.5.3: Next version with no policy violations"
+    resp.getRecommendationText("4.5.3") == "${dateQualifier}\n\t* Current version has no policy violations"
   }
 
   /*

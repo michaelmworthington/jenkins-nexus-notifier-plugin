@@ -21,24 +21,28 @@ class IQVersionRecommendation
     boolean currentIsNonFailing = pCurrentVersion == nextNonFailingVersion
     boolean nonFailingIsNoViolations = nextNonFailingVersion == nextNoViolationsVersion
 
+    String dateQualifier = "As of " + new Date().format("yyyy-MM-dd") + ":"
+
     if(currentIsNoViolations)
     {
-      return "Current version has no policy violations"
+      return "${dateQualifier}\n\t* Current version has no policy violations"
     }
     else if (!nextNonFailingVersion && !nextNoViolationsVersion)
     {
-      return "No recommended versions are available for the current component"
+      return "${dateQualifier}\n\t* No recommended versions are available for the current component"
     }
     else if (nonFailingIsNoViolations)
     {
-      return "${nextNoViolationsVersion}: Next version with no failing policy violations also has no violations"
+      return "${dateQualifier}\n\t* ${nextNoViolationsVersion}: Next version with no failing policy violations also has no violations"
     }
     else
     {
       def returnValue = []
+      returnValue += dateQualifier
+
       if (currentIsNonFailing)
       {
-        String text = "Current version has no failing violations"
+        String text = "\t* Current version has no failing violations"
         if(stage)
         {
           text += " when evaluated at Nexus IQ Server scan stage: ${stage}"
@@ -47,7 +51,7 @@ class IQVersionRecommendation
       }
       else if (nextNonFailingVersion)
       {
-        String text = "${nextNonFailingVersion}: Next version with no failing policy"
+        String text = "\t* ${nextNonFailingVersion}: Next version with no failing policy"
         if(stage)
         {
           text += " when evaluated at Nexus IQ Server scan stage: ${stage}"
@@ -57,11 +61,11 @@ class IQVersionRecommendation
 
       if (nextNoViolationsVersion)
       {
-        returnValue += "${nextNoViolationsVersion}: Next version with no policy violations"
+        returnValue += "\t* ${nextNoViolationsVersion}: Next version with no policy violations"
       }
       else
       {
-        returnValue += "No recommended version clean of policy violations"
+        returnValue += "\t* No recommended version clean of policy violations"
       }
 
       return returnValue.join("\n")
