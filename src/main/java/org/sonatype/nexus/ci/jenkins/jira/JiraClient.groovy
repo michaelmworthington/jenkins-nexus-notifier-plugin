@@ -486,7 +486,7 @@ class JiraClient extends AbstractToolClient
 
     returnValue <<= "\n\n"
 
-    if(pPolicyViolation.licenseData.getEffectiveLicenseNames())
+    if(pPolicyViolation.licenseData?.getEffectiveLicenseNames())
     {
       returnValue <<= "Effective Licenses:\n"
       pPolicyViolation.licenseData.getEffectiveLicenseNames().split("\n").each {
