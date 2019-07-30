@@ -128,16 +128,19 @@ class JiraNotifier
             final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction,
             final boolean shouldUpdateLastScanDate = true)
   {
-    checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey()) //todo: the proper way to validate input strings - for custom fields in lookupAndValidateCustomField()
-    //todo: other required field mappings
-    //todo:      application id
-    //todo:      fingerprint field
+    checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey())
+    checkArgument(!isNullOrEmpty(jiraNotification.issueTypeName), Messages.JiraNotifier_NoIssueType())
+    if(jiraNotification.shouldCreateSubTasksForAggregatedTickets)
+    {
+      checkArgument(!isNullOrEmpty(jiraNotification.subTaskIssueTypeName), Messages.JiraNotifier_NoSubTaskIssueType())
+    }
+    //todo: other required field mappings - may need to be done at the appropriate location depending on what type of tickets are being created
 
-    def dynamicDataJson
+    def dynamicDataJson = null
     if(dynamicData)
     {
       dynamicDataJson = new JsonSlurper().parseText(dynamicData)
-      checkArgument(dynamicDataJson.size == 1, "When running for a single app, only dynamic data with one object is supported.")
+      checkArgument(dynamicDataJson?.size == 1, "When running for a single app, only dynamic data with one object is supported.")
     }
 
     IQClient iqClient
@@ -198,6 +201,10 @@ class JiraNotifier
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
       {
+        //todo: other required field mappings
+        checkArgument(!isNullOrEmpty(jiraFieldMappingUtil.getViolationIdCustomField().customFieldId),
+                      "Custom Field mapping for Policy Violation ID must be set when creating individual tickets. Please validate the field name: ${jiraFieldMappingUtil.getViolationIdCustomField().customFieldName}")
+
         // Data from IQ Server ("potential") and JIRA ("current") mapped by Fingerprint
         Map<String, PolicyViolation> potentialComponentsMap = new HashMap<String, PolicyViolation>()
         Map<String, PolicyViolation> potentialFindingsMap = new HashMap<String, PolicyViolation>()
@@ -618,12 +625,16 @@ class JiraNotifier
   {
     if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
     {
+      //todo: other required field mappings
+
       calculateNewAndRepeatFindings("Component", potentialComponentsMap, currentComponentsMap, newIQComponents, repeatJiraComponents)
       calculateOldFindings("Component", potentialComponentsMap, currentComponentsMap, oldJiraComponents)
     }
 
     if(jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets || !jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
     {
+      //todo: other required field mappings
+
       calculateNewAndRepeatFindings("Finding", potentialFindingsMap, currentFindingsMap, newIQFindings, repeatJiraFindings)
       calculateOldFindings("Finding", potentialFindingsMap, currentFindingsMap, oldJiraFindings)
 

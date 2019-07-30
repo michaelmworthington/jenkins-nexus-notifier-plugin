@@ -38,10 +38,10 @@ class JiraFieldMappingUtil
   private String maxCveCodeCustomFieldName
   private String cveLinkCustomFieldName
   private String maxCveLinkCustomFieldName
-  private String cweCodeCustomFieldName //todo
-  private String maxCweCodeCustomFieldName //todo
-  private String threatVectorCustomFieldName //todo
-  private String maxThreatVectorCustomFieldName //todo
+  private String cweCodeCustomFieldName
+  private String maxCweCodeCustomFieldName
+  private String threatVectorCustomFieldName
+  private String maxThreatVectorCustomFieldName
   private String cvssCustomFieldName
   private String maxCvssCustomFieldName
   private String iqServerReportLinkCustomFieldName
@@ -248,7 +248,7 @@ class JiraFieldMappingUtil
    */
   private void assignFieldsFromConfig()
   {
-    issueTypeName = iJiraNotification.issueTypeName //TODO: this appears to be required on the API - the default value only comes in through the UI
+    issueTypeName = iJiraNotification.issueTypeName
     subTaskIssueTypeName = iJiraNotification.subTaskIssueTypeName
     priorityName = iJiraNotification.priorityName
     shouldCreateIndividualTickets = iJiraNotification.shouldCreateIndividualTickets
