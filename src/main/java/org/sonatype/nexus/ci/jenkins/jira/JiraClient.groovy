@@ -217,6 +217,7 @@ class JiraClient extends AbstractToolClient
   {
     String projectKey = jiraFieldMappingUtil.projectKey
     String transitionTargetStatus = jiraFieldMappingUtil.transitionStatus
+    String applicationCustomFieldId = jiraFieldMappingUtil.getApplicationCustomField().customFieldId
     String applicationCustomFieldName = jiraFieldMappingUtil.getApplicationCustomField().customFieldName
     String iqApplicationExternalId = jiraFieldMappingUtil.getApplicationCustomField().customFieldValue
     String violationIdCustomFieldId = jiraFieldMappingUtil.getViolationIdCustomField().customFieldId
@@ -229,7 +230,7 @@ class JiraClient extends AbstractToolClient
       jql['jql'] += " AND status != \"${transitionTargetStatus}\""
     }
 
-    if (applicationCustomFieldName?.trim() && iqApplicationExternalId?.trim())
+    if (applicationCustomFieldId?.trim() && iqApplicationExternalId?.trim())
     {
       jql['jql'] += " AND \"${applicationCustomFieldName}\" ~ \"${iqApplicationExternalId}\""
     }

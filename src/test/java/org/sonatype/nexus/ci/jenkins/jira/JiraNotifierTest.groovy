@@ -39,6 +39,7 @@ class JiraNotifierTest
 
   private static final String iqTestAppExternalId = "aaaaaaa-testidegrandfathering"
 
+  //todo: mock iq-aaaaaaa-testidegrandfathering-applicationInfo.json
 
   IQClient iqClient, integrationTestIqClient
   JiraClient jiraClient, integrationTestJiraClient
@@ -56,7 +57,7 @@ class JiraNotifierTest
   String dynamicDataTwo, dynamicDataOne
 
   PolicyEvaluationHealthAction policyEvaluationHealthAction
-  JiraNotification jiraNotificationCreateParentTicketTest
+  JiraNotification jiraNotificationCreateParentTicketTest, jiraNotificationMinimalTest
   ContinuousMonitoringConfig continuousMonitoringConfig = new ContinuousMonitoringConfig()
 
   JiraNotifier jiraNotifier
@@ -95,6 +96,64 @@ class JiraNotifierTest
     dynamicDataTwo = new File("src/test/resources/continuous-monitor-dynamic-data-two.json").text
     dynamicDataOne = new File("src/test/resources/continuous-monitor-dynamic-data-one.json").text
 
+    jiraNotificationMinimalTest = new JiraNotification(true,
+                                                       'JIRAIQ',
+                                                       "Bug",
+                                                       "Sub-task",
+                                                       "Low",
+                                                       true,
+                                                       false,
+                                                       false,
+                                                       true,
+                                                       "Done",
+                                                       "Resolve",
+                                                       null,
+                                                       -1,
+                                                       null,
+                                                       null,
+                                                       verboseLogging,
+                                                       dryRun,
+                                                       null,
+                                                       disableJqlFieldFilter,
+                                                       jqlMaxResultsOverride,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       "Finding ID",
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null)
+
     jiraNotificationCreateParentTicketTest = new JiraNotification(true,
                                                                   'JIRAIQ',
                                                                   "Bug",
@@ -107,6 +166,7 @@ class JiraNotifierTest
                                                                   "Done",
                                                                   "Resolve",
                                                                   "License",
+                                                                  0,
                                                                   null,
                                                                   null,
                                                                   verboseLogging,
@@ -158,7 +218,8 @@ class JiraNotifierTest
                                                                           [ customFieldName: 'Scan Stage', customFieldValue: 'Build'],
                                                                           [ customFieldName: 'App Mnemonic', dynamicDataCustomFieldValue: "appName"],
                                                                           [ customFieldName: 'App Mnemonic IDIP', dynamicDataCustomFieldValue: "mnemonic"],
-                                                                          [ customFieldName: 'Copied Detect Date', copyValueFromFieldName: "Detect Date"]
+                                                                          [ customFieldName: 'Copied Detect Date', copyValueFromFieldName: "Detect Date"],
+                                                                          [ customFieldName: 'Copied Finding License', copyValueFromFieldName: "Finding License"],
                                                                   ])
   }
 
@@ -676,7 +737,7 @@ class JiraNotifierTest
       1 * integrationTestIqClient.lookupComponentDetailsFromIQ(iqTestReport, iqTestAppExternalId)
       1 * integrationTestJiraClient.lookupJiraTickets(_, _)
 
-      //Expectations when doing License Policy Filter
+      //Expectations when doing Security-High Policy Filter
       2 * integrationTestJiraClient.createIssue(*_)
       10 * integrationTestJiraClient.createSubTask(*_)
 
@@ -728,4 +789,34 @@ class JiraNotifierTest
     then:
     29 * integrationTestJiraClient.closeTicket(*_)
   }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with Jira Server - Create Detail Tickets - Aggregate by Component and SubTasks - Minimal Config Test'() {
+    setup:
+    jiraNotificationMinimalTest.policyFilterPrefix = ''
+    jiraNotificationMinimalTest.policyFilterThreatLevel = 0
+    jiraNotificationMinimalTest.shouldAggregateTicketsByComponent = true
+    jiraNotificationMinimalTest.shouldCreateSubTasksForAggregatedTickets = true
+
+    //need these so we're not calling back to the jenkins runtime
+    JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
+    IQClientFactory.getIQClient(*_) >> integrationTestIqClient
+
+    when:
+    jiraNotifier.send(true, dynamicDataOne, jiraNotificationMinimalTest, policyEvaluationHealthAction)
+
+    then:
+    1 * integrationTestJiraClient.lookupCustomFields()
+    1 * integrationTestIqClient.lookupPolcyDetailsFromIQ(iqTestReport, iqTestAppExternalId)
+    1 * integrationTestIqClient.lookupComponentDetailsFromIQ(iqTestReport, iqTestAppExternalId)
+    1 * integrationTestJiraClient.lookupJiraTickets(_, _)
+
+    when:
+    jiraNotificationMinimalTest.policyFilterPrefix = 'A Fake License So All The Tickets Get Closed'
+    jiraNotifier.send(true, null, jiraNotificationMinimalTest, policyEvaluationHealthAction)
+
+    then:
+    true
+  }
+
 }
