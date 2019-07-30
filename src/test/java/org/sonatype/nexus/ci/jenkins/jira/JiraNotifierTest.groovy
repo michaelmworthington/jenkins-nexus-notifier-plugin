@@ -509,6 +509,7 @@ class JiraNotifierTest
       1 * jiraClient.lookupCustomFields() >> customFields
       1 * iqClient.lookupPolcyDetailsFromIQ(iqTestReport, iqTestAppExternalId) >> iqReport
       1 * iqClient.lookupComponentDetailsFromIQ(iqTestReport, iqTestAppExternalId) >> iqReportRaw
+      9 * iqClient.lookupCweAndThreatVector(_) >> ["",""]
       1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
 
       //Expectations when doing License Policy Filter
