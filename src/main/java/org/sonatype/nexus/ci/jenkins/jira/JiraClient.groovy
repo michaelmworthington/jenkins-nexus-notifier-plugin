@@ -464,7 +464,7 @@ class JiraClient extends AbstractToolClient
       returnValue <<= "| *Organization* | ${jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue} |\n"
     }
     returnValue <<= "| *Scan*        | ${jiraFieldMappingUtil.scanInternalId} ([View detailed report|${pPolicyViolation.reportLink}]) |\n"
-    returnValue <<= "| *Stage*       | ${jiraFieldMappingUtil.getScanStageCustomField()} |\n"
+    returnValue <<= "| *Stage*       | ${jiraFieldMappingUtil.getScanStageCustomField().customFieldValue} |\n"
     returnValue <<= "| *Policy Violation*\n*First Found Timestamp* | ${nowFormatted} |\n"
 
     returnValue <<= "\n\n"
