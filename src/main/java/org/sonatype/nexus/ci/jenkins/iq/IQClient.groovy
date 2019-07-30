@@ -16,7 +16,15 @@ import org.sonatype.nexus.ci.jenkins.util.AbstractToolClient
 
 class IQClient extends AbstractToolClient
 {
+  /**
+   * The vesion string returned by IQ Server when the Client Connection is initiated
+   * This can be used for feature flagging based on the version support
+   */
   private String serverVersion
+
+  //cache cve details for cwe and threat vector - until i start passing the hash/coordinate
+  private Map<String, Object> cveDetails = [:]
+
 
   IQClient(String serverUrl, String username, String password, PrintStream logger, final boolean verboseLogging = false) {
     super(serverUrl, username, password, logger, verboseLogging)
@@ -188,11 +196,21 @@ class IQClient extends AbstractToolClient
 
   def lookupCVEDetails(String cveCode)
   {
-    def url = getCVEDetailsUrl(serverUrl, cveCode)
-    def headers = getRequestHeaders(username, password)
+    if(!cveDetails.containsKey(cveCode))
+    {
+      def url = getCVEDetailsUrl(serverUrl, cveCode)
+      def headers = getRequestHeaders(username, password)
 
-    http.get(url, headers)
-  }
+      cveDetails.put(cveCode,http.get(url, headers))
+    }
+    else
+    {
+      verbosePrintLn("Using the cached copy of CVE Details for: ${cveCode}")
+    }
+
+    return cveDetails.get(cveCode)
+
+    }
 
   private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {
     verbosePrintLn("Get the Application Policy Threats Report from IQ Server")
