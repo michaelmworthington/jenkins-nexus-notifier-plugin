@@ -436,7 +436,10 @@ class JiraClient extends AbstractToolClient
     return returnValue
   }
 
-  //TODO: make a nice looking Description (Add all policy violations if we are aggregating and not creating subtasks
+  /**
+   * http://localhost:8080/secure/WikiRendererHelpAction.jspa?section=advanced
+   * TODO: customize description between aggregated and non-aggregated (Add all policy violations if we are aggregating and not creating subtasks
+   */
   private static String buildTicketBodyText(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation pPolicyViolation, boolean pIsParentTicket)
   {
     String maxLabel = ""
@@ -449,23 +452,147 @@ class JiraClient extends AbstractToolClient
     //TODO: also format a summary ticket
     String nowFormatted = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
-    def returnValue = "\n" +
-            "First Found Timestamp: ${nowFormatted}\n\n" +
-            "Source: ${pPolicyViolation.reportLink}\n\n";
+    def returnValue = "h1. Sonatype Nexus IQ\n\n"
 
-    if(pPolicyViolation.cveLink)
+    /*
+     * Report/Application Info
+     */
+    returnValue <<= "| *Application* | ${jiraFieldMappingUtil.getApplicationCustomField().customFieldValue} |\n"
+    if(jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue)
     {
-      returnValue <<= "${maxLabel}Vulnerability Info: ${pPolicyViolation.cveLink}\n\n"
+      returnValue <<= "| *Organization* | ${jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue} |\n"
+    }
+    returnValue <<= "| *Scan*        | ${jiraFieldMappingUtil.scanInternalId} ([View detailed report|${pPolicyViolation.reportLink}]) |\n"
+    returnValue <<= "| *Stage*       | ${jiraFieldMappingUtil.getScanStageCustomField()} |\n"
+    returnValue <<= "| *Policy Violation*\n*First Found Timestamp* | ${nowFormatted} |\n"
+
+    returnValue <<= "\n\n"
+
+    /*
+     * Component Info
+     */
+    returnValue <<= "h2. Component Info\n\n"
+    if(pPolicyViolation.packageUrl)
+    {
+      returnValue <<= "Package Url:\n"
+      returnValue <<= "* ${pPolicyViolation.packageUrl}"
+    }
+    else
+    {
+      returnValue <<= "Component Identifier:\n"
+      returnValue <<= "* ${pPolicyViolation.componentIdentifier?.prettyName}"
     }
 
-    returnValue <<= "${maxLabel}Policy Threat Level: ${pPolicyViolation.policyThreatLevel}\n\n"
+    returnValue <<= "\n\n"
+
+    if(pPolicyViolation.licenseData.getEffectiveLicenseNames())
+    {
+      returnValue <<= "Effective Licenses:\n"
+      pPolicyViolation.licenseData.getEffectiveLicenseNames().split("\n").each {
+        returnValue <<= "* ${it}\n"
+      }
+    }
+    returnValue <<= "\n\n"
+
+    /*
+     * Policy Info
+     */
+    String threatLevelColor = getThreatLevelColor(pPolicyViolation)
+
+    returnValue <<= "h2. ${maxLabel}Policy Violation Info\n"
+    returnValue <<= "|| Policy Name || Threat Level || Reason Text ||\n"
+    returnValue <<= "| ${pPolicyViolation.policyName} "
+    returnValue <<= "| {panel:borderStyle=solid|bgColor=${threatLevelColor}}{color:#FFFFFF}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${pPolicyViolation.policyThreatLevel}{color}{panel} "
+    returnValue <<= "| "
+    if(pPolicyViolation.cvssReason)
+    {
+      returnValue <<= "${pPolicyViolation.cvssReason}"
+    }
+    else
+    {
+      returnValue <<= "&nbsp;"
+    }
+    returnValue <<= " |\n"
+
+    returnValue <<= "\n\n"
+
+    /*
+     * Remediation Info
+     */
+    String recommendation = pPolicyViolation.recommendedRemediation?.getRecommendationText(pPolicyViolation.componentIdentifier?.version)
+    if(recommendation)
+    {
+      returnValue <<= "h2. Recommended Remedation\n"
+      returnValue <<= "${recommendation}"
+    }
+
+    returnValue <<= "\n\n"
+
+    /*
+     * Security Info
+     */
+    if (pPolicyViolation.cveCode)
+    {
+      returnValue <<= "h2. ${maxLabel}Vulnerability Info\n"
+      returnValue <<= "\n"
+      returnValue <<= "{panel:borderStyle=solid|bgColor=#d1f8ff}Note: These values may change over time. For the most up-to-date and accurate information, please refer to the Nexus IQ Server report link above{panel}\n"
+      returnValue <<= "\n"
+      returnValue <<= "| *${maxLabel}SV Code* | ${pPolicyViolation.cveCode} (${pPolicyViolation.cveLink}) |\n"
+      returnValue <<= "| *${maxLabel}CVSS Score* | ${pPolicyViolation.cvssScore} |\n"
+      returnValue <<= "| *${maxLabel}CVSS Severity* | ${pPolicyViolation.severity} |\n"
+      if (pPolicyViolation.cweCode)
+      {
+        returnValue <<= "| *${maxLabel}CWE* | ${pPolicyViolation.cweCode} (https://cwe.mitre.org/data/definitions/${pPolicyViolation.cweCode}.html) |\n"
+      }
+      if (pPolicyViolation.threatVector)
+      {
+        returnValue <<= "| *${maxLabel}Threat Vector* | ${pPolicyViolation.threatVector} |\n"
+      }
+    }
+
+    returnValue <<= "\n\n"
+
+    /*
+     * File Info
+     */
+    returnValue <<= "h2. File Occurrences:\n"
+    returnValue <<= "{code}\n"
+    pPolicyViolation.occurrences.each {
+      returnValue <<= "${it}\n"
+    }
+    returnValue <<= "{code}\n\n"
 
     returnValue <<= "Fingerprint:  ${pPolicyViolation.fingerprint}\n\n" +
-                    "Fingerprint Key:  ${pPolicyViolation.fingerprintKey}\n\n" +
-                    "Fingerprint Pretty Print:  ${pPolicyViolation.fingerprintPrettyPrint}\n\n" +
-                    "Found by:  SonatypeIQ\n\n" +
-                    "Detail:  ${pPolicyViolation.cvssReason}"
+                    "Fingerprint Key:  ${pPolicyViolation.fingerprintKey}\n\n"
+                    //"Fingerprint Pretty Print:  ${pPolicyViolation.fingerprintPrettyPrint}\n\n"
 
     return returnValue
+  }
+
+  private static String getThreatLevelColor(PolicyViolation pPolicyViolation)
+  {
+    String threatLevelColor = "#000000"
+    if (pPolicyViolation.policyThreatLevel >= 8)
+    {
+      threatLevelColor = "#ED1C24" //red
+    }
+    else if (pPolicyViolation.policyThreatLevel >= 4)
+    {
+      threatLevelColor = "#F7931D" //orange
+    }
+    else if (pPolicyViolation.policyThreatLevel >= 2)
+    {
+      threatLevelColor = "#FFDD17" //yellow
+    }
+    else if (pPolicyViolation.policyThreatLevel >= 1)
+    {
+      threatLevelColor = "#006bbf" //dark blue
+    }
+    else
+    {
+      threatLevelColor = "#6D98CF" //light blue
+    }
+
+    return threatLevelColor
   }
 }
