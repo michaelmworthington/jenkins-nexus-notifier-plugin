@@ -35,6 +35,8 @@ class JiraClientTest
   JiraClient client, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
+  def disableIQCveDetails = false
+  def disableIQRemediationRecommendation = false
   def dryRun = false
 
   def customFields
@@ -77,6 +79,8 @@ class JiraClientTest
                                                                 null,
                                                                 verboseLogging,
                                                                 dryRun,
+                                                                disableIQCveDetails,
+                                                                disableIQRemediationRecommendation,
                                                                 null,
                                                                 disableJqlFieldFilter,
                                                                 jqlMaxResultsOverride,

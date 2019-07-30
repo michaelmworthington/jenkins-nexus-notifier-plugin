@@ -104,7 +104,11 @@ class JiraNotifier
   {
     try
     {
-      IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
+      IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId,
+                                                      logger,
+                                                      jiraNotification.verboseLogging,
+                                                      jiraNotification.disableIQCVEDetails,
+                                                      jiraNotification.disableIQRemediationRecommendation)
 
       PolicyEvaluationHealthAction policyEvaluationHealthAction = new PolicyEvaluationHealthAction()
       //TODO: this does have the date, which may be useful for setting the date on jira tickets based on the report rather than current time
@@ -150,7 +154,11 @@ class JiraNotifier
 
     try
     {
-      iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId, logger, jiraNotification.verboseLogging)
+      iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId,
+                                             logger,
+                                             jiraNotification.verboseLogging,
+                                             jiraNotification.disableIQCVEDetails,
+                                             jiraNotification.disableIQRemediationRecommendation)
       jiraClient = JiraClientFactory.getJiraClient(jiraNotification.jobJiraCredentialsId,
                                                    logger,
                                                    jiraNotification.verboseLogging,
@@ -495,7 +503,7 @@ class JiraNotifier
           //lookup recommended version from IQ Server
           //Because it's another API call, do it only when creating tickets
           safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
-          safeLookupCWEAndThreatVector(jiraFieldMappingUtil, policyViolation, iqClient)
+          safeLookupCWEAndThreatVector(policyViolation, iqClient)
 
           resp = createIndividualTicket(jiraClient,
                                         jiraFieldMappingUtil,
@@ -509,7 +517,7 @@ class JiraNotifier
 
               //copy recommended version from parent
               childPolicyViolation.recommendedRemediation = policyViolation.recommendedRemediation
-              safeLookupCWEAndThreatVector(jiraFieldMappingUtil, childPolicyViolation, iqClient)
+              safeLookupCWEAndThreatVector(childPolicyViolation, iqClient)
 
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
@@ -535,7 +543,7 @@ class JiraNotifier
               //lookup recommended version from IQ Server
               //Because it's another API call, do it only when creating tickets
               safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
-              safeLookupCWEAndThreatVector(jiraFieldMappingUtil, policyViolation, iqClient)
+              safeLookupCWEAndThreatVector(policyViolation, iqClient)
 
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
@@ -556,7 +564,7 @@ class JiraNotifier
         //lookup recommended version from IQ Server
         //Because it's another API call, do it only when creating tickets
         safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
-        safeLookupCWEAndThreatVector(jiraFieldMappingUtil, policyViolation, iqClient)
+        safeLookupCWEAndThreatVector(policyViolation, iqClient)
 
         createIndividualTicket(jiraClient,
                                jiraFieldMappingUtil,
@@ -572,7 +580,7 @@ class JiraNotifier
     // at the end of the day, i'm assuming a minimum supported version of 67
     // (I have a version check now in IQClient, but I don't really feel like changing it - and don't want to
     // make another API call for each recommendation lookup, and don't want to code a caching mechanism)
-    if (jiraFieldMappingUtil.getRecommendedRemediationCustomField().customFieldId && policyViolation.packageUrl)
+    if (policyViolation.packageUrl)
     {
       policyViolation.recommendedRemediation = new IQVersionRecommendation(iqClient.lookupRecommendedVersion(policyViolation.packageUrl,
                                                                                                              jiraFieldMappingUtil.getScanStageCustomField().customFieldValue,
@@ -581,13 +589,9 @@ class JiraNotifier
     }
   }
 
-  private static void safeLookupCWEAndThreatVector(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation policyViolation, IQClient iqClient)
+  private static void safeLookupCWEAndThreatVector(PolicyViolation policyViolation, IQClient iqClient)
   {
-    if (policyViolation.cveCode
-            && (jiraFieldMappingUtil.getCweCodeCustomField().customFieldId
-            || jiraFieldMappingUtil.getMaxCweCodeCustomField().customFieldId
-            || jiraFieldMappingUtil.getThreatVectorCustomField().customFieldId
-            || jiraFieldMappingUtil.getMaxThreatVectorCustomField().customFieldId))
+    if (policyViolation.cveCode)
     {
       String[] resp = iqClient.lookupCweAndThreatVector(policyViolation.cveCode)
       policyViolation.cweCode = resp[0]

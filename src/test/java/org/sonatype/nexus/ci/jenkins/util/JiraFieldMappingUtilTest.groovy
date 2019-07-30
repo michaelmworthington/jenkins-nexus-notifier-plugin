@@ -34,6 +34,8 @@ class JiraFieldMappingUtilTest
   JiraClient client, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
+  def disableIQCveDetails = false
+  def disableIQRemediationRecommendation = false
   def dryRun = false
 
   boolean verboseLogging = true
@@ -67,6 +69,8 @@ class JiraFieldMappingUtilTest
                                                        -1,
                                                        null,
                                                        null,
+                                                       false,
+                                                       false,
                                                        false,
                                                        false,
                                                        null,
@@ -126,10 +130,12 @@ class JiraFieldMappingUtilTest
                                                               null,
                                                               null,
                                                               verboseLogging,
-                                                              false,
+                                                              dryRun,
+                                                              disableIQCveDetails,
+                                                              disableIQRemediationRecommendation,
                                                               null,
-                                                              false,
-                                                              5,
+                                                              disableJqlFieldFilter,
+                                                              jqlMaxResultsOverride,
                                                               null,
                                                               "IQ Application",
                                                               "IQ Organization",

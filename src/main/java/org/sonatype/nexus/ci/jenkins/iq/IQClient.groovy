@@ -25,9 +25,20 @@ class IQClient extends AbstractToolClient
   //cache cve details for cwe and threat vector - until i start passing the hash/coordinate
   private Map<String, Object> cveDetails = [:]
 
+  private Boolean disableIQCveDetails
+  private Boolean disableIQRemediationRecommendation
 
-  IQClient(String serverUrl, String username, String password, PrintStream logger, final boolean verboseLogging = false) {
+  IQClient(String serverUrl,
+           String username,
+           String password,
+           PrintStream logger,
+           final boolean verboseLogging = false,
+           final boolean disableIQCveDetails = false,
+           final boolean disableIQRemediationRecommendation = false) {
     super(serverUrl, username, password, logger, verboseLogging)
+
+    this.disableIQCveDetails = disableIQCveDetails
+    this.disableIQRemediationRecommendation = disableIQRemediationRecommendation
   }
 
   String getServerVersion()
@@ -80,7 +91,10 @@ class IQClient extends AbstractToolClient
     Map body = getComponentRemediationDetailsBody(pPackageUrl)
     def headers = getRequestHeaders(username, password)
 
-    http.post(url, body, headers)
+    if(!disableIQRemediationRecommendation)
+    {
+      http.post(url, body, headers)
+    }
   }
 
   private def lookupApplicationReportLinks(String iqAppInternalId)
@@ -172,16 +186,16 @@ class IQClient extends AbstractToolClient
     try
     {
       def resp= lookupCVEDetails(cveCode) //todo: need to pass the hash and coordinates
-      String htmlDetails = resp.htmlDetails
+      String htmlDetails = resp?.htmlDetails
       //def htmlDetails = new XmlSlurper(new org.ccil.cowan.tagsoup.Parser()).parseText(resp.htmlDetails)
 
-      if (htmlDetails.contains("CWE:"))
+      if (htmlDetails?.contains("CWE:"))
       {
         //cweCode = htmlDetails.split("CWE:")[1].trim().split("[^0-9]")[0]
         cweCode = htmlDetails.split("CWE:")[1].trim().split("\\.html")[0].split(".*/")[1]
       }
 
-      if (htmlDetails.contains("Vector:"))
+      if (htmlDetails?.contains("Vector:"))
       {
         threatVector = htmlDetails.split("Vector:")[1].trim().split("[^A-Za-z0-9:./]")[0]
       }
@@ -201,7 +215,10 @@ class IQClient extends AbstractToolClient
       def url = getCVEDetailsUrl(serverUrl, cveCode)
       def headers = getRequestHeaders(username, password)
 
-      cveDetails.put(cveCode,http.get(url, headers))
+      if(!disableIQCveDetails)
+      {
+        cveDetails.put(cveCode, http.get(url, headers))
+      }
     }
     else
     {
@@ -209,8 +226,7 @@ class IQClient extends AbstractToolClient
     }
 
     return cveDetails.get(cveCode)
-
-    }
+  }
 
   private String getPolicyEvaluationResultsUrl(String serverUrl, String iqAppExternalId, String iqReportInternalId) {
     verbosePrintLn("Get the Application Policy Threats Report from IQ Server")

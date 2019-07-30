@@ -52,6 +52,8 @@ public class JiraNotification
   private String jobIQCredentialsId;
   private boolean verboseLogging;
   private boolean dryRun;
+  private boolean disableIQCVEDetails;
+  private boolean disableIQRemediationRecommendation;
   private String jiraDateFormatOverride;
   private boolean disableJqlFieldFilter;
   private int jqlMaxResultsOverride;
@@ -114,6 +116,8 @@ public class JiraNotification
   public String getJobIQCredentialsId() { return jobIQCredentialsId; }
   public boolean getVerboseLogging() { return verboseLogging; }
   public boolean getDryRun() { return dryRun; }
+  public boolean getDisableIQCVEDetails() { return disableIQCVEDetails; }
+  public boolean getDisableIQRemediationRecommendation() { return disableIQRemediationRecommendation; }
   public String getJiraDateFormatOverride() { return jiraDateFormatOverride; }
   public boolean getDisableJqlFieldFilter() { return disableJqlFieldFilter; }
   public int getJqlMaxResultsOverride() { return jqlMaxResultsOverride; }
@@ -175,6 +179,8 @@ public class JiraNotification
                           final String jobIQCredentialsId,
                           final boolean verboseLogging,
                           final boolean dryRun,
+                          final boolean disableIQCVEDetails,
+                          final boolean disableIQRemediationRecommendation,
                           final String jiraDateFormatOverride,
                           final boolean disableJqlFieldFilter,
                           final int jqlMaxResultsOverride,
@@ -235,6 +241,8 @@ public class JiraNotification
     this.jobIQCredentialsId = jobIQCredentialsId;
     this.verboseLogging = verboseLogging;
     this.dryRun = dryRun;
+    this.disableIQCVEDetails = disableIQCVEDetails;
+    this.disableIQRemediationRecommendation = disableIQRemediationRecommendation;
     this.jiraDateFormatOverride = jiraDateFormatOverride;
     this.disableJqlFieldFilter = disableJqlFieldFilter;
     this.jqlMaxResultsOverride = jqlMaxResultsOverride;

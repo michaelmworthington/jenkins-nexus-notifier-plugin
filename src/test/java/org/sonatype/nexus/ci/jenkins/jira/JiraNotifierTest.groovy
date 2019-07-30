@@ -45,6 +45,8 @@ class JiraNotifierTest
   JiraClient jiraClient, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
+  def disableIQCveDetails = false
+  def disableIQRemediationRecommendation = false
   def dryRun = false
 
   boolean verboseLogging = true
@@ -70,7 +72,7 @@ class JiraNotifierTest
     iqClient = Mock(IQClient.class)
 
     integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
-    integrationTestIqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging])
+    integrationTestIqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging, disableIQCveDetails, disableIQRemediationRecommendation])
 
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
@@ -113,6 +115,8 @@ class JiraNotifierTest
                                                        null,
                                                        verboseLogging,
                                                        dryRun,
+                                                       disableIQCveDetails,
+                                                       disableIQRemediationRecommendation,
                                                        null,
                                                        disableJqlFieldFilter,
                                                        jqlMaxResultsOverride,
@@ -170,10 +174,12 @@ class JiraNotifierTest
                                                                   null,
                                                                   null,
                                                                   verboseLogging,
-                                                                  false,
+                                                                  dryRun,
+                                                                  disableIQCveDetails,
+                                                                  disableIQRemediationRecommendation,
                                                                   null,
-                                                                  false,
-                                                                  5,
+                                                                  disableJqlFieldFilter,
+                                                                  jqlMaxResultsOverride,
                                                                   null,
                                                                   "IQ Application",
                                                                   "IQ Organization",

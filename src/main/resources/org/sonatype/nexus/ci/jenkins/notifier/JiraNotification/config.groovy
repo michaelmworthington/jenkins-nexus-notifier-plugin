@@ -85,6 +85,14 @@ f.section(title: typedDescriptor.displayName) {
         f.checkbox()
       }
 
+      f.entry(title: _('Disable lookup of CVE Details from IQ Server'), field: 'disableIQCVEDetails') {
+        f.checkbox()
+      }
+
+      f.entry(title: _('Disable lookup of Version Remediation Recommendation from IQ Server'), field: 'disableIQRemediationRecommendation') {
+        f.checkbox()
+      }
+
       f.entry(title: _('Dry Run - Dont Create or Update Jira'), field: 'dryRun') {
         f.checkbox()
       }

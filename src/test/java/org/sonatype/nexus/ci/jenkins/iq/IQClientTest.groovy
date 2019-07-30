@@ -39,7 +39,13 @@ class IQClientTest
 
   def setup() {
     http = Mock(SonatypeHTTPBuilder)
-    clientHttpMock = new IQClient("http://localhost:${port}/iq", 'admin', 'admin123', System.out, true)
+    clientHttpMock = new IQClient("http://localhost:${port}/iq",
+                                  'admin',
+                                  'admin123',
+                                  System.out,
+                                  true,
+                                  false,
+                                  false )
     clientHttpMock.http = http
 
     iqApplication = new JsonSlurper().parse(new File("src/test/resources/iq-${iqTestAppExternalId}-applicationInfo.json"))
@@ -52,7 +58,7 @@ class IQClientTest
     iqVersionRecommendationOnlyNonFail = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-only-non-failing.json'))
     iqVersionRecommendationOnlyNoViolations = new JsonSlurper().parse(new File('src/test/resources/iq-version-recommendation-only-no-violations.json'))
 
-    clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true])
+    clientLive = Spy(IQClient, constructorArgs: ["http://localhost:${port}/iq", 'admin', 'admin123', System.out, true, false, false])
   }
 
   def 'lookup scan report policy threats has correct url'() {

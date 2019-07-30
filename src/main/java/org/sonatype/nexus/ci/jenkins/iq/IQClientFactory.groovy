@@ -26,7 +26,11 @@ import static com.google.common.base.Preconditions.checkNotNull
 
 class IQClientFactory
 {
-  static IQClient getIQClient(String jobCredentialsId = null, PrintStream logger = null, final boolean verboseLogging = false) {
+  static IQClient getIQClient(String jobCredentialsId = null,
+                              PrintStream logger = null,
+                              final boolean verboseLogging = false,
+                              final boolean disableIQCveDetails = false,
+                              final boolean disableIQRemediationRecommendation = false) {
     def configuration = NotifierConfiguration.getNotifierConfiguration()
     checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration())
     checkArgument(configuration.jiraConfigs != null, Messages.JiraClientFactory_NoConfiguration())
@@ -38,13 +42,13 @@ class IQClientFactory
 
     def credentials = findCredentials(jiraConfig.iqServerUrl, credentialsId)
 
-    return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging)
+    return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, disableIQCveDetails, disableIQRemediationRecommendation)
   }
 
   static IQClient getIQClientForUrl(final String jobCredentialsId, final String url) {
     def credentials = findCredentials(url, jobCredentialsId)
 
-    return new IQClient(url, credentials.username, credentials.password.plainText, null, false)
+    return new IQClient(url, credentials.username, credentials.password.plainText, null, false, false, false)
   }
 
   static private StandardUsernamePasswordCredentials findCredentials(final String url, final String credentialsId) {
