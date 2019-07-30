@@ -45,7 +45,7 @@ class JiraNotifierTest
   JiraClient jiraClient, integrationTestJiraClient
   def jqlMaxResultsOverride = 50
   def disableJqlFieldFilter = false
-  def disableIQCveDetails = false
+  def disableIQCVEDetails = false
   def disableIQRemediationRecommendation = false
   def dryRun = false
 
@@ -72,7 +72,7 @@ class JiraNotifierTest
     iqClient = Mock(IQClient.class)
 
     integrationTestJiraClient = Spy(JiraClient, constructorArgs: ["http://localhost:${jiraPort}", 'admin', 'admin123', mockLogger, verboseLogging, dryRun, disableJqlFieldFilter, jqlMaxResultsOverride])
-    integrationTestIqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging, disableIQCveDetails, disableIQRemediationRecommendation])
+    integrationTestIqClient = Spy(IQClient, constructorArgs: ["http://localhost:${iqPort}/iq", 'admin', 'admin123', mockLogger, verboseLogging, disableIQCVEDetails, disableIQRemediationRecommendation])
 
     mockListener.getLogger() >> mockLogger
     mockRun.getEnvironment(_) >> [:]
@@ -115,7 +115,7 @@ class JiraNotifierTest
                                                        null,
                                                        verboseLogging,
                                                        dryRun,
-                                                       disableIQCveDetails,
+                                                       disableIQCVEDetails,
                                                        disableIQRemediationRecommendation,
                                                        null,
                                                        disableJqlFieldFilter,
@@ -175,7 +175,7 @@ class JiraNotifierTest
                                                                   null,
                                                                   verboseLogging,
                                                                   dryRun,
-                                                                  disableIQCveDetails,
+                                                                  disableIQCVEDetails,
                                                                   disableIQRemediationRecommendation,
                                                                   null,
                                                                   disableJqlFieldFilter,

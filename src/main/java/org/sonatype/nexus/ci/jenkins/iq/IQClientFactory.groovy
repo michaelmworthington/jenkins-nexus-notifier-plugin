@@ -29,7 +29,7 @@ class IQClientFactory
   static IQClient getIQClient(String jobCredentialsId = null,
                               PrintStream logger = null,
                               final boolean verboseLogging = false,
-                              final boolean disableIQCveDetails = false,
+                              final boolean disableIQCVEDetails = false,
                               final boolean disableIQRemediationRecommendation = false) {
     def configuration = NotifierConfiguration.getNotifierConfiguration()
     checkArgument(configuration != null, Messages.JiraClientFactory_NoConfiguration())
@@ -42,7 +42,7 @@ class IQClientFactory
 
     def credentials = findCredentials(jiraConfig.iqServerUrl, credentialsId)
 
-    return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, disableIQCveDetails, disableIQRemediationRecommendation)
+    return new IQClient(jiraConfig.iqServerUrl, credentials.username, credentials.password.plainText, logger, verboseLogging, disableIQCVEDetails, disableIQRemediationRecommendation)
   }
 
   static IQClient getIQClientForUrl(final String jobCredentialsId, final String url) {

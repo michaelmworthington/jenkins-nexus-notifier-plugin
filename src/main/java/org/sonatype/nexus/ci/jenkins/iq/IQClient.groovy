@@ -25,7 +25,7 @@ class IQClient extends AbstractToolClient
   //cache cve details for cwe and threat vector - until i start passing the hash/coordinate
   private Map<String, Object> cveDetails = [:]
 
-  private Boolean disableIQCveDetails
+  private Boolean disableIQCVEDetails
   private Boolean disableIQRemediationRecommendation
 
   IQClient(String serverUrl,
@@ -33,11 +33,11 @@ class IQClient extends AbstractToolClient
            String password,
            PrintStream logger,
            final boolean verboseLogging = false,
-           final boolean disableIQCveDetails = false,
+           final boolean disableIQCVEDetails = false,
            final boolean disableIQRemediationRecommendation = false) {
     super(serverUrl, username, password, logger, verboseLogging)
 
-    this.disableIQCveDetails = disableIQCveDetails
+    this.disableIQCVEDetails = disableIQCVEDetails
     this.disableIQRemediationRecommendation = disableIQRemediationRecommendation
   }
 
@@ -215,7 +215,7 @@ class IQClient extends AbstractToolClient
       def url = getCVEDetailsUrl(serverUrl, cveCode)
       def headers = getRequestHeaders(username, password)
 
-      if(!disableIQCveDetails)
+      if(!disableIQCVEDetails)
       {
         cveDetails.put(cveCode, http.get(url, headers))
       }
