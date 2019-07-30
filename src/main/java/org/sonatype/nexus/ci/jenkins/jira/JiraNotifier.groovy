@@ -180,14 +180,20 @@ class JiraNotifier
       String iqAppExternalId = linkPieces[linkPieces.length-3]
       jiraFieldMappingUtil.getApplicationCustomField().customFieldValue = iqAppExternalId
       jiraFieldMappingUtil.getScanStageCustomField().customFieldValue = iqClient.lookupStageForReport(iqAppExternalId, iqReportInternalid)
+      jiraFieldMappingUtil.setScanInternalId(iqReportInternalid)
 
-      //skip this if the org custom field is not mapped - to avoid any edge cases with permissions (customFieldID should be null, but double check that)
-      if(jiraFieldMappingUtil.getOrganizationCustomField().customFieldId)
+      try
       {
         jiraFieldMappingUtil.getOrganizationCustomField().customFieldValue = iqClient.lookupOrganizationName(iqAppExternalId)
       }
+      catch (Exception e)
+      {
+        logger.print("INFO: Error occurred while looking up the IQ Organization for the application.")
+        logger.print("INFO: The most likely cause is the user does not have view access to the organization.")
+        logger.print("INFO: Error Message: ${e.message}")
+      }
 
-      //todo: skip for continuous monitoring
+      //todo: skip for continuous monitoring?
       jiraFieldMappingUtil.getLastScanDateCustomField().customFieldValue = jiraFieldMappingUtil.getFormattedScanDateForJira()
 
       if (jiraFieldMappingUtil.shouldCreateIndividualTickets)
@@ -463,7 +469,7 @@ class JiraNotifier
                                  JiraClient jiraClient,
                                  JiraFieldMappingUtil jiraFieldMappingUtil)
   {
-    String iqApplicationInternalId = iqClient.lookupApplication(jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)?.applications[0]?.id
+    String iqApplicationInternalId = iqClient.lookupApplication(jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)?.applications?.getAt(0)?.id
 
     if(jiraFieldMappingUtil.shouldAggregateTicketsByComponent)
     {
@@ -482,6 +488,7 @@ class JiraNotifier
           //lookup recommended version from IQ Server
           //Because it's another API call, do it only when creating tickets
           safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
+          safeLookupCWEAndThreatVector(jiraFieldMappingUtil, policyViolation, iqClient)
 
           resp = createIndividualTicket(jiraClient,
                                         jiraFieldMappingUtil,
@@ -495,6 +502,7 @@ class JiraNotifier
 
               //copy recommended version from parent
               childPolicyViolation.recommendedRemediation = policyViolation.recommendedRemediation
+              safeLookupCWEAndThreatVector(jiraFieldMappingUtil, childPolicyViolation, iqClient)
 
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
@@ -520,6 +528,7 @@ class JiraNotifier
               //lookup recommended version from IQ Server
               //Because it's another API call, do it only when creating tickets
               safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
+              safeLookupCWEAndThreatVector(jiraFieldMappingUtil, policyViolation, iqClient)
 
               createSubTask(jiraClient,
                             jiraFieldMappingUtil,
@@ -540,6 +549,7 @@ class JiraNotifier
         //lookup recommended version from IQ Server
         //Because it's another API call, do it only when creating tickets
         safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
+        safeLookupCWEAndThreatVector(jiraFieldMappingUtil, policyViolation, iqClient)
 
         createIndividualTicket(jiraClient,
                                jiraFieldMappingUtil,
@@ -561,6 +571,20 @@ class JiraNotifier
                                                                                                              jiraFieldMappingUtil.getScanStageCustomField().customFieldValue,
                                                                                                              iqApplicationInternalId),
                                                                            jiraFieldMappingUtil.getScanStageCustomField().customFieldValue)
+    }
+  }
+
+  private static void safeLookupCWEAndThreatVector(JiraFieldMappingUtil jiraFieldMappingUtil, PolicyViolation policyViolation, IQClient iqClient)
+  {
+    if (policyViolation.cveCode
+            && (jiraFieldMappingUtil.getCweCodeCustomField().customFieldId
+            || jiraFieldMappingUtil.getMaxCweCodeCustomField().customFieldId
+            || jiraFieldMappingUtil.getThreatVectorCustomField().customFieldId
+            || jiraFieldMappingUtil.getMaxThreatVectorCustomField().customFieldId))
+    {
+      String[] resp = iqClient.lookupCweAndThreatVector(policyViolation.cveCode)
+      policyViolation.cweCode = resp[0]
+      policyViolation.threatVector = resp[1]
     }
   }
 

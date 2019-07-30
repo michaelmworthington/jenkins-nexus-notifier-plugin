@@ -15,6 +15,7 @@ class JiraFieldMappingUtil
   private EnvVars iEnvVars
   private PrintStream logger
   private Date scanDate
+  private String scanInternalId
 
   String projectKey
   String issueTypeName
@@ -178,8 +179,8 @@ class JiraFieldMappingUtil
       getMaxSeverityCustomField().customFieldValue = pPolicyViolation.severity
       getMaxCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
       getMaxCveLinkCustomField().customFieldValue =  pPolicyViolation.cveLink
-      //getMaxCweCodeCustomField().customFieldValue =  pPolicyViolation.cweCode        //todo
-      //getMaxThreatVectorCustomField().customFieldValue = pPolicyViolation.threatVector //todo
+      getMaxCweCodeCustomField().customFieldValue =  pPolicyViolation.cweCode
+      getMaxThreatVectorCustomField().customFieldValue = pPolicyViolation.threatVector
       getMaxCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
       getMaxIqServerPolicyViolationNameCustomField().customFieldValue = pPolicyViolation.policyName
       getMaxIqServerPolicyViolationThreatLevelCustomField().customFieldValue = pPolicyViolation.policyThreatLevel
@@ -190,8 +191,8 @@ class JiraFieldMappingUtil
       getSeverityCustomField().customFieldValue =  pPolicyViolation.severity
       getCveCodeCustomField().customFieldValue =  pPolicyViolation.cveCode
       getCveLinkCustomField().customFieldValue =  pPolicyViolation.cveLink
-      //todo: cwe code
-      //todo: threat vector
+      getCweCodeCustomField().customFieldValue =  pPolicyViolation.cweCode
+      getThreatVectorCustomField().customFieldValue = pPolicyViolation.threatVector
       getCvssCustomField().customFieldValue =  pPolicyViolation.cvssScore
       getIqServerPolicyViolationNameCustomField().customFieldValue = pPolicyViolation.policyName
       getIqServerPolicyViolationThreatLevelCustomField().customFieldValue = pPolicyViolation.policyThreatLevel
@@ -422,6 +423,16 @@ class JiraFieldMappingUtil
     }
 
     returnValue
+  }
+
+  String getScanInternalId()
+  {
+    return scanInternalId
+  }
+
+  void setScanInternalId(String scanInternalId)
+  {
+    this.scanInternalId = scanInternalId
   }
 
   String getFormattedScanDateForJira()

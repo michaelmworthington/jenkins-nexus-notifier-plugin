@@ -374,4 +374,20 @@ class IQClientTest
     thisVersion == true
     after == false
   }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Lookup CVE Details'() {
+
+    when:
+    def resp = clientLive.lookupCweAndThreatVector(cveCode)
+
+    then:
+    resp == result
+
+    where:
+    cveCode | result
+    "sonatype-2019-0001" | ["94", "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"]
+    "sonatype-2016-0030" | ["79", ""]
+    "CVE-2019-9047" |  ["89", "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"]
+  }
 }

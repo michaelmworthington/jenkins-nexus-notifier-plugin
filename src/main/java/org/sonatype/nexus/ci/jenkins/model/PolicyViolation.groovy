@@ -49,6 +49,8 @@ class PolicyViolation
   Double cvssScore
   String cveCode
   String cveLink
+  String cweCode
+  String threatVector
   String severity
 
   static boolean assignableFrom(Object action) {
@@ -210,6 +212,8 @@ class PolicyViolation
       severity = policyViolation.severity
       cveCode = policyViolation.cveCode
       cveLink = policyViolation.cveLink
+      cweCode = policyViolation.cweCode
+      threatVector = policyViolation.threatVector
       cvssReason = policyViolation.cvssReason
     }
 
