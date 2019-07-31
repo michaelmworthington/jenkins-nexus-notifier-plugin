@@ -20,6 +20,7 @@ import hudson.model.TaskListener
 import org.sonatype.nexus.ci.jenkins.iq.IQClient
 import org.sonatype.nexus.ci.jenkins.iq.IQClientFactory
 import org.sonatype.nexus.ci.jenkins.model.IQVersionRecommendation
+import org.sonatype.nexus.ci.jenkins.model.JiraNotifierStats
 import org.sonatype.nexus.ci.jenkins.model.PolicyEvaluationHealthAction
 import org.sonatype.nexus.ci.jenkins.model.PolicyViolation
 import org.sonatype.nexus.ci.jenkins.notifier.ContinuousMonitoringConfig
@@ -37,15 +38,20 @@ class JiraNotifier
   final Run run
   final TaskListener listener
   final PrintStream logger
+  final JiraNotifierStats stats
 
   JiraNotifier(@Nonnull final Run run, @Nonnull final TaskListener listener) {
     this.run = run
     this.listener = listener
     this.logger = listener.logger
+
+    this.stats = new JiraNotifierStats(logger)
   }
 
   void continuousMonitor(final String dynamicData, final ContinuousMonitoringConfig continuousMonitoringConfig, final JiraNotification jiraNotification)
   {
+    stats.cmMessage = "Continuous Monitor "
+
     logger.println("######################################")
     logger.println("Starting Jira Continuous Monitoring")
     logger.println("######################################")
@@ -56,6 +62,8 @@ class JiraNotifier
     //if the application id is specified, use that and ignore the dynamic data
     if (singleAppId)
     {
+      stats.setTotalApplications(1)
+
       checkArgument(!isNullOrEmpty(singleStage), "Continuous Monitoring Stage is required when specifying an application name")
 
       logger.println("#################################################################################################################")
@@ -75,6 +83,8 @@ class JiraNotifier
       int current = 1
       int total = dynamicDataJson.size
       String stageToUse, appIdToUse
+
+      stats.setTotalApplications(total)
       dynamicDataJson.each{
         checkArgument(!isNullOrEmpty(it[appKeyFieldName]), "Application Name Value not found for key : ${appKeyFieldName} for Dynamic Data : ${it}")
         appIdToUse = it[appKeyFieldName]
@@ -98,6 +108,12 @@ class JiraNotifier
         current++
       }
     }
+
+    logger.println("######################################################################")
+    logger.println("                 Continuous Monitoring Completed                      ")
+    logger.println("                 -------------------------------                      ")
+    stats.printGrandTotals(true)
+    logger.println("######################################################################")
   }
 
   private void runContinuousMonitorForApp(final String dynamicData, final String pAppId, final String pStage, final JiraNotification jiraNotification, final boolean shouldUpdateLastScanDate)
@@ -132,6 +148,8 @@ class JiraNotifier
             final PolicyEvaluationHealthAction pPolicyEvaluationHealthAction,
             final boolean shouldUpdateLastScanDate = true)
   {
+    stats.startApplication()
+
     checkArgument(!isNullOrEmpty(jiraNotification.projectKey), Messages.JiraNotifier_NoProjectKey())
     checkArgument(!isNullOrEmpty(jiraNotification.issueTypeName), Messages.JiraNotifier_NoIssueType())
     if(jiraNotification.shouldCreateSubTasksForAggregatedTickets)
@@ -309,6 +327,9 @@ class JiraNotifier
         logger.println("######################################")
         logger.println("######################################")
 
+        //add ticket metrics to stats
+        stats.totalApplicationNewJiraTickets = newIQFindings.size() + newIQComponents.size()
+
         /***************************************
           4. Create New Tickets
          ***************************************/
@@ -376,12 +397,16 @@ class JiraNotifier
       else
       {
         logger.println("Creating just one ticket with a violation summary in the description")
+        stats.startTicket()
+
         createSummaryTicket(jiraClient, jiraFieldMappingUtil, policyEvaluationHealthAction, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue, iqReportInternalid)
 
         if (jiraFieldMappingUtil.shouldTransitionJiraTickets)
         {
           logger.println("Skipping Transitioning tickets when in Summary Mode")
         }
+
+        stats.finishTicket()
       }
     }
     catch (ex)
@@ -389,6 +414,18 @@ class JiraNotifier
       logger.println(ex.message)
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
+    }
+    finally
+    {
+      stats.finishApplication()
+      logger.println("######################################")
+      logger.println("                STATS                 ")
+      logger.println("######################################")
+      stats.printFinishedApplicationMessage()
+      stats.printFinishedApplicationNewJiraTickets()
+      stats.printGrandTotals()
+      logger.println("######################################")
+      logger.println("######################################")
     }
   }
 
@@ -500,6 +537,8 @@ class JiraNotifier
         }
         else
         {
+          stats.startTicket()
+
           //lookup recommended version from IQ Server
           //Because it's another API call, do it only when creating tickets
           safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
@@ -508,11 +547,14 @@ class JiraNotifier
           resp = createIndividualTicket(jiraClient,
                                         jiraFieldMappingUtil,
                                         policyViolation)
+          stats.finishTicket()
 
           if (jiraFieldMappingUtil.shouldCreateSubTasksForAggregatedTickets)
           {
             logger.println("Creating ${policyViolation.findingFingerprints.size()} finding tickets")
             policyViolation.findingFingerprints.each {
+              stats.startTicket()
+
               PolicyViolation childPolicyViolation = newIQFindings.get(it)
 
               //copy recommended version from parent
@@ -525,6 +567,8 @@ class JiraNotifier
                             childPolicyViolation)
 
               createdSubTasks.add(it)
+
+              stats.finishTicket()
             }
           }
         }
@@ -540,6 +584,8 @@ class JiraNotifier
           {
             if (repeatJiraComponentsWithNewFindings.containsKey(policyViolation.componentFingerprint))
             {
+              stats.startTicket()
+
               //lookup recommended version from IQ Server
               //Because it's another API call, do it only when creating tickets
               safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
@@ -549,6 +595,8 @@ class JiraNotifier
                             jiraFieldMappingUtil,
                             repeatJiraComponentsWithNewFindings.get(policyViolation.componentFingerprint).ticketExternalId,
                             policyViolation)
+
+              stats.finishTicket()
             }
             else
             {
@@ -557,10 +605,13 @@ class JiraNotifier
           }
         }
       }
-    } else
+    }
+    else
     {
       logger.println("Creating ${newIQFindings.size()} finding tickets")
       newIQFindings.each { fingerprint, policyViolation ->
+        stats.startTicket()
+
         //lookup recommended version from IQ Server
         //Because it's another API call, do it only when creating tickets
         safeLookupRecommendedVersion(jiraFieldMappingUtil, policyViolation, iqClient, iqApplicationInternalId)
@@ -569,6 +620,8 @@ class JiraNotifier
         createIndividualTicket(jiraClient,
                                jiraFieldMappingUtil,
                                policyViolation)
+
+        stats.finishTicket()
         }
     }
   }
