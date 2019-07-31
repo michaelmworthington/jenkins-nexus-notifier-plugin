@@ -24,7 +24,7 @@ class ComponentIdentifier
   def coordinates
   String prettyName
 
-  ComponentIdentifier(Map pComponentIdentifierJson)
+  ComponentIdentifier(Map pComponentIdentifierJson, String pHash)
   {
     if (pComponentIdentifierJson)
     {
@@ -81,7 +81,10 @@ class ComponentIdentifier
     else
     {
       format = "unknown"
-      //TODO: if null, probably a component unknown, is there any other info we can provide (i.e. the filename)?
+      //if null, probably a component unknown,
+      // we could possibly use the file name as in the UI, but it's not unique, so the hash is stil the underlying UUID
+      // also, given that the hash is the identifier, i'm not sure what i'd do with two separate file names
+      version = pHash
     }
 
     prettyName = buildPrettyName()
@@ -104,10 +107,8 @@ class ComponentIdentifier
         returnValue = [format, group, artifact, version, classifier, extension].findAll().join(":")
         break
       case "unknown":
-        //todo - what else can we set for unknowns?
-        coordinates?.each {
-          returnValue += ":${it.value}"
-        }
+        //using the version as the hash
+        returnValue += ":${version}"
         break
       default:
         coordinates?.each {

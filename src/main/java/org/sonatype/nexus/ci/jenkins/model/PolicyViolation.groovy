@@ -69,7 +69,7 @@ class PolicyViolation
                           String policyFilterPrefix,
                           int policyFilterThreatLevel)
   {
-    ComponentIdentifier componentIdentifier = new ComponentIdentifier(componentPolicyData.componentIdentifier)
+    ComponentIdentifier componentIdentifier = new ComponentIdentifier(componentPolicyData.componentIdentifier, componentPolicyData.hash)
     String componentName = componentIdentifier.prettyName
     String packageUrl = componentRawData?.packageUrl
     IQRawLicenseData licenseData = new IQRawLicenseData(componentRawData?.licenseData)
@@ -99,8 +99,6 @@ class PolicyViolation
           && it.policyThreatLevel >= policyFilterThreatLevel)
       {
         String conditionReasonText = ""
-        String fingerprintPrettyPrint = "${componentName} - ${it.policyName}"
-        String fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}"
         String cveCode = ""
         String cveLink = ""
         Double cvssScore = 0
@@ -114,8 +112,6 @@ class PolicyViolation
         if(cvssCondition)
         {
           conditionReasonText = cvssCondition.conditionReason
-          fingerprintPrettyPrint = "${componentName} - ${it.policyName} - ${conditionReasonText}"
-          fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}-${conditionReasonText}"
 
           //Parse the CVSS Reason for CVE Code and CVSS Score
           String[] parts = conditionReasonText.split(' ')
@@ -127,11 +123,19 @@ class PolicyViolation
         else if (licenseCondition)
         {
           conditionReasonText = licenseCondition.conditionReason
-          fingerprintPrettyPrint = "${componentName} - ${it.policyName} - ${conditionReasonText}"
-          fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}-${conditionReasonText}"
-          //TODO: do i get the license name here?
+        }
+        else
+        {
+          conditionReasonText = it.constraints?.getAt(0)?.constraintName
         }
 
+        /*
+         * TODO: This is the most important thing to making the whole Sync work.
+         * If the fingerprint hash changes, the tickets will not line up with the policy violations,
+         * which could cause close/new ticket churn
+         */
+        String fingerprintPrettyPrint = "${componentName} - ${it.policyName} - ${conditionReasonText}"
+        String fingerprintKey = "SONATYPEIQ-${iqAppExternalId}-${it.policyId}-${componentName}-${conditionReasonText}"
         String findingFingerprintHash = getFingerprintHash(fingerprintKey)
 
         PolicyViolation policyViolation = new PolicyViolation(reportLink: pReportLink,

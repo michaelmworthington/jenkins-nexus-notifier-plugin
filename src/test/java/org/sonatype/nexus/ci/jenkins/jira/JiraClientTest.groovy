@@ -270,7 +270,8 @@ class JiraClientTest
     ComponentIdentifier componentIdentifier = new ComponentIdentifier([format     : "maven",
                                                                        coordinates: [groupId   : "org.apache.struts",
                                                                                      artifactId: "struts2-core",
-                                                                                     version   : "1.2.3"]])
+                                                                                     version   : "1.2.3"]],
+                                                                      "abchash")
     def policyName = "Security-Low"
     def severity = "Low"
     def policyThreatLevel = 1
@@ -324,7 +325,8 @@ class JiraClientTest
     ComponentIdentifier componentIdentifier = new ComponentIdentifier([format     : "maven",
                                                                        coordinates: [groupId   : "org.apache.struts",
                                                                                      artifactId: "struts2-core",
-                                                                                     version   : "1.2.3"]])
+                                                                                     version   : "1.2.3"]],
+                                                                      "abchash")
     def componentFingerprintPretty = componentIdentifier.prettyName
     def componentFingerprintKey = "SONATYPEIQ-APPID-COMPONENTID"
     def componentFingerprintHash = "some-parent-sha-value"

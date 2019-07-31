@@ -11,7 +11,8 @@ class ComponentIdentifierTest
     ComponentIdentifier componentIdentifier = new ComponentIdentifier([format     : "maven",
                                                                        coordinates: [groupId   : "org.apache.struts",
                                                                                      artifactId: "struts2-core",
-                                                                                     version   : "1.2.3"]])
+                                                                                     version   : "1.2.3"]],
+                                                                      "abchash")
 
     expect:
     componentIdentifier.prettyName == "maven:org.apache.struts:struts2-core:1.2.3"
@@ -25,7 +26,8 @@ class ComponentIdentifierTest
                                                                                      artifactId: "struts2-core",
                                                                                      version   : "1.2.3",
                                                                                      classifier: "linux",
-                                                                                     extension : "war"]])
+                                                                                     extension : "war"]],
+                                                                      "xyzhash")
 
     expect:
     componentIdentifier.prettyName == "maven:org.apache.struts:struts2-core:1.2.3:linux:war"
