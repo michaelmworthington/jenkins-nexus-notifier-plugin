@@ -14,7 +14,7 @@ class JiraNotifierStatsTest
 
     sleep(ONE_SECOND_IN_MILLIS * 5)
 
-    def res = stats.getElapsedTime()
+    def res = stats.getElapsedTime(new Date())
     println res
 
     expect:

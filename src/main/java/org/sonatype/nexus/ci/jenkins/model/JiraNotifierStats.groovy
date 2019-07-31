@@ -48,7 +48,13 @@ class JiraNotifierStats
   void printFinishedApplicationNewJiraTickets()
   {
     def i = currentApplicationIndex
-    def art = applicationElapsedTimes[i].toMilliseconds() / applicationNewJiraTickets[i]
+    def art = "average not yet available"
+
+    if(applicationNewJiraTickets[i] > 0)
+    {
+      art = applicationElapsedTimes[i].toMilliseconds() / applicationNewJiraTickets[i]
+    }
+
     logger.println("Created ${applicationNewJiraTickets[i]} Jira tickets for this application (avg time per ticket: ${art} milliseconds vs avg time per ticket for all apps: ${getAverageTicketElapsedMilliseconds()} milliseconds)")
   }
 
