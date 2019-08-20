@@ -38,8 +38,7 @@ class JiraNotifierTest
   //private static final String iqTestReport = "73cbe478f71a4b8382d773a4248f2f88" //test (59)
 
   private static final String iqTestAppExternalId = "aaaaaaa-testidegrandfathering"
-
-  //todo: mock iq-aaaaaaa-testidegrandfathering-applicationInfo.json
+  private static final String iqTestAppInternalId = "e06a119c75d04d97b8d8c11b62719752"
 
   IQClient iqClient, integrationTestIqClient
   JiraClient jiraClient, integrationTestJiraClient
@@ -55,7 +54,7 @@ class JiraNotifierTest
   def mockListener = Mock(TaskListener)
   def mockRun = Mock(Run)
 
-  def customFields, iqReport, iqReportRaw
+  def iqApplication, iqApplicationEmpty, customFields, iqReport, iqReportRaw
   String dynamicDataTwo, dynamicDataOne
 
   PolicyEvaluationHealthAction policyEvaluationHealthAction
@@ -78,12 +77,14 @@ class JiraNotifierTest
     mockRun.getEnvironment(_) >> [:]
     jiraNotifier = new JiraNotifier(mockRun, mockListener)
 
+    iqApplication = new JsonSlurper().parse(new File("src/test/resources/iq-${iqTestAppExternalId}-applicationInfo.json"))
+    iqApplicationEmpty = new JsonSlurper().parse(new File("src/test/resources/iq-applications-empty.json"))
     customFields = new JsonSlurper().parse(new File('src/test/resources/jira-custom-fields.json'))
     iqReport = new JsonSlurper().parse(new File("src/test/resources/iq-${iqTestAppExternalId}-${iqTestReport}-policythreats.json"))
     iqReportRaw = new JsonSlurper().parse(new File("src/test/resources/iq-report-raw-${iqTestAppExternalId}-${iqTestReport}.json"))
 
     policyEvaluationHealthAction = new PolicyEvaluationHealthAction(
-            reportLink: "http://localhost:8060/iq/ui/links/application/${iqTestAppExternalId}/report/${iqTestReport}",
+            reportLink: "http://localhost:${iqPort}/iq/ui/links/application/${iqTestAppExternalId}/report/${iqTestReport}",
             affectedComponentCount: 1,
             criticalComponentCount: 2,
             severeComponentCount: 3,
@@ -525,7 +526,7 @@ class JiraNotifierTest
       def openTickets100 = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks-from-jenkinsfile-test-100-113.json'))
 
       def iqReportBig = new JsonSlurper().parse(new File("src/test/resources/iq-${iqTestAppExternalId}-67b95f188e3f4a9896a370d7bc830cc8-policythreats.json"))
-      policyEvaluationHealthAction.reportLink = "http://localhost:8060/iq/ui/links/application/${iqTestAppExternalId}/report/67b95f188e3f4a9896a370d7bc830cc8"
+      policyEvaluationHealthAction.reportLink = "http://localhost:${iqPort}/iq/ui/links/application/${iqTestAppExternalId}/report/67b95f188e3f4a9896a370d7bc830cc8"
 
       jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security-High"
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
@@ -557,7 +558,7 @@ class JiraNotifierTest
       def openTicketsBad = new JsonSlurper().parse(new File('src/test/resources/jira-open-tickets-empty-set-bad-maxResults.json'))
 
       def iqReportBig = new JsonSlurper().parse(new File("src/test/resources/iq-${iqTestAppExternalId}-67b95f188e3f4a9896a370d7bc830cc8-policythreats.json"))
-      policyEvaluationHealthAction.reportLink = "http://localhost:8060/iq/ui/links/application/${iqTestAppExternalId}/report/67b95f188e3f4a9896a370d7bc830cc8"
+      policyEvaluationHealthAction.reportLink = "http://localhost:${iqPort}/iq/ui/links/application/${iqTestAppExternalId}/report/67b95f188e3f4a9896a370d7bc830cc8"
 
       jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security-High"
       jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
@@ -622,6 +623,73 @@ class JiraNotifierTest
       o.each{
         it[fieldName] != null
       }
+  }
+
+  def 'Continuous Monitoring Create Detail Tickets - Aggregate by Component and SubTask - Update Existing Security High Tickets and add other Security Tickets'() {
+    setup:
+    def openTickets = new JsonSlurper().parse(new File('src/test/resources/jira-open-security-tickets-aggregated-and-subtasks.json'))
+
+    jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security"
+    jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+    jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+    JiraClientFactory.getJiraClient(*_) >> jiraClient
+    IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+    jiraNotifier.continuousMonitor(dynamicDataOne, continuousMonitoringConfig, jiraNotificationCreateParentTicketTest)
+
+    then:
+    2 * iqClient.lookupApplication(iqTestAppExternalId) >> iqApplication
+    1 * iqClient.lookupReportLinkForInternalId(iqTestAppInternalId, "stage-release") >> "http://localhost:${iqPort}/iq/ui/links/application/${iqTestAppExternalId}/report/${iqTestReport}"
+    1 * jiraClient.lookupCustomFields() >> customFields
+    1 * iqClient.lookupPolcyDetailsFromIQ(iqTestReport, iqTestAppExternalId) >> iqReport
+    1 * iqClient.lookupComponentDetailsFromIQ(iqTestReport, iqTestAppExternalId) >> iqReportRaw
+    9 * iqClient.lookupCweAndThreatVector(_) >> ["",""]
+    1 * jiraClient.lookupJiraTickets(_, _) >> openTickets
+
+    //Expectations when doing License Policy Filter
+    9 * jiraClient.createSubTask(*_)
+    12 * jiraClient.updateIssueScanDate(*_)
+  }
+
+  def 'Continuous Monitoring Create Detail Tickets - Aggregate by Component and SubTask - Invalid Application ID throws Exception'() {
+    setup:
+    jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security"
+    jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+    jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+    JiraClientFactory.getJiraClient(*_) >> jiraClient
+    IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+    jiraNotifier.continuousMonitor(dynamicDataOne, continuousMonitoringConfig, jiraNotificationCreateParentTicketTest)
+
+    then:
+    1 * iqClient.lookupApplication(iqTestAppExternalId) >> iqApplicationEmpty
+    IllegalArgumentException ex = thrown()
+    ex.message == 'Continuous Monitoring Application was not found: aaaaaaa-testidegrandfathering'
+  }
+
+  def 'Continuous Monitoring Create Detail Tickets - Aggregate by Component and SubTask - Application has no report at stage'() {
+    setup:
+    jiraNotificationCreateParentTicketTest.policyFilterPrefix = "Security"
+    jiraNotificationCreateParentTicketTest.shouldAggregateTicketsByComponent = true
+    jiraNotificationCreateParentTicketTest.shouldCreateSubTasksForAggregatedTickets = true
+
+    JiraClientFactory.getJiraClient(*_) >> jiraClient
+    IQClientFactory.getIQClient(*_) >> iqClient
+
+    when:
+    continuousMonitoringConfig.dynamicDataStageKey = null
+    continuousMonitoringConfig.stage = "operate"
+
+    jiraNotifier.continuousMonitor(dynamicDataOne, continuousMonitoringConfig, jiraNotificationCreateParentTicketTest)
+
+    then:
+    1 * iqClient.lookupApplication(iqTestAppExternalId) >> iqApplication
+    1 * iqClient.lookupReportLinkForInternalId(iqTestAppInternalId, "operate") >> null
+    0 * jiraClient.lookupCustomFields()
   }
 
   /*
@@ -729,7 +797,7 @@ class JiraNotifierTest
       //jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = null
 
       // The report from Juice Shop and Goof with lots of results
-      //policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
+      //policyEvaluationHealthAction.reportLink = 'http://localhost:${iqPort}/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
 
       //need these so we're not calling back to the jenkins runtime
       JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient
@@ -768,7 +836,7 @@ class JiraNotifierTest
     //jiraNotificationCreateParentTicketTest.lastScanDateCustomFieldName = null
 
     // The report from Juice Shop and Goof with lots of results
-    //policyEvaluationHealthAction.reportLink = 'http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
+    //policyEvaluationHealthAction.reportLink = 'http://localhost:${iqPort}/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/df53830759574e71a645d40839dc531f'
 
     //need these so we're not calling back to the jenkins runtime
     JiraClientFactory.getJiraClient(*_) >> integrationTestJiraClient

@@ -118,20 +118,15 @@ class JiraNotifier
 
   private void runContinuousMonitorForApp(final String dynamicData, final String pAppId, final String pStage, final JiraNotification jiraNotification, final boolean shouldUpdateLastScanDate)
   {
+    IQClient iqClient
+
     try
     {
-      IQClient iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId,
+      iqClient = IQClientFactory.getIQClient(jiraNotification.jobIQCredentialsId,
                                                       logger,
                                                       jiraNotification.verboseLogging,
                                                       jiraNotification.disableIQCVEDetails,
                                                       jiraNotification.disableIQRemediationRecommendation)
-
-      PolicyEvaluationHealthAction policyEvaluationHealthAction = new PolicyEvaluationHealthAction()
-      //TODO: this does have the date, which may be useful for setting the date on jira tickets based on the report rather than current time
-      policyEvaluationHealthAction.reportLink = iqClient.lookupReportLink(pAppId, pStage)
-
-      //todo: skip updating the last scan date, but it still needs to be set for new tickets
-      send(true, dynamicData, jiraNotification, policyEvaluationHealthAction, shouldUpdateLastScanDate)
     }
     catch (Throwable ex)
     {
@@ -139,6 +134,24 @@ class JiraNotifier
       logger.println(ex.message)
       ex.printStackTrace(logger)
       throw new AbortException(ex.message)
+    }
+
+    String iqApplicationInternalId = iqClient.lookupApplication(pAppId)?.applications?.getAt(0)?.id
+    checkArgument(!isNullOrEmpty(iqApplicationInternalId), "Continuous Monitoring Application was not found: ${pAppId}")
+
+    PolicyEvaluationHealthAction policyEvaluationHealthAction = new PolicyEvaluationHealthAction()
+
+    //TODO: this does have the date, which may be useful for setting the date on jira tickets based on the report rather than current time
+    policyEvaluationHealthAction.reportLink = iqClient.lookupReportLinkForInternalId(iqApplicationInternalId, pStage)
+
+    if(policyEvaluationHealthAction.reportLink)
+    {
+      //todo: skip updating the last scan date, but it still needs to be set for new tickets
+      send(true, dynamicData, jiraNotification, policyEvaluationHealthAction, shouldUpdateLastScanDate)
+    }
+    else
+    {
+      logger.println("WARNING: IQ Server Report not found at stage: ${pStage} for Application: ${pAppId}")
     }
   }
 
@@ -202,6 +215,8 @@ class JiraNotifier
 
       // IQ Link: http://localhost:8060/iq/ui/links/application/aaaaaaa-testidegrandfathering/report/3d0fedc4857f44368e0b501a6b986048
       logger.println("IQ Link: " + policyEvaluationHealthAction.reportLink)
+      checkArgument(!isNullOrEmpty(policyEvaluationHealthAction.reportLink), "IQ Link is required.")
+
       jiraFieldMappingUtil.getIqServerReportLinkCustomField().customFieldValue = policyEvaluationHealthAction.reportLink
 
       String[] linkPieces = policyEvaluationHealthAction.reportLink.split("/")
@@ -259,6 +274,8 @@ class JiraNotifier
         def findingComponents = iqClient.lookupComponentDetailsFromIQ(iqReportInternalid, jiraFieldMappingUtil.getApplicationCustomField().customFieldValue)
 
         String cveLinkBaseUrl = iqClient.lookupCveLinkBaseUrl()
+        //TODO: Where is the Vuln ID?
+        //TODO:    Waiver Link
 
         logger.println("Parsing findings from the IQ Server Report: ${potentialFindings.aaData.size}")
         potentialFindings.aaData.each { policyFinding ->
@@ -479,6 +496,14 @@ class JiraNotifier
       {
         if ("Sub-task" == pv.ticketType)
         {
+          //todo: there is a scenario where a sub-task can exist for a closed parent.
+          //todo: i'm not sure why this would happen, but i changed the code on April 7th (23:55 - 541652d7ebd9dae37ad984ffc3b7e5f4fbc72b05)
+          //todo: so that a new sub-task gets created for the open parent task
+          //todo:
+          //todo: this results in duplicate tickets with the same fingerprint.
+          //todo: adding them to the map here will result in the latest ticket being closed; assuming they're closed
+          //todo:
+          //todo: Q) what should happen if we find duplicate tickets?
           currentFindingsMap.put(pv.fingerprint, pv)
         } else
         {

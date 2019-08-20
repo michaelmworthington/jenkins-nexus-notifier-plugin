@@ -351,6 +351,21 @@ class IQClientTest
   }
 
   @Requires({env.JIRA_IQ_ARE_LOCAL})
+  def 'helper test to verify interaction with IQ Server - Lookup Report Link'() {
+    when:
+    def resp = clientLive.lookupReportLink(app, stage)
+
+    then:
+    resp != response
+
+    where:
+    app | stage | response
+    iqTestAppExternalId | "release" | null
+    iqTestAppExternalId | "operate" | "should be null"
+    "foobar" | "release" | "should be null"
+  }
+
+  @Requires({env.JIRA_IQ_ARE_LOCAL})
   def 'helper test to verify interaction with IQ Server - Lookup Remediation Recommendation'() {
     String appId = iqTestAppInternalId
     appId = "a5004e5c189349faac376647f8863a19"
@@ -372,8 +387,8 @@ class IQClientTest
 
     when:
     boolean before = clientLive.isVersionSupported("1.59")
-    boolean thisVersion = clientLive.isVersionSupported("1.69")
-    boolean after = clientLive.isVersionSupported("1.70")
+    boolean thisVersion = clientLive.isVersionSupported("1.71")
+    boolean after = clientLive.isVersionSupported("1.72")
 
     then:
     before == true

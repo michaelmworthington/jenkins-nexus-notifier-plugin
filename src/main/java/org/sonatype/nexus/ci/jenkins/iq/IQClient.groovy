@@ -72,17 +72,26 @@ class IQClient extends AbstractToolClient
   String lookupReportLink(String iqAppExternalId, String iqStage)
   {
     def applicationResp = lookupApplication(iqAppExternalId)
-    def reportsResp = lookupApplicationReportLinks(applicationResp?.applications[0]?.id)
+
+    if(applicationResp?.applications?.size > 0)
+    {
+      return lookupReportLinkForInternalId(applicationResp?.applications[0]?.id, iqStage)
+    }
+
+    return null
+  }
+
+  String lookupReportLinkForInternalId(String iqAppInternalId, String iqStage)
+  {
+    def reportsResp = lookupApplicationReportLinks(iqAppInternalId)
     def reportHtmlUrl = reportsResp.find { it.stage == iqStage }?.reportHtmlUrl
 
     if (reportHtmlUrl)
     {
       return "${serverUrl}/${reportHtmlUrl}"
     }
-    else
-    {
-      return null
-    }
+
+    return null
   }
 
   def lookupRecommendedVersion(String pPackageUrl, String pStage, String pIQApplicationInternalId)

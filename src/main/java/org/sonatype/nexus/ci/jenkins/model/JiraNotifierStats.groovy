@@ -67,16 +67,21 @@ class JiraNotifierStats
       def jobTotalTimeMillis = applicationElapsedTimes.sum()
       def appAverageSeconds = getAverageApplicationElapsedSeconds()
 
-      def actualTicketCount = applicationNewJiraTickets.sum()
-      def ticketsPerApp = actualTicketCount / actualAppCount
-      def ticketAverageMillis = getAverageTicketElapsedMilliseconds()
-
       logger.println("Finished ${actualAppCount} ${cmMessage}Applications")
       logger.println("    * Total Time: ${jobTotalTimeMillis}")
       logger.println("    * Average Seconds per App: ${appAverageSeconds}")
-      logger.println("Created a total of ${actualTicketCount} tickets")
-      logger.println("    * Average Tickets per App: ${ticketsPerApp}")
-      logger.println("    * Average Millis per Ticket: ${ticketAverageMillis}")
+
+
+      if(actualAppCount > 0)
+      {
+        def actualTicketCount = applicationNewJiraTickets.sum()
+        def ticketsPerApp = actualTicketCount / actualAppCount
+        def ticketAverageMillis = getAverageTicketElapsedMilliseconds()
+
+        logger.println("Created a total of ${actualTicketCount} tickets")
+        logger.println("    * Average Tickets per App: ${ticketsPerApp}")
+        logger.println("    * Average Millis per Ticket: ${ticketAverageMillis}")
+      }
     }
   }
 

@@ -235,7 +235,7 @@ class JiraClient extends AbstractToolClient
       jql['jql'] += " AND \"${applicationCustomFieldName}\" ~ \"${iqApplicationExternalId}\""
     }
 
-    jql['jql'] += " ORDER BY key"
+    jql['jql'] += " ORDER BY key" //todo: see comment in JiraNotifier.lookupJiraTickets(). i think one protection is to reverse the order so that older tickets take precedence over new tickets
 
 
     def fields = [:]
