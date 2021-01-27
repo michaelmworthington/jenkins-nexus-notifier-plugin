@@ -59,7 +59,7 @@
     <findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
     <jvnet-localizer-plugin.version>1.23</jvnet-localizer-plugin.version>
 
-    <buildsupport.version>10</buildsupport.version>
+    <buildsupport.version>25</buildsupport.version>
     <buildsupport.license-maven-plugin.version>2.11</buildsupport.license-maven-plugin.version>
 
     <public.serverId>sonatype-public</public.serverId>
