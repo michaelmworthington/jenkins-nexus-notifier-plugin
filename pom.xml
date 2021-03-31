@@ -60,7 +60,7 @@
     <jvnet-localizer-plugin.version>1.23</jvnet-localizer-plugin.version>
 
     <buildsupport.version>10</buildsupport.version>
-    <buildsupport.license-maven-plugin.version>2.11</buildsupport.license-maven-plugin.version>
+    <buildsupport.license-maven-plugin.version>4.0</buildsupport.license-maven-plugin.version>
 
     <public.serverId>sonatype-public</public.serverId>
     <public.nexusUrl>https://repository.sonatype.org</public.nexusUrl>
