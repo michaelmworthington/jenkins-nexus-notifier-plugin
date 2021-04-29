@@ -1,0 +1,26 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.mycila:license-maven-plugin
+    versions:
+    - "3.0"
+    - "4.0"
+  - dependency-name: org.codehaus.groovy:groovy-eclipse-batch
+    versions:
+    - 3.0.7-02
+    - 3.0.7-03
+  - dependency-name: org.sonatype.buildsupport:licenses
+    versions:
+    - "25"
+    - "26"
+  - dependency-name: org.codehaus.groovy:groovy-eclipse-compiler
+    versions:
+    - 3.6.0-03
+  - dependency-name: org.objenesis:objenesis
+    versions:
+    - "3.1"
